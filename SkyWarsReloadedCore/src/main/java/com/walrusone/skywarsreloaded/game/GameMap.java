@@ -555,8 +555,14 @@ public class GameMap {
     }
 
     public void removePlayer(final UUID uuid) {
-        for (TeamCard tCard : teamCards) {
-            if (tCard.removePlayer(uuid)) break;
+        this.removePlayer(uuid, true);
+    }
+
+    public void removePlayer(final UUID uuid, boolean removePlayerCard) {
+        if (removePlayerCard) {
+            for (TeamCard tCard : teamCards) {
+                if (tCard.removePlayer(uuid)) break;
+            }
         }
         spectators.remove(uuid);
         this.removeWaitingPlayer(uuid);
