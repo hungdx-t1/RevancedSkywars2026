@@ -7,21 +7,16 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>v1_21_R1</artifactId>
+    <artifactId>v1_21_R7</artifactId>
     <packaging>jar</packaging>
 
-    <name>v1_21_R1</name>
-
-    <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-    </properties>
+    <name>v1_21_R7</name>
 
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.21.1-R0.1-SNAPSHOT</version>
+            <version>1.21.11-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -31,23 +26,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.walrusone</groupId>
-            <artifactId>v1_20_R1</artifactId>
-            <version>${revision}</version>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>26.1.0</version>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>

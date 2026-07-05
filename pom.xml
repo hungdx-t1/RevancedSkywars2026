@@ -20,7 +20,6 @@
     <modules>
         <module>SkyWarsReloadedCore</module>
         <module>slime-asp</module>
-        <module>v1_21_R1</module>
         <module>v1_21_R7</module>
         <module>skywars-assembly</module>
     </modules>
