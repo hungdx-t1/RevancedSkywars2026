@@ -75,7 +75,7 @@ public class TeamCard {
         return playerCards.size();
     }
 
-    public int getFullCount() {
+    public int getEmptySlots() {
         int x = 0;
         for (PlayerCard pCard : playerCards) {
             if (pCard.getUUID() == null) {
@@ -190,7 +190,7 @@ public class TeamCard {
     }
 
     boolean isFull() {
-        return getFullCount() == getGameMap().getTeamSize();
+        return getEmptySlots() == getGameMap().getTeamSize();
     }
 
     public int getPlayersSize() {
@@ -215,7 +215,7 @@ public class TeamCard {
 
     public boolean isEliminated() {
         int playersLeft = this.getPlayersSize();
-        return (playersLeft == 0) || (this.teamSize == getDeadPlayerSize());
+        return (playersLeft == 0) || (this.teamSize <= getDeadPlayerSize());
     }
 
     public String getPlayerNames() {

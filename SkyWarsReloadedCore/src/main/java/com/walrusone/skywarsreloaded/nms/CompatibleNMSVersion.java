@@ -44,8 +44,13 @@ public enum CompatibleNMSVersion {
     v1_19_R3(19, "v1_19_R1"),
 
     // 1.20
-    v1_20_R1(20, "v1_19_R1"),
-    v1_20_R2(20, "v1_19_R1"),
+    v1_20_R1(20, "v1_20_R1"),
+    v1_20_R2(20, "v1_20_R1"),
+
+    // 1.21
+    v1_21_R1(21, "v1_21_R1"),
+    v1_21_R2(21, "v1_21_R1"),
+    v1_21_R3(21, "v1_21_R1"),
     ;
 
     private final int featureVersion;
@@ -60,9 +65,18 @@ public enum CompatibleNMSVersion {
         return nmsImplVersion;
     }
 
-    static CompatibleNMSVersion getLatestSupported() {
-        CompatibleNMSVersion[] values = CompatibleNMSVersion.values();
-        return values[values.length - 1];
+    static CompatibleNMSVersion getLatestSupported(Integer currentFeatureVersion) {
+        // iterate over the available NMS versions and get the latest one that matches the current feature version (not higher than the current version)
+        if (currentFeatureVersion != null) {
+            for (int i = CompatibleNMSVersion.values().length - 1; i >= 0; i--) {
+                CompatibleNMSVersion version = CompatibleNMSVersion.values()[i];
+                if (version.getFeatureVersion() <= currentFeatureVersion) {
+                    return version;
+                }
+            }
+        }
+
+        return CompatibleNMSVersion.values()[CompatibleNMSVersion.values().length - 1];
     }
 
     public int getFeatureVersion() {
