@@ -75,7 +75,7 @@ public class PlayerStat {
     public void loadStats(Runnable postLoadStatsTask) {
         DataStorage.get().loadStats(this, () -> {
             this.setInitialized(true);
-            this.saveStats(postLoadStatsTask);
+            if (postLoadStatsTask != null) postLoadStatsTask.run();
         });
     }
 
@@ -154,12 +154,7 @@ public class PlayerStat {
 
     public static PlayerStat getPlayerStats(final Player player) {
         String uuid = player.getUniqueId().toString();
-        for (final PlayerStat pData : getPlayers()) {
-            if (pData.getId().equals(uuid)) {
-                return pData;
-            }
-        }
-        return null;
+        return getPlayerStats(uuid);
     }
 
     public static PlayerStat getPlayerStats(final UUID uuid) {
@@ -258,7 +253,7 @@ public class PlayerStat {
                         .replace("{time}", "" + Util.get().getFormattedTime(gMap.getTimer()))
                         .replace("{aliveplayers}", "" + gMap.getAlivePlayers().size())
                         .replace("{players}", "" + currentPlayers)
-                        .replace("{maxplayers}", "" + gMap.getTeamCards().size() * gMap.getTeamSize())
+                        .replace("{maxplayers}", "" + gMap.getMaxPlayers())
                         .replace("{winner}", SkyWarsReloaded.getCfg().usePlayerNames() ? getWinnerName(gMap,0) : getWinningTeamName(gMap))
                         .replace("{winner1}", SkyWarsReloaded.getCfg().usePlayerNames() ? getWinnerName(gMap,0) : getWinningTeamName(gMap))
                         .replace("{winner2}", SkyWarsReloaded.getCfg().usePlayerNames() ? getWinnerName(gMap,1) : "remove")
@@ -339,20 +334,20 @@ public class PlayerStat {
     public void saveStats(Runnable postSaveStatsTask) {
         Player player = SkyWarsReloaded.get().getServer().getPlayer(UUID.fromString(uuid));
         String playerName = player != null ? player.getName() : uuid;
-        Bukkit.getLogger().log(Level.WARNING, "Now saving stats of player " + playerName);
+        Bukkit.getLogger().log(Level.INFO, "Now saving stats of player " + playerName);
 
-        PlayerStat self = this;
+        saveStatsNow();
+
         new BukkitRunnable() {
             @Override
             public void run() {
-                saveStatsSync(self);
                 if (postSaveStatsTask != null) postSaveStatsTask.run();
             }
         }.runTask(SkyWarsReloaded.get());
     }
 
-    private void saveStatsSync(PlayerStat ps) {
-        DataStorage.get().saveStats(ps);
+    private void saveStatsNow() {
+        DataStorage.get().saveStats(this);
     }
 
     public String getId() {

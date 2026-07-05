@@ -196,18 +196,22 @@ public class PlayerManager {
                     // Send titles
                     for (final Player p : alivePlayers) {
                         Util.get().sendTitle(p, 2, 20, 2, "",
-                                new Messaging.MessageFormatter().setVariable("player", playerRemoved.getDisplayName())
+                                new Messaging.MessageFormatter()
+                                        .setVariable("player", playerRemoved.getDisplayName())
                                         .setVariable("players", "" + gameMap.getPlayerCount())
                                         .setVariable("playercount", "" + gameMap.getPlayerCount())
-                                        .setVariable("maxplayers", "" + gameMap.getMaxPlayers()).format("game.left-the-game"));
+                                        .setVariable("maxplayers", "" + gameMap.getMaxPlayers())
+                                        .format("game.left-the-game"));
                     }
                 }
 
                 // Send leave message to all players (waiting before start or during ending state)
-                matchManager.message(gameMap, new Messaging.MessageFormatter().setVariable("player", playerRemoved.getDisplayName())
+                matchManager.message(gameMap, new Messaging.MessageFormatter()
+                        .setVariable("player", playerRemoved.getDisplayName())
                         .setVariable("players", "" + gameMap.getPlayerCount())
                         .setVariable("playercount", "" + gameMap.getPlayerCount())
-                        .setVariable("maxplayers", "" + gameMap.getMaxPlayers()).format("game.waitstart-left-the-game"), playerRemoved);
+                        .setVariable("maxplayers", "" + gameMap.getMaxPlayers())
+                        .format("game.waitstart-left-the-game"), playerRemoved);
             }
         }
     }
@@ -284,8 +288,7 @@ public class PlayerManager {
         // ---------------- TEAM & PLAYER DATA ------------------
         // Process Team data
         playerCard.setDead(true);
-        teamCard.removePlayer(pUuid);
-        // Place the first team to die, last. So we use players left (missing the current one, so +1)
+        // Place the first team to die, last. So we use teams left (missing the current one, so +1)
         // + 1 because we are counting from 1
         if (teamCard.isEliminated())
             teamCard.setPlace(gameMap.getTeamsLeft() + 1);
@@ -323,7 +326,7 @@ public class PlayerManager {
         Bukkit.getPluginManager().callEvent(new SkyWarsLeaveEvent(playerRemoved, gameMap));
 
         // ---------------- GAME MAP UPDATES -----------------
-        gameMap.removePlayer(pUuid);
+        gameMap.removePlayer(pUuid, false);
         if (SkyWarsReloaded.getCfg().spectateEnable() && removeReason.equals(PlayerRemoveReason.DEATH)) {
             this.addSpectator(gameMap, playerRemoved);
             shouldSendToLobby = false;
