@@ -87,7 +87,7 @@ public class SWRSign83 implements com.walrusone.skywarsreloaded.game.signs.SWRSi
             if (sign == null) return;
 
             if (loc.getBlock().getType().name().contains("HANGING")) {
-                attachedBlock = loc.clone().add(0, 1, 0).getBlock();
+                attachedBlock = loc.add(0, 1, 0).getBlock();
             } else if (loc.getBlock().getType().name().contains("WALL")) {
                 attachedBlock = getAttachedBlock(loc.getBlock());
             } else {
