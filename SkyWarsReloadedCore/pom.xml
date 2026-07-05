@@ -11,12 +11,6 @@
 
     <artifactId>SkyWarsReloadedCore</artifactId>
     <packaging>jar</packaging>
-    <version>${revision}</version>
-
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-    </properties>
 
     <repositories>
         <repository>
@@ -112,28 +106,6 @@
             <version>2.9.7</version>
         </dependency>
 
-        <!-- SLIME WORLDS: ASWM DEPENDENCY -->
-
-        <!-- SLIME WORLDS: USE THESE DEPENDENCIES TO GET LEGACY SWM SUPPORT IN THE IDEA DURING DEVELOPMENT-->
-        <!--<dependency>
-            <groupId>com.grinderwolf</groupId>
-            <artifactId>slimeworldmanager-api</artifactId>
-            <version>2.2.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.grinderwolf</groupId>
-            <artifactId>slimeworldmanager-plugin</artifactId>
-            <version>2.2.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.grinderwolf</groupId>
-            <artifactId>slimeworldmanager-nms-common</artifactId>
-            <version>2.2.1</version>
-            <scope>provided</scope>
-        </dependency>-->
-        <!-- END OF LEGACY SWM DEPENDENCIES -->
         <dependency>
             <groupId>com.github.MilkBowl</groupId>
             <artifactId>VaultAPI</artifactId>
