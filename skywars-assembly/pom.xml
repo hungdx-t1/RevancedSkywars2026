@@ -156,6 +156,7 @@
                                 </includes>
                             </artifactSet>
                             <finalName>SWR-${revision}</finalName>
+                            <outputDirectory>${project.parent.basedir}/target/</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -177,4 +178,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>
