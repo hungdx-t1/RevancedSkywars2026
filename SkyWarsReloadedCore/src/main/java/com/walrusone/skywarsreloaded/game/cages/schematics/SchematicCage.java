@@ -5,7 +5,6 @@ import com.sk89q.worldedit.EditSession;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.game.PlayerCard;
-import com.walrusone.skywarsreloaded.game.TeamCard;
 import com.walrusone.skywarsreloaded.managers.PlayerStat;
 import com.walrusone.skywarsreloaded.menus.gameoptions.objects.CoordLoc;
 import com.walrusone.skywarsreloaded.utilities.Util;
@@ -71,11 +70,7 @@ public class SchematicCage {
                     if (SkyWarsReloaded.getCfg().debugEnabled()) {
                         Util.get().logToFile("SWR[" + map.getName() + "] Now pasting the cage for player " + player.getName() + " with schematic " + schematicFile.getName());
                     }
-                    if (SkyWarsReloaded.getNMS().getVersion() < 13) {
-                        new Schematic12().pasteSchematic(schematicFile, map, spawn, player);
-                    } else {
-                        new Schematic13().pasteSchematic(schematicFile, map, spawn, player);
-                    }
+                    new Schematic13().pasteSchematic(schematicFile, map, spawn, player);
                     return true;
                 }
             }

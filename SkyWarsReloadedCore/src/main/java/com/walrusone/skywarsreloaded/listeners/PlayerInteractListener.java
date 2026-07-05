@@ -359,11 +359,7 @@ public class PlayerInteractListener implements Listener {
             for (GameMap gMap : SkyWarsReloaded.getGameMapMgr().getPlayableArenas(GameType.ALL)) {
                 for (Crate crate : gMap.getCrates()) {
                     if (crate.getInventory().equals(inv) && inv.getViewers().size() <= 1) {
-                        if (SkyWarsReloaded.getNMS().getVersion() < 9) {
-                            e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.valueOf("CHEST_CLOSE"), 1, 1);
-                        } else {
-                            e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 1);
-                        }
+                        e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 1);
                         SkyWarsReloaded.getNMS().playChestAction(crate.getLocation().getBlock(), false);
                         return;
                     }
@@ -438,8 +434,7 @@ public class PlayerInteractListener implements Listener {
                         // Remove from map
                         map.removeChest(chest);
                         InventoryHolder ih = chest.getInventory().getHolder();
-                        if (ih instanceof DoubleChest) {
-                            DoubleChest dc = (DoubleChest) ih;
+                        if (ih instanceof DoubleChest dc) {
                             Chest left = (Chest) dc.getLeftSide();
                             Chest right = (Chest) dc.getRightSide();
                             Location locLeft = left.getLocation();

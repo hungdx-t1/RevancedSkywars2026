@@ -133,21 +133,6 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
         return instance.pom;
     }
 
-    public boolean isNewVersion() throws Exception {
-        // Prevent mix-and-match incompatible versions of SWR & SWR-Extension
-        Thread thread = Thread.currentThread();
-        StackTraceElement[] stackTrace = thread.getStackTrace();
-
-        // Check who is asking - if it's the extension, ensure use of compatibility check
-        String callingClassName = stackTrace[2].getClassName();
-        if (callingClassName.equals("me.gaagjescraft.network.team.skywarsreloaded.extension.SWExtension")) {
-            if (extensionCompatible) return true; // everything checks out
-            else if (extensionHasCompatCheck) return false; // non-legacy extension version, we can return false
-            else throw new Exception("Incompatible extension version!"); // legacy extension, requires exception to prevent enable
-        }
-        return true;
-    }
-
     @Override
     public void onLoad() {
         instance = this;
@@ -169,33 +154,6 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
 
         servername = "none";
 
-        // Load config for 1.8
-        if (nmsHandler.getVersion() < 9) {
-            File config = new File(SkyWarsReloaded.get().getDataFolder(), "config.yml");
-            if (!config.exists()) {
-                SkyWarsReloaded.get().saveResource("config18.yml", false);
-                config = new File(SkyWarsReloaded.get().getDataFolder(), "config18.yml");
-                if (config.exists()) {
-                    boolean result = config.renameTo(new File(SkyWarsReloaded.get().getDataFolder(), "config.yml"));
-                    if (result) {
-                        getLogger().info("Loading 1.8 Configuration Files");
-                    }
-                }
-            }
-            // Load config for 1.12
-        } else if (nmsHandler.getVersion() < 13 && nmsHandler.getVersion() > 8) {
-            File config = new File(SkyWarsReloaded.get().getDataFolder(), "config.yml");
-            if (!config.exists()) {
-                SkyWarsReloaded.get().saveResource("config112.yml", false);
-                config = new File(SkyWarsReloaded.get().getDataFolder(), "config112.yml");
-                if (config.exists()) {
-                    boolean result = config.renameTo(new File(SkyWarsReloaded.get().getDataFolder(), "config.yml"));
-                    if (result) {
-                        getLogger().info("Loading 1.9 - 1.12 Configuration Files");
-                    }
-                }
-            }
-        }
         // Copy missing attributes
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
@@ -284,9 +242,7 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
         ic = new IconMenuController();
 
         // LISTENERS
-        if (nmsHandler.getVersion() > 8) {
-            this.getServer().getPluginManager().registerEvents(new SwapHandListener(), this);
-        }
+        this.getServer().getPluginManager().registerEvents(new SwapHandListener(), this); // 1.9+
         this.getServer().getPluginManager().registerEvents(ic, this);
         this.getServer().getPluginManager().registerEvents(new ArenaDamageListener(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);

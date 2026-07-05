@@ -16,6 +16,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
+import org.jetbrains.annotations.Contract;
 
 import java.util.List;
 import java.util.UUID;
@@ -80,7 +81,7 @@ public interface NMS {
 
     ItemStack getBlankPlayerHead();
 
-    int getVersion();
+    default int getVersion() { return 21; }
 
     ItemStack getMaterial(String paramString);
 

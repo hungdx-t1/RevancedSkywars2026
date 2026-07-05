@@ -491,24 +491,15 @@ public class Config {
             for (int i = 0; i < itemNames.size(); i++) {
                 String name = itemNames.get(i);
                 String def;
-                if (SkyWarsReloaded.getNMS().getVersion() < 9) {
-                    def = defItems8.get(i);
-                } else if (SkyWarsReloaded.getNMS().getVersion() > 8 && SkyWarsReloaded.getNMS().getVersion() < 13) {
-                    def = defItems12.get(i);
-                } else {
-                    def = defItems13.get(i);
-                }
+                def = defItems13.get(i);
                 addMaterial(name, SkyWarsReloaded.get().getConfig().getString("items." + name), def);
             }
 
             for (int i = 0; i < signItems.size(); i++) {
                 String name = signItems.get(i);
                 String def;
-                if (SkyWarsReloaded.getNMS().getVersion() < 13) {
-                    def = signDef8.get(i);
-                } else {
-                    def = signDef13.get(i);
-                }
+
+                def = signDef13.get(i);
 
                 addMaterial(name, SkyWarsReloaded.get().getConfig().getString("signs." + name), def);
             }

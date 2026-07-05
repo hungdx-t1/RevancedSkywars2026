@@ -7,12 +7,11 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 public class SkyWarsDeathEvent extends Event {
-
     private static final HandlerList handlers = new HandlerList();
-    private Player player;
-    private GameMap map;
-    private EntityDamageEvent.DamageCause cause;
-    private Player taggerPlayer;
+    private final Player player;
+    private final GameMap map;
+    private final EntityDamageEvent.DamageCause cause;
+    private final Player taggerPlayer;
 
     public SkyWarsDeathEvent(Player p, EntityDamageEvent.DamageCause cause, GameMap game, Player taggerPlayer) {
         this.player = p;
