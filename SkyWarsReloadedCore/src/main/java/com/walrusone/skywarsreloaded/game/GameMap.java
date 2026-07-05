@@ -423,15 +423,15 @@ public class GameMap {
                 for (TeamCard tCard : teamCards) {
                     if (SkyWarsReloaded.getCfg().debugEnabled()) {
                         Bukkit.getLogger().log(Level.WARNING, "#addPlayers: --teamCard: " + (tCard.getPlace() + 1));
-                        Bukkit.getLogger().log(Level.WARNING, "#addPlayers: (" + (tCard.getPlace() + 1) + ") fullCount: " + tCard.getFullCount());
+                        Bukkit.getLogger().log(Level.WARNING, "#addPlayers: (" + (tCard.getPlace() + 1) + ") emptySlots: " + tCard.getEmptySlots());
                     }
-                    if (tCard.getFullCount() > 0) { // If space available
+                    if (tCard.getEmptySlots() > 0) { // If space available
                         reservedTeamCard = tCard.sendReservation(player, ps);
-                        break;
+                        if (reservedTeamCard != null) break;
                     }
                 }
             } else { // In party mode
-                if (teamToTry.getFullCount() > 0) {
+                if (teamToTry.getEmptySlots() > 0) {
                     reservedTeamCard = teamToTry.sendReservation(player, ps);
                 } else {
                     SkyWarsReloaded.get().getLogger().warning("Player attempted to join party team but the team referenced is empty (" + player.getName() + ", " + teamToTry.getTeamName() + ")");
@@ -479,7 +479,7 @@ public class GameMap {
                     PlayerStat ps = PlayerStat.getPlayerStats(uuid);
                     if (ps != null && player != null && ps.isInitialized()) {
                         for (TeamCard tCard : teamCards) {
-                            if (tCard.getFullCount() > 0) {
+                            if (tCard.getEmptySlots() > 0) {
                                 Util.get().ejectPassengers(player);
                                 TeamCard reserve = tCard.sendReservation(player, ps);
                                 if (reserve != null) {
@@ -496,7 +496,7 @@ public class GameMap {
             if (teamToTry == null) {
                 teamCards.sort(new TeamCardComparator());
                 for (TeamCard tCard : teamCards) {
-                    if (tCard.getFullCount() >= party.getSize()) {
+                    if (tCard.getEmptySlots() >= party.getSize()) {
                         for (int i = 0; i < party.getSize(); i++) {
                             Player player = Bukkit.getPlayer(party.getMembers().get(i));
                             PlayerStat ps = PlayerStat.getPlayerStats(player.getUniqueId());
@@ -515,7 +515,7 @@ public class GameMap {
                     }
                 }
             } else {
-                if (teamToTry.getFullCount() >= party.getSize()) {
+                if (teamToTry.getEmptySlots() >= party.getSize()) {
                     for (int i = 0; i < party.getSize(); i++) {
                         Player player = Bukkit.getPlayer(party.getMembers().get(i));
                         PlayerStat ps = PlayerStat.getPlayerStats(player.getUniqueId());
@@ -659,7 +659,7 @@ public class GameMap {
             return false;
         }
         for (TeamCard tCard : teamCards) {
-            if (tCard.getFullCount() > 0) {
+            if (tCard.getEmptySlots() > 0) {
                 return true;
             }
         }
@@ -675,7 +675,7 @@ public class GameMap {
             return playerCount + party.getSize() - 1 < teamCards.size();
         } else {
             for (TeamCard tCard : teamCards) {
-                if (tCard.getFullCount() >= party.getSize()) {
+                if (tCard.getEmptySlots() >= party.getSize()) {
                     return true;
                 }
             }
@@ -950,38 +950,41 @@ public class GameMap {
         if (inEditing) {
             saveMap(sender);
         }
-        if (spawnLocations.size() > 1) {
-            int maxPlayers = getMaxPlayers();
-            int actualMaxPlayers = teamCards.size() * teamSize;
 
-            if ((teamSize > 1 && maxPlayers == actualMaxPlayers || !SkyWarsReloaded.getCfg().isUseSeparateCages()) || (teamSize == 1 && maxPlayers > 1)) {
-                if (spectateSpawn == null && SkyWarsReloaded.getCfg().spectateEnable()) {
-                    SkyWarsReloaded.get().getLogger().info("Could Not Register Map: " + name + " - No spectator spawn has been set. Set it using '/swm spawn spec'");
-                    registered = false;
-                    return 3;
-                }
-                if (waitingLobbySpawn == null && teamSize > 1) {
-                    SkyWarsReloaded.get().getLogger().info("Could Not Register Map: " + name + " - No waiting lobby spawn has been set. This is required for team games. Set it using '/swm spawn lobby'");
-                    registered = false;
-                    return 4;
-                }
-
-                registered = true;
-                gameboard = new GameBoard(this);
-                refreshMap();
-                getJoinQueue().start();
-                SkyWarsReloaded.get().getLogger().info("Registered Map " + name + "!");
-                return 0;
-            } else {
-                registered = false;
-                SkyWarsReloaded.get().getLogger().info("Could Not Register Map: " + name + " - Not all teams have enough spawns. There are only " + maxPlayers + "/" + actualMaxPlayers + " spawns set.");
-                return 1;
-            }
-        } else {
+        if (spawnLocations.size() < 2) {
             registered = false;
             SkyWarsReloaded.get().getLogger().info("Could Not Register Map: " + name + " - Map must have at least 2 Spawn Points");
             return 2;
         }
+
+        int maxPlayers = getMaxPlayers();
+        int actualMaxPlayers = teamCards.size() * teamSize;
+
+        boolean notEnoughSpawns = teamSize > 1 && (maxPlayers != actualMaxPlayers) && SkyWarsReloaded.getCfg().isUseSeparateCages();
+        boolean soloModeInvalid = teamSize == 1 && maxPlayers <= 1;
+
+        if (notEnoughSpawns || soloModeInvalid) {
+            registered = false;
+            SkyWarsReloaded.get().getLogger().info("Could Not Register Map: " + name + " - Not all teams have enough spawns. There are only " + maxPlayers + "/" + actualMaxPlayers + " spawns set.");
+            return 1;
+        }
+        if (spectateSpawn == null && SkyWarsReloaded.getCfg().spectateEnable()) {
+            SkyWarsReloaded.get().getLogger().info("Could Not Register Map: " + name + " - No spectator spawn has been set. Set it using '/swm spawn spec'");
+            registered = false;
+            return 3;
+        }
+        if (waitingLobbySpawn == null && teamSize > 1) {
+            SkyWarsReloaded.get().getLogger().info("Could Not Register Map: " + name + " - No waiting lobby spawn has been set. This is required for team games. Set it using '/swm spawn lobby'");
+            registered = false;
+            return 4;
+        }
+
+        registered = true;
+        gameboard = new GameBoard(this);
+        refreshMap();
+        getJoinQueue().start();
+        SkyWarsReloaded.get().getLogger().info("Registered Map " + name + "!");
+        return 0;
     }
 
     /*Inventories*/
@@ -1098,7 +1101,6 @@ public class GameMap {
                 }
             }
             if (teamSize > 1) {
-                // todo test this
                 cage.createSpawnPlatforms(this);
             }
         }
@@ -1264,7 +1266,7 @@ public class GameMap {
         if (SkyWarsReloaded.getCfg().bungeeMode()) {
             String playerCount = "" + this.getAlivePlayers().size();
             String maxPlayers = "" + this.getMaxPlayers();
-            String gameStarted = "" + this.matchState.toString();
+            String gameStarted = this.matchState.toString();
             ArrayList<String> messages = new ArrayList<>();
             messages.add("ServerUpdate");
             messages.add(SkyWarsReloaded.get().getServerName());
@@ -1320,7 +1322,8 @@ public class GameMap {
     public void addSign(Location loc) {
         signs.add(SkyWarsReloaded.getNMS().createSWRSign(name, loc));
         saveArenaData();
-        updateSigns();
+
+        SkyWarsReloaded.get().getServer().getScheduler().runTask(SkyWarsReloaded.get(), this::updateSigns);
     }
 
     public String getDisplayName() {
@@ -1459,11 +1462,13 @@ public class GameMap {
      * Returns the maximum number of players that can join a match
      */
     public int getMaxPlayers() {
-        int i = 0;
+        boolean separateCages = SkyWarsReloaded.getCfg().isUseSeparateCages();
+
+        int spawns = 0;
         for (List<CoordLoc> coords : spawnLocations.values()) {
-            i += coords.size();
+            spawns += coords.size();
         }
-        return i;
+        return spawns * (separateCages ? 1 : teamSize);
     }
 
     public void setThunderStorm(boolean b) {
@@ -2212,7 +2217,7 @@ public class GameMap {
     public static class TeamCardComparator implements Comparator<TeamCard> {
         @Override
         public int compare(TeamCard f1, TeamCard f2) {
-            return Integer.compare(f1.getFullCount(), f2.getFullCount());
+            return Integer.compare(f1.getEmptySlots(), f2.getEmptySlots());
         }
     }
 

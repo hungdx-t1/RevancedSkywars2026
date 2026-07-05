@@ -154,12 +154,7 @@ public class PlayerStat {
 
     public static PlayerStat getPlayerStats(final Player player) {
         String uuid = player.getUniqueId().toString();
-        for (final PlayerStat pData : getPlayers()) {
-            if (pData.getId().equals(uuid)) {
-                return pData;
-            }
-        }
-        return null;
+        return getPlayerStats(uuid);
     }
 
     public static PlayerStat getPlayerStats(final UUID uuid) {
@@ -258,7 +253,7 @@ public class PlayerStat {
                         .replace("{time}", "" + Util.get().getFormattedTime(gMap.getTimer()))
                         .replace("{aliveplayers}", "" + gMap.getAlivePlayers().size())
                         .replace("{players}", "" + currentPlayers)
-                        .replace("{maxplayers}", "" + gMap.getTeamCards().size() * gMap.getTeamSize())
+                        .replace("{maxplayers}", "" + gMap.getMaxPlayers())
                         .replace("{winner}", SkyWarsReloaded.getCfg().usePlayerNames() ? getWinnerName(gMap,0) : getWinningTeamName(gMap))
                         .replace("{winner1}", SkyWarsReloaded.getCfg().usePlayerNames() ? getWinnerName(gMap,0) : getWinningTeamName(gMap))
                         .replace("{winner2}", SkyWarsReloaded.getCfg().usePlayerNames() ? getWinnerName(gMap,1) : "remove")

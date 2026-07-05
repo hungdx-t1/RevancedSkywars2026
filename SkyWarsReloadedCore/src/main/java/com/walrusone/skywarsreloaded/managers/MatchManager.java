@@ -280,10 +280,12 @@ public class MatchManager {
             String playerCount = gameMap.getMatchState() == MatchState.WAITINGLOBBY ? gameMap.getWaitingPlayers().size() + "" : String.valueOf(pCard.getJoinIndex() + 1); // String.valueOf(gameMap.getAllPlayers().size());
             // Send join message to all
             for (final Player p : gameMap.getAllPlayers()) {
-                p.sendMessage(new Messaging.MessageFormatter().setVariable("player", player.getDisplayName())
+                p.sendMessage(new Messaging.MessageFormatter()
+                        .setVariable("player", player.getDisplayName())
                         .setVariable("players", playerCount)
                         .setVariable("playercount", playerCount)
-                        .setVariable("maxplayers", "" + gameMap.getMaxPlayers()).format("game.waitstart-joined-the-game"));
+                        .setVariable("maxplayers", "" + gameMap.getMaxPlayers())
+                        .format("game.waitstart-joined-the-game"));
             }
         }
 
@@ -449,7 +451,7 @@ public class MatchManager {
                                     int lowest = 0;
                                     for (TeamCard card : cards) {
                                         // If team has a "lone" player AND
-                                        if (card.getFullCount() > 0 && card.getPlayersSize() <= lowest) {
+                                        if (card.getEmptySlots() > 0 && card.getPlayersSize() <= lowest) {
                                             // Add player to team
                                             card.sendReservation(player, PlayerStat.getPlayerStats(player));
                                             break;

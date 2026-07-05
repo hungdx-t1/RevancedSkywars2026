@@ -261,11 +261,25 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
                     getLogger().info("SlimeWorldManager cannot be used on 1.20 or higher. We expected the server to be running AdvancedSlimePaper.");
                     wm = null;
                 } else if (serverFeatureVersion > 14) {
-                    getLogger().info("Using ASWM World Manager");
-                    wm = new ASWMWorldManager();
+                    try {
+                        getLogger().info("Using ASWM World Manager");
+                        wm = (WorldManager) Class.forName("com.walrusone.skywarsreloaded.managers.worlds.ASWMWorldManager")
+                                .getConstructor()
+                                .newInstance();
+                    } catch (Exception ex) {
+                        getLogger().info("Using Bukkit World Manager");
+                        wm = null;
+                    }
                 } else {
-                    getLogger().info("Using Legacy SWM World Manager");
-                    wm = new LegacySWMWorldManager();
+                    try {
+                        getLogger().info("Using Legacy SWM World Manager");
+                        wm = (WorldManager) Class.forName("com.walrusone.skywarsreloaded.managers.worlds.LegacySWMWorldManager")
+                                .getConstructor()
+                                .newInstance();
+                    } catch (Exception ex) {
+                        getLogger().info("Using Bukkit World Manager");
+                        wm = null;
+                    }
                 }
             }
         }
@@ -656,7 +670,7 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
                         GameMap gMap = SkyWarsReloaded.getGameMapMgr().getMapsCopy().get(0);
                         String playerCount = "" + gMap.getAlivePlayers().size();
                         String maxPlayers = "" + gMap.getMaxPlayers();
-                        String gameStarted = "" + gMap.getMatchState().toString();
+                        String gameStarted = gMap.getMatchState().toString();
                         ArrayList<String> messages = new ArrayList<>();
                         messages.add("ServerUpdate");
                         messages.add(servername);
@@ -792,7 +806,7 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
         extensionHasCompatCheck = true;
 
         PluginDescriptionFile desc = ext.getDescription();
-        String compatibleExtensionVersion = "1.7.13";
+        String compatibleExtensionVersion = "1.7.15";
         String foundVersion = desc.getVersion();
 
         String[] compatVersionParts = compatibleExtensionVersion.split("\\.");
