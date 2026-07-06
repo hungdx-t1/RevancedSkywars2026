@@ -736,54 +736,6 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
         return updater;
     }
 
-    @SuppressWarnings("unused")
-    public boolean extensionCompatCheck(JavaPlugin ext) {
-        extensionHasCompatCheck = true;
-
-        PluginDescriptionFile desc = ext.getDescription();
-        String compatibleExtensionVersion = "1.7.15";
-        String foundVersion = desc.getVersion();
-
-        String[] compatVersionParts = compatibleExtensionVersion.split("\\.");
-        String[] foundVersionParts = foundVersion.split("\\.");
-
-        boolean majorMatch = compatVersionParts[0].equals(foundVersionParts[0]);
-        boolean featureMatch = compatVersionParts[1].equals(foundVersionParts[1]);
-        boolean patchMatch = compatVersionParts[2].equals(foundVersionParts[2]);
-
-        if (!patchMatch) {
-            try {
-                int compatPatchVer = Integer.parseInt(compatVersionParts[2]);
-                int foundPatchVer = Integer.parseInt(foundVersionParts[2]);
-                if (foundPatchVer > compatPatchVer) {
-                    this.getLogger().warning(String.format(
-                            "You are using a newer Skywars-Extension version than expected but this should still work (%s). " +
-                                    "This message is for debugging purposes. Skywars will attempt to start as normal.",
-                            foundVersion
-                    ));
-
-                    // Allow newer patch versions
-                    patchMatch = true;
-                }
-            } catch (Exception ignored) {
-            }
-        }
-
-        if (desc.getName().equals("Skywars-Extension") && majorMatch && featureMatch && patchMatch) {
-            extensionCompatible = true;
-            return true;
-        } else {
-            String msg = "\n" +
-                    "-------------------------------------------------------------------------------\n" +
-                    "You are trying to load an incompatible version of the Skywars-Extension plugin!\n" +
-                    "Expected version %s but found %s! Make sure you download the latest version on\n" +
-                    "SpigotMC or our website. You won't receive support for using outdated versions!\n" +
-                    "-------------------------------------------------------------------------------\n";
-            this.getLogger().severe(String.format(msg, compatibleExtensionVersion, foundVersion));
-            return false;
-        }
-    }
-
     protected void loadHologramManager() {
         hologramManager = null;
         if (Bukkit.getPluginManager().isPluginEnabled("DecentHolograms")) {
