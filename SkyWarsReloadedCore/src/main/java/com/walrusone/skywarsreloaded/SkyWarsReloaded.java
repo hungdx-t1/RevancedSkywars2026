@@ -85,8 +85,6 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
 
     // Utils
     private GCNTUpdater updater;
-    private boolean extensionCompatible = false;
-    private boolean extensionHasCompatCheck = false;
 
     public static SkyWarsReloaded get() {
         return instance;
@@ -144,7 +142,8 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
         // NMS Init
         this.nmsHandler = CompatibleNMSVersion.loadNMS(this);
         if (this.nmsHandler == null) {
-            this.setEnabled(false);
+            // disable plugin
+            getServer().getPluginManager().disablePlugin(this);
             return;
         }
 

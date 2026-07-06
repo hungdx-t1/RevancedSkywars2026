@@ -1,5 +1,4 @@
 package com.walrusone.skywarsreloaded.managers.worlds;
 
-public interface ASPWorldManager extends WorldManager {
-
-}
+// recommended
+public interface ASPWorldManager extends WorldManager { }
