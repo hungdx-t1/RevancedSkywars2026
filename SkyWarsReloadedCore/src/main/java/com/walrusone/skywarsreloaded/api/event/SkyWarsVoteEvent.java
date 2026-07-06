@@ -1,19 +1,24 @@
-package com.walrusone.skywarsreloaded.events;
+package com.walrusone.skywarsreloaded.api.event;
 
+import com.walrusone.skywarsreloaded.enums.Vote;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jspecify.annotations.NonNull;
 
-public class SkyWarsJoinEvent extends Event {
+@SuppressWarnings("unused")
+public class SkyWarsVoteEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
-    private Player player;
-    private GameMap map;
+    private final Player player;
+    private final GameMap map;
+    private final Vote vote;
 
-    public SkyWarsJoinEvent(Player p, GameMap game) {
+    public SkyWarsVoteEvent(Player p, GameMap game, Vote vote) {
         this.player = p;
         this.map = game;
+        this.vote = vote;
     }
 
     public static HandlerList getHandlerList() {
@@ -21,7 +26,7 @@ public class SkyWarsJoinEvent extends Event {
     }
 
     @Override
-    public HandlerList getHandlers() {
+    public @NonNull HandlerList getHandlers() {
         return handlers;
     }
 
@@ -32,4 +37,9 @@ public class SkyWarsJoinEvent extends Event {
     public GameMap getGame() {
         return map;
     }
+
+    public Vote getVote() {
+        return vote;
+    }
+
 }

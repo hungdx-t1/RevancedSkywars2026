@@ -2,7 +2,7 @@ package com.walrusone.skywarsreloaded.menus.gameoptions;
 
 import com.google.common.collect.Lists;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.events.SkyWarsSelectKitEvent;
+import com.walrusone.skywarsreloaded.api.event.SkyWarsSelectKitEvent;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
 import com.walrusone.skywarsreloaded.menus.gameoptions.objects.GameKit;

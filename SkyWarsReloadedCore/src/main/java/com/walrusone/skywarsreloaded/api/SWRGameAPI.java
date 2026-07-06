@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public interface SWRGameAPI {
 
     /**

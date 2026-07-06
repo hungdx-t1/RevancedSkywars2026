@@ -5,7 +5,7 @@ import com.walrusone.skywarsreloaded.SkyWarsReloaded;
 import com.walrusone.skywarsreloaded.enums.MatchState;
 import com.walrusone.skywarsreloaded.enums.ScoreVar;
 import com.walrusone.skywarsreloaded.enums.Vote;
-import com.walrusone.skywarsreloaded.events.SkyWarsVoteEvent;
+import com.walrusone.skywarsreloaded.api.event.SkyWarsVoteEvent;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.game.PlayerCard;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
@@ -19,7 +19,6 @@ import org.bukkit.block.DoubleChest;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ChestOption extends GameOption {
     public ChestOption(GameMap gameMap, String key) {

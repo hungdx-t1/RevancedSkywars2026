@@ -1,8 +1,8 @@
 package com.walrusone.skywarsreloaded.commands.admin;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.events.SkyWarsReloadEvent;
-import com.walrusone.skywarsreloaded.events.SkyWarsReloadPreLoadEvent;
+import com.walrusone.skywarsreloaded.api.event.SkyWarsReloadEvent;
+import com.walrusone.skywarsreloaded.api.event.SkyWarsReloadPreLoadEvent;
 import com.walrusone.skywarsreloaded.utilities.Messaging;
 import com.walrusone.skywarsreloaded.utilities.SWRServer;
 import net.md_5.bungee.api.chat.BaseComponent;

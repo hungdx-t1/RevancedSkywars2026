@@ -3,7 +3,7 @@ package com.walrusone.skywarsreloaded.menus;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
 import com.walrusone.skywarsreloaded.enums.MatchState;
 import com.walrusone.skywarsreloaded.enums.Vote;
-import com.walrusone.skywarsreloaded.events.SkyWarsSelectTeamEvent;
+import com.walrusone.skywarsreloaded.api.event.SkyWarsSelectTeamEvent;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.game.PlayerCard;
 import com.walrusone.skywarsreloaded.game.TeamCard;

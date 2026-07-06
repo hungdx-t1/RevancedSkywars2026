@@ -2,7 +2,7 @@ package com.walrusone.skywarsreloaded.game;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
 import com.walrusone.skywarsreloaded.enums.MatchState;
-import com.walrusone.skywarsreloaded.events.SkyWarsJoinEvent;
+import com.walrusone.skywarsreloaded.api.event.SkyWarsJoinEvent;
 import com.walrusone.skywarsreloaded.game.cages.schematics.SchematicCage;
 import com.walrusone.skywarsreloaded.managers.PlayerStat;
 import com.walrusone.skywarsreloaded.menus.gameoptions.objects.CoordLoc;

@@ -6,13 +6,12 @@ import com.walrusone.skywarsreloaded.api.SWREventAPI;
 import com.walrusone.skywarsreloaded.api.SWRGameAPI;
 import com.walrusone.skywarsreloaded.api.SkywarsReloadedAPI;
 
+@SuppressWarnings("unused")
 public class SkywarsReloadedImpl implements SkywarsReloadedAPI {
-
-
     private final SkyWarsReloaded plugin;
     private SWRCommandAPI swrCmdAPI;
     private SWREventAPI swrEventAPI;
-    private SWRGameAPI swrGameAPI;
+    private final SWRGameAPI swrGameAPI;
 
     public SkywarsReloadedImpl() {
         this.plugin = SkyWarsReloaded.get();

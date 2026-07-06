@@ -5,7 +5,7 @@ import com.walrusone.skywarsreloaded.SkyWarsReloaded;
 import com.walrusone.skywarsreloaded.enums.MatchState;
 import com.walrusone.skywarsreloaded.enums.ScoreVar;
 import com.walrusone.skywarsreloaded.enums.Vote;
-import com.walrusone.skywarsreloaded.events.SkyWarsVoteEvent;
+import com.walrusone.skywarsreloaded.api.event.SkyWarsVoteEvent;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.game.PlayerCard;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
@@ -13,9 +13,6 @@ import com.walrusone.skywarsreloaded.utilities.Messaging;
 import com.walrusone.skywarsreloaded.utilities.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class TimeOption extends GameOption {
     public TimeOption(GameMap gameMap, String key) {

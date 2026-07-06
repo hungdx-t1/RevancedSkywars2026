@@ -1,8 +1,8 @@
 package com.walrusone.skywarsreloaded.matchevents;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.events.SkywarsGameEventAnnounceEvent;
-import com.walrusone.skywarsreloaded.events.SkywarsGameEventTriggerEvent;
+import com.walrusone.skywarsreloaded.api.event.SkywarsGameEventAnnounceEvent;
+import com.walrusone.skywarsreloaded.api.event.SkywarsGameEventTriggerEvent;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
 import com.walrusone.skywarsreloaded.utilities.Messaging;

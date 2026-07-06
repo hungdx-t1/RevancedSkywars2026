@@ -1,22 +1,21 @@
-package com.walrusone.skywarsreloaded.events;
+package com.walrusone.skywarsreloaded.api.event;
 
 import com.walrusone.skywarsreloaded.game.GameMap;
-import com.walrusone.skywarsreloaded.game.TeamCard;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jspecify.annotations.NonNull;
 
-public class SkyWarsSelectTeamEvent extends Event {
+@SuppressWarnings("unused")
+public class SkyWarsJoinEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
-    private Player player;
-    private GameMap map;
-    private TeamCard team;
+    private final Player player;
+    private final GameMap map;
 
-    public SkyWarsSelectTeamEvent(Player p, GameMap game, TeamCard team) {
+    public SkyWarsJoinEvent(Player p, GameMap game) {
         this.player = p;
         this.map = game;
-        this.team = team;
     }
 
     public static HandlerList getHandlerList() {
@@ -24,7 +23,7 @@ public class SkyWarsSelectTeamEvent extends Event {
     }
 
     @Override
-    public HandlerList getHandlers() {
+    public @NonNull HandlerList getHandlers() {
         return handlers;
     }
 
@@ -34,9 +33,5 @@ public class SkyWarsSelectTeamEvent extends Event {
 
     public GameMap getGame() {
         return map;
-    }
-
-    public TeamCard getTeam() {
-        return team;
     }
 }

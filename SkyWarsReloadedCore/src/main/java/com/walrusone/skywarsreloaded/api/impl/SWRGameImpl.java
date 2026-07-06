@@ -5,13 +5,13 @@ import com.walrusone.skywarsreloaded.api.SWRGameAPI;
 import com.walrusone.skywarsreloaded.api.SkywarsReloadedAPI;
 import com.walrusone.skywarsreloaded.enums.GameType;
 import com.walrusone.skywarsreloaded.game.GameMap;
-import com.walrusone.skywarsreloaded.managers.GameMapManager;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class SWRGameImpl implements SWRGameAPI {
 
     private final SkywarsReloadedAPI swrAPI;

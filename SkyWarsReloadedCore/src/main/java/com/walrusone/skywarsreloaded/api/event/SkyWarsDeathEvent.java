@@ -1,4 +1,4 @@
-package com.walrusone.skywarsreloaded.events;
+package com.walrusone.skywarsreloaded.api.event;
 
 import com.walrusone.skywarsreloaded.game.GameMap;
 import org.bukkit.entity.Player;
@@ -7,6 +7,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.jspecify.annotations.NonNull;
 
+@SuppressWarnings("unused")
 public class SkyWarsDeathEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     private final Player player;

@@ -1,10 +1,12 @@
-package com.walrusone.skywarsreloaded.events;
+package com.walrusone.skywarsreloaded.api.event;
 
 import com.walrusone.skywarsreloaded.matchevents.MatchEvent;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jspecify.annotations.NonNull;
 
+@SuppressWarnings("unused")
 public class SkywarsGameEventAnnounceEvent extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
@@ -31,7 +33,7 @@ public class SkywarsGameEventAnnounceEvent extends Event implements Cancellable 
     }
 
     @Override
-    public HandlerList getHandlers() {
+    public @NonNull HandlerList getHandlers() {
         return handlers;
     }
 

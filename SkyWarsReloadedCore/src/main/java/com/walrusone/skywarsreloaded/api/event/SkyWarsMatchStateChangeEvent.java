@@ -1,22 +1,22 @@
-package com.walrusone.skywarsreloaded.events;
+package com.walrusone.skywarsreloaded.api.event;
 
 import com.walrusone.skywarsreloaded.enums.MatchState;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.utilities.SWRServer;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.entity.EntityDamageEvent;
+import org.jspecify.annotations.NonNull;
 
+@SuppressWarnings("unused")
 public class SkyWarsMatchStateChangeEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
-    private GameMap map;
-    private SWRServer server;
-    private MatchState state;
-    private boolean async;
-    private boolean bungeecord;
+    private final GameMap map;
+    private final SWRServer server;
+    private final MatchState state;
+    private final boolean async;
+    private final boolean bungeecord;
 
     public SkyWarsMatchStateChangeEvent(GameMap gameIn, MatchState stateIn) {
         this.map = gameIn;
@@ -39,7 +39,7 @@ public class SkyWarsMatchStateChangeEvent extends Event {
     }
 
     @Override
-    public HandlerList getHandlers() {
+    public @NonNull HandlerList getHandlers() {
         return handlers;
     }
 

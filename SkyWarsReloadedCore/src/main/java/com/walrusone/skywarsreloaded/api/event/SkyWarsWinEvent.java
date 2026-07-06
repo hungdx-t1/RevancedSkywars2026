@@ -1,4 +1,4 @@
-package com.walrusone.skywarsreloaded.events;
+package com.walrusone.skywarsreloaded.api.event;
 
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.managers.PlayerStat;
@@ -6,13 +6,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jspecify.annotations.NonNull;
 
+@SuppressWarnings("unused")
 public class SkyWarsWinEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
-    private PlayerStat stat;
-    private GameMap g;
-
+    private final PlayerStat stat;
+    private final GameMap g;
 
     public SkyWarsWinEvent(PlayerStat pl, GameMap map) {
         this.stat = pl;
@@ -36,7 +37,7 @@ public class SkyWarsWinEvent extends Event {
     }
 
     @Override
-    public HandlerList getHandlers() {
+    public @NonNull HandlerList getHandlers() {
         return handlers;
     }
 
