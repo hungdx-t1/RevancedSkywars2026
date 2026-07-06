@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.jspecify.annotations.NonNull;
 
 public class SkyWarsDeathEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
@@ -25,7 +26,7 @@ public class SkyWarsDeathEvent extends Event {
     }
 
     @Override
-    public HandlerList getHandlers() {
+    public @NonNull HandlerList getHandlers() {
         return handlers;
     }
 

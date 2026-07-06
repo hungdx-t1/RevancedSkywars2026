@@ -4,9 +4,8 @@ import com.walrusone.skywarsreloaded.SkyWarsReloaded;
 import com.walrusone.skywarsreloaded.commands.BaseCmd;
 import com.walrusone.skywarsreloaded.utilities.Messaging;
 import com.walrusone.skywarsreloaded.utilities.Party;
-import me.rayzr522.jsonmessage.JSONMessage;
+import com.walrusone.skywarsreloaded.utilities.JSONMessage;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -49,12 +48,7 @@ public class InviteCmd extends BaseCmd {
             party.invite(invited);
             invited.sendMessage(new Messaging.MessageFormatter().setVariable("leader", player.getName()).setVariable("partyname", party.getPartyName()).format("party.invite"));
 
-            JSONMessage.create(new Messaging.MessageFormatter().format("party.clicktoaccept"))
-                    .color(ChatColor.GOLD)
-                    .tooltip(new Messaging.MessageFormatter().format("party.clicktoaccept"))
-                    .color(ChatColor.AQUA)
-                    .runCommand("/swp a")
-                    .send(invited);
+            JSONMessage.generateInviteMessage(invited);
 
             player.sendMessage(new Messaging.MessageFormatter().setVariable("player", invited.getName()).format("party.invited"));
         } else {
