@@ -134,7 +134,6 @@ public class NMSHandler implements NMS {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public SWRSign createSWRSign(String name, Location location) {
         return new com.walrusone.skywarsreloaded.nms.v26_1.SWRSign(name, location);
     }

@@ -144,16 +144,6 @@ public class SWRServer {
         ItemStack itemStack = SkyWarsReloaded.getIM().getItem(item);
         Material material = itemStack.getType();
         block.setType(material);
-        if (SkyWarsReloaded.getNMS().getVersion() < 13 && (
-                material.equals(Material.valueOf("WOOL")) ||
-                material.equals(Material.valueOf("STAINED_GLASS")) ||
-                material.equals(Material.valueOf("STAINED_CLAY")))
-        ) {
-            SkyWarsReloaded.getNMS().setBlockWithColor(
-                    block.getWorld(), block.getX(), block.getY(), block.getZ(),
-                    material,
-                    itemStack.getData().getData());
-        }
     }
 
     public int getTeamSize() {

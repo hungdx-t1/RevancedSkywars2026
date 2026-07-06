@@ -77,11 +77,7 @@ public class ArenaMenu {
                 lores.add(ChatColor.AQUA + "Left Click for a list");
                 lores.add(ChatColor.AQUA + "of Sign Locations.");
 
-
-                String signItem = "SIGN";
-                if (SkyWarsReloaded.getNMS().getVersion() >= 13) {
-                    signItem = "BIRCH_SIGN";
-                }
+                String signItem = "BIRCH_SIGN";
 
                 ItemStack signs = SkyWarsReloaded.getNMS().getItemStack(new ItemStack(Material.valueOf(signItem), 1), lores, "Join Signs");
 

@@ -38,18 +38,11 @@ public class JSONMessage {
                 continue;
             }
 
-            String styleName;
-            switch (style) {
-                case MAGIC:
-                    styleName = "obfuscated";
-                    break;
-                case UNDERLINE:
-                    styleName = "underlined";
-                    break;
-                default:
-                    styleName = style.name().toLowerCase();
-                    break;
-            }
+            String styleName = switch (style) {
+                case MAGIC -> "obfuscated";
+                case UNDERLINE -> "underlined";
+                default -> style.name().toLowerCase();
+            };
 
             builder.put(style, styleName);
         }
@@ -103,10 +96,10 @@ public class JSONMessage {
      * @throws ArrayIndexOutOfBoundsException If {@code parts.size() <= 0}.
      */
     public MessagePart last() {
-        if (parts.size() <= 0) {
+        if (parts.isEmpty()) {
             throw new ArrayIndexOutOfBoundsException("No MessageParts exist!");
         }
-        return parts.get(parts.size() - 1);
+        return parts.getLast();
     }
 
     /**
@@ -386,17 +379,13 @@ public class JSONMessage {
             }
         }
 
-        MessagePart last = parts.get(parts.size() - 1);
+        MessagePart last = parts.getLast();
         last.setText(last.getText().substring(0, last.getText().length() - 1));
 
         centeringStartIndex = -1;
 
         return this;
     }
-
-    ///////////////////////////
-    // BEGIN UTILITY CLASSES //
-    ///////////////////////////
 
     /**
      * Represents the JSON format that all click/hover events in JSON messages must follow.

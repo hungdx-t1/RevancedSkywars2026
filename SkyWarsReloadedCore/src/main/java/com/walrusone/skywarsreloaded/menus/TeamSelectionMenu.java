@@ -27,12 +27,6 @@ public class TeamSelectionMenu {
 
     public TeamSelectionMenu(GameMap gMap) {
         String menuName = new Messaging.MessageFormatter().setVariable("mapname", gMap.getDisplayName()).format("menu.teamselection-menu-title");
-        if (SkyWarsReloaded.getNMS().getVersion() < 9) {
-            if (menuName.length() > 32) {
-                menuName = menuName.substring(0, 31);
-            }
-        }
-
         List<TeamCard> teamCards = gMap.getTeamCards();
         final int tsize = teamCards.size();
         int msize = 54;
@@ -73,13 +67,7 @@ public class TeamSelectionMenu {
                             .setVariable("teamcolor", tCard.getTeamName())
                             .format("menu.team_select_menu.item_title");
                     byte color = SkyWarsReloaded.getCfg().isUseTeamMaterialBytes() ? tCard.getByte() : (byte) SkyWarsReloaded.getCfg().getStandardTeamMaterialByte();
-                    ItemStack item;
-                    if (SkyWarsReloaded.getNMS().getVersion() >= 13) {
-                        item = new ItemStack(Material.valueOf(mat.toUpperCase()));
-                    }
-                    else {
-                        item = SkyWarsReloaded.getNMS().getColorItem(mat, color);
-                    }
+                    ItemStack item = SkyWarsReloaded.getNMS().getColorItem(mat, color);
                     if (SkyWarsReloaded.getCfg().isUseTeamNumberInMenu()) {
                         // + 1 since item count cannot be 0 and human prefer starting at 1
                         item.setAmount(tCard.getPosition() + 1);
@@ -109,7 +97,7 @@ public class TeamSelectionMenu {
                                     .format("menu.team_select_menu.lore.player-list-lore-line"));
                         }
                     }
-                    invs1.get(0).setItem(tCard.getPosition(), SkyWarsReloaded.getNMS().getItemStack(item, lores, name));
+                    invs1.getFirst().setItem(tCard.getPosition(), SkyWarsReloaded.getNMS().getItemStack(item, lores, name));
                 }
             }
         };

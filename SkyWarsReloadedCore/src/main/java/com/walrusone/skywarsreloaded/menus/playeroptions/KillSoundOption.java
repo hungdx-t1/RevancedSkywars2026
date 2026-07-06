@@ -56,13 +56,7 @@ public class KillSoundOption extends PlayerOption {
         File soundFile = new File(SkyWarsReloaded.get().getDataFolder(), "killsounds.yml");
 
         if (!soundFile.exists()) {
-            if (SkyWarsReloaded.getNMS().getVersion() < 9) {
-                saveKillFile("killsounds18.yml");
-            } else if (SkyWarsReloaded.getNMS().getVersion() < 13 && SkyWarsReloaded.getNMS().getVersion() > 8) {
-                saveKillFile("killsounds112.yml");
-            } else {
-                SkyWarsReloaded.get().saveResource("killsounds.yml", false);
-            }
+            SkyWarsReloaded.get().saveResource("killsounds.yml", false);
         }
 
         if (soundFile.exists()) {

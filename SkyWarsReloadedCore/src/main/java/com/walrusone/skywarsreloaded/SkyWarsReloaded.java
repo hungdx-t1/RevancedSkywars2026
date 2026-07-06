@@ -26,8 +26,8 @@ import com.walrusone.skywarsreloaded.managers.worlds.FileWorldManager;
 import com.walrusone.skywarsreloaded.managers.worlds.WorldManager;
 import com.walrusone.skywarsreloaded.menus.*;
 import com.walrusone.skywarsreloaded.menus.gameoptions.objects.GameKit;
+import com.walrusone.skywarsreloaded.nms.CompatibleNMSVersion;
 import com.walrusone.skywarsreloaded.nms.NMS;
-import com.walrusone.skywarsreloaded.nms.NMSUtils;
 import com.walrusone.skywarsreloaded.utilities.Messaging;
 import com.walrusone.skywarsreloaded.utilities.SWRServer;
 import com.walrusone.skywarsreloaded.utilities.Util;
@@ -143,7 +143,7 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
         loaded = false;
 
         // NMS Init
-        this.nmsHandler = NMSUtils.loadNMS(this);
+        this.nmsHandler = CompatibleNMSVersion.loadNMS(this);
         if (this.nmsHandler == null) {
             this.setEnabled(false);
             return;

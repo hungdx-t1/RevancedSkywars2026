@@ -116,9 +116,7 @@ public abstract class AbstractHologramsManager<T> implements HologramManager {
             Player player = Bukkit.getPlayer(topList.get(rank).getUUID());
             if (player == null) return null;
 
-            ItemStack head = (SkyWarsReloaded.getNMS().getVersion() < 13)
-                    ? new ItemStack(Material.valueOf("SKULL_ITEM"), 1, (short) 3)
-                    : new ItemStack(Material.valueOf("PLAYER_HEAD"), 1);
+            ItemStack head = new ItemStack(Material.valueOf("PLAYER_HEAD"), 1);
 
             SkullMeta meta = (SkullMeta) head.getItemMeta();
             if (meta != null) {

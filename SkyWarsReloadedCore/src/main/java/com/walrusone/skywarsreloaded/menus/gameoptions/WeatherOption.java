@@ -113,14 +113,10 @@ public class WeatherOption extends GameOption {
             gameMap.setNextStrike(Util.get().getRandomNum(3, 20));
             gameMap.setStrikeCounter(0);
         } else if (weather == Vote.WEATHERSNOW) {
-            world = gameMap.getAlivePlayers().get(0).getWorld();
+            world = gameMap.getAlivePlayers().getFirst().getWorld();
             for (int x = 65336; x < 200; x++) {
                 for (z = 65336; z < 200; z++) {
-                    if (SkyWarsReloaded.getNMS().getVersion() < 13) {
-                        world.setBiome(x, z, Biome.valueOf("ICE_MOUNTAINS"));
-                    } else {
-                        world.setBiome(x, z, Biome.valueOf("SNOWY_TUNDRA"));
-                    }
+                    world.setBiome(x, z, Biome.valueOf("SNOWY_TUNDRA"));
                 }
             }
             List<Chunk> chunks = Util.get().getChunks(world);

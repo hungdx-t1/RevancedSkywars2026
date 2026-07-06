@@ -4,6 +4,7 @@ import com.walrusone.skywarsreloaded.SkyWarsReloaded;
 import com.walrusone.skywarsreloaded.enums.MatchState;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.utilities.Messaging;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Tag;
@@ -15,7 +16,6 @@ import org.bukkit.block.data.type.WallSign;
 import org.bukkit.block.sign.Side;
 import org.bukkit.block.sign.SignSide;
 
-@Deprecated
 public class SWRSign implements com.walrusone.skywarsreloaded.game.signs.SWRSign {
     private final String gameName;
     private final Location location;
@@ -57,10 +57,6 @@ public class SWRSign implements com.walrusone.skywarsreloaded.game.signs.SWRSign
         if (blockData instanceof WallSign wallSign) {
             face = wallSign.getFacing().getOppositeFace();
         }
-//        else if (blockData instanceof HangingSign hangingSign) {
-//            face = hangingSign.getFacing().getOppositeFace();
-//        }
-
         return b.getRelative(face);
     }
 
@@ -141,7 +137,7 @@ public class SWRSign implements com.walrusone.skywarsreloaded.game.signs.SWRSign
                     .setVariable("teamsize", String.valueOf(gMap.getTeamSize()))
                     .format("signs.line" + (i + 1) + team);
 
-            frontSide.setLine(i, formattedLine);
+            frontSide.line(i, LegacyComponentSerializer.legacyAmpersand().deserialize(formattedLine));
         }
     }
 }

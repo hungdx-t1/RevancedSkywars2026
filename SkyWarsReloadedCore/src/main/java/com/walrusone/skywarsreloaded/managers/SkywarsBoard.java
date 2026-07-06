@@ -60,10 +60,7 @@ public class SkywarsBoard {
         cache.remove(arg0);
         cache.put(arg0, arg1);
 
-        ArrayList<String> arg3;
-        if (SkyWarsReloaded.getNMS().getVersion() > 12) arg3 = convertIntoPieces(arg1, 64);
-        else arg3 = convertIntoPieces(arg1, 16);
-
+        ArrayList<String> arg3 = convertIntoPieces(arg1, 64);
         arg2.setPrefix(fixIssues(arg3.get(0)));
         arg2.setSuffix(fixIssues(arg3.get(1)));
     }
