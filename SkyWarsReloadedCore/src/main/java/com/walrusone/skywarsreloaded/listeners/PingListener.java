@@ -2,9 +2,8 @@ package com.walrusone.skywarsreloaded.listeners;
 
 import com.google.common.collect.ImmutableList;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.MatchState;
+import com.walrusone.skywarsreloaded.api.enums.MatchState;
 import com.walrusone.skywarsreloaded.game.GameMap;
-import com.walrusone.skywarsreloaded.managers.GameMapManager;
 import com.walrusone.skywarsreloaded.utilities.Messaging;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.server.ServerListPingEvent;

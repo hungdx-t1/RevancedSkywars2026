@@ -1,4 +1,4 @@
-package com.walrusone.skywarsreloaded.enums;
+package com.walrusone.skywarsreloaded.api.enums;
 
 public enum ChestType {
     BASIC,

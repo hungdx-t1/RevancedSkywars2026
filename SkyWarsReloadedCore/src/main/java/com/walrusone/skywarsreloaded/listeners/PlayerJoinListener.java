@@ -1,9 +1,8 @@
 package com.walrusone.skywarsreloaded.listeners;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.GameType;
+import com.walrusone.skywarsreloaded.api.enums.GameType;
 import com.walrusone.skywarsreloaded.game.GameMap;
-import com.walrusone.skywarsreloaded.managers.GameMapManager;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
 import com.walrusone.skywarsreloaded.managers.PlayerStat;
 import com.walrusone.skywarsreloaded.utilities.Util;
@@ -69,8 +68,6 @@ public class PlayerJoinListener implements Listener {
         pStats.loadStats(() -> {
             // Not allowed? Stop.
             if (!postLoadStats(player)) return;
-            // Send updater message if the player was allowed to join
-            SkyWarsReloaded.get().getUpdater().handleJoiningPlayer(player);
         });
     }
 

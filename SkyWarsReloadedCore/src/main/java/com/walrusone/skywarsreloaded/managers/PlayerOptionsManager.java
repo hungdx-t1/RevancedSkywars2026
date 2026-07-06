@@ -2,7 +2,7 @@ package com.walrusone.skywarsreloaded.managers;
 
 import com.google.common.collect.Maps;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.GameType;
+import com.walrusone.skywarsreloaded.api.enums.GameType;
 import com.walrusone.skywarsreloaded.game.Crate;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.menus.playeroptions.*;

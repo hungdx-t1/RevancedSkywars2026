@@ -1,4 +1,4 @@
-package com.walrusone.skywarsreloaded.enums;
+package com.walrusone.skywarsreloaded.api.enums;
 
 import java.util.ArrayList;
 import java.util.Random;

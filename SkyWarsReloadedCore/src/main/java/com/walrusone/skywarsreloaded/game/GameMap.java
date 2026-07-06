@@ -5,20 +5,17 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
 import com.walrusone.skywarsreloaded.config.Config;
-import com.walrusone.skywarsreloaded.enums.ChestPlacementType;
-import com.walrusone.skywarsreloaded.enums.MatchState;
-import com.walrusone.skywarsreloaded.enums.PlayerRemoveReason;
-import com.walrusone.skywarsreloaded.enums.Vote;
+import com.walrusone.skywarsreloaded.api.enums.ChestPlacementType;
+import com.walrusone.skywarsreloaded.api.enums.MatchState;
+import com.walrusone.skywarsreloaded.api.enums.PlayerRemoveReason;
+import com.walrusone.skywarsreloaded.api.enums.Vote;
 import com.walrusone.skywarsreloaded.api.event.SkyWarsJoinEvent;
 import com.walrusone.skywarsreloaded.api.event.SkyWarsMatchStateChangeEvent;
 import com.walrusone.skywarsreloaded.game.cages.*;
 import com.walrusone.skywarsreloaded.game.signs.SWRSign;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
 import com.walrusone.skywarsreloaded.managers.PlayerStat;
-import com.walrusone.skywarsreloaded.managers.worlds.ASWMWorldManager;
-import com.walrusone.skywarsreloaded.managers.worlds.FileWorldManager;
-import com.walrusone.skywarsreloaded.managers.worlds.WorldManager;
-import com.walrusone.skywarsreloaded.managers.worlds.WorldManagerType;
+import com.walrusone.skywarsreloaded.managers.worlds.*;
 import com.walrusone.skywarsreloaded.matchevents.*;
 import com.walrusone.skywarsreloaded.menus.ArenaMenu;
 import com.walrusone.skywarsreloaded.menus.TeamSelectionMenu;
@@ -688,7 +685,7 @@ public class GameMap {
         File dataDirectory = new File(SkyWarsReloaded.get().getDataFolder(), "maps");
         File target = new File(dataDirectory, name);
         SkyWarsReloaded.getWM().deleteWorld(target);
-        if (SkyWarsReloaded.getWM() instanceof ASWMWorldManager) SkyWarsReloaded.getWM().deleteWorld(name, true);
+        if (SkyWarsReloaded.getWM() instanceof ASPWorldManager) SkyWarsReloaded.getWM().deleteWorld(name, true);
 
         File mapDataDirectory = new File(SkyWarsReloaded.get().getDataFolder(), "mapsData");
         if (!mapDataDirectory.exists() && !mapDataDirectory.mkdirs()) {

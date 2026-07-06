@@ -1,7 +1,7 @@
 package com.walrusone.skywarsreloaded.commands.maps;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.ChestPlacementType;
+import com.walrusone.skywarsreloaded.api.enums.ChestPlacementType;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.utilities.Messaging;
 import org.bukkit.command.CommandSender;

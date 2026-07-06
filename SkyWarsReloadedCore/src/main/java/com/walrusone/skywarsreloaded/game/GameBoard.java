@@ -1,8 +1,8 @@
 package com.walrusone.skywarsreloaded.game;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.MatchState;
-import com.walrusone.skywarsreloaded.enums.ScoreVar;
+import com.walrusone.skywarsreloaded.api.enums.MatchState;
+import com.walrusone.skywarsreloaded.api.enums.ScoreVar;
 import com.walrusone.skywarsreloaded.managers.PlayerStat;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;

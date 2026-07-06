@@ -6,7 +6,7 @@ import com.walrusone.skywarsreloaded.menus.playeroptions.OptionSelectionMenu;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import static com.walrusone.skywarsreloaded.enums.PlayerOptions.TAUNT;
+import static com.walrusone.skywarsreloaded.api.enums.PlayerOptions.TAUNT;
 
 public class SWTauntCmd extends BaseCmd {
     public SWTauntCmd(SkyWarsReloaded plugin, String t) {

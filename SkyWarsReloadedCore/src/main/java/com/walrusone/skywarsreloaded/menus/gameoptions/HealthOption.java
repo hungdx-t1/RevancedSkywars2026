@@ -2,9 +2,9 @@ package com.walrusone.skywarsreloaded.menus.gameoptions;
 
 import com.google.common.collect.Lists;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.MatchState;
-import com.walrusone.skywarsreloaded.enums.ScoreVar;
-import com.walrusone.skywarsreloaded.enums.Vote;
+import com.walrusone.skywarsreloaded.api.enums.MatchState;
+import com.walrusone.skywarsreloaded.api.enums.ScoreVar;
+import com.walrusone.skywarsreloaded.api.enums.Vote;
 import com.walrusone.skywarsreloaded.api.event.SkyWarsVoteEvent;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.game.PlayerCard;

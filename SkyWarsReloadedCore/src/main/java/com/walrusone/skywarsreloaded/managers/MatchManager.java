@@ -2,10 +2,10 @@ package com.walrusone.skywarsreloaded.managers;
 
 import com.google.common.collect.ImmutableList;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.GameType;
-import com.walrusone.skywarsreloaded.enums.MatchState;
-import com.walrusone.skywarsreloaded.enums.PlayerRemoveReason;
-import com.walrusone.skywarsreloaded.enums.ScoreVar;
+import com.walrusone.skywarsreloaded.api.enums.GameType;
+import com.walrusone.skywarsreloaded.api.enums.MatchState;
+import com.walrusone.skywarsreloaded.api.enums.PlayerRemoveReason;
+import com.walrusone.skywarsreloaded.api.enums.ScoreVar;
 import com.walrusone.skywarsreloaded.api.event.SkyWarsWinEvent;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.game.PlayerCard;

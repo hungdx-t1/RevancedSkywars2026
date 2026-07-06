@@ -1,6 +1,6 @@
 package com.walrusone.skywarsreloaded.api.event;
 
-import com.walrusone.skywarsreloaded.enums.MatchState;
+import com.walrusone.skywarsreloaded.api.enums.MatchState;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.utilities.SWRServer;
 import org.bukkit.Bukkit;

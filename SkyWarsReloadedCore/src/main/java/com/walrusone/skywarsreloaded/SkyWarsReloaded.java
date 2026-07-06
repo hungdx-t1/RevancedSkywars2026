@@ -11,16 +11,15 @@ import com.walrusone.skywarsreloaded.commands.*;
 import com.walrusone.skywarsreloaded.config.Config;
 import com.walrusone.skywarsreloaded.database.DataStorage;
 import com.walrusone.skywarsreloaded.database.Database;
-import com.walrusone.skywarsreloaded.enums.LeaderType;
-import com.walrusone.skywarsreloaded.enums.MatchState;
-import com.walrusone.skywarsreloaded.enums.PlayerRemoveReason;
+import com.walrusone.skywarsreloaded.api.enums.LeaderType;
+import com.walrusone.skywarsreloaded.api.enums.MatchState;
+import com.walrusone.skywarsreloaded.api.enums.PlayerRemoveReason;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.game.PlayerData;
 import com.walrusone.skywarsreloaded.listeners.*;
 import com.walrusone.skywarsreloaded.managers.*;
 import com.walrusone.skywarsreloaded.managers.holograms.DecentHologramManager;
 import com.walrusone.skywarsreloaded.managers.holograms.HologramManager;
-import com.walrusone.skywarsreloaded.managers.holograms.HolographicHologramManager;
 import com.walrusone.skywarsreloaded.managers.worlds.ASPWorldManager;
 import com.walrusone.skywarsreloaded.managers.worlds.FileWorldManager;
 import com.walrusone.skywarsreloaded.managers.worlds.WorldManager;
@@ -34,7 +33,6 @@ import com.walrusone.skywarsreloaded.utilities.Util;
 import com.walrusone.skywarsreloaded.utilities.minecraftping.MinecraftPing;
 import com.walrusone.skywarsreloaded.utilities.minecraftping.MinecraftPingOptions;
 import com.walrusone.skywarsreloaded.utilities.minecraftping.MinecraftPingReply;
-import com.walrusone.skywarsreloaded.utilities.mygcnt.GCNTUpdater;
 import com.walrusone.skywarsreloaded.utilities.placeholders.SWRPlaceholderAPI;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -82,9 +80,6 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
 
     private boolean loaded;
     private BukkitTask specObserver;
-
-    // Utils
-    private GCNTUpdater updater;
 
     public static SkyWarsReloaded get() {
         return instance;
@@ -147,9 +142,7 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
             return;
         }
 
-        // Updater init
-        this.updater = new GCNTUpdater();
-
+        // Utils
         servername = "none";
 
         // Copy missing attributes
@@ -707,16 +700,10 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
         return loaded;
     }
 
-    public GCNTUpdater getUpdater() {
-        return updater;
-    }
-
     protected void loadHologramManager() {
         hologramManager = null;
         if (Bukkit.getPluginManager().isPluginEnabled("DecentHolograms")) {
             hologramManager = new DecentHologramManager(this);
-        } else if (Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays")) {
-            hologramManager = new HolographicHologramManager(this);
         }
 
         if (hologramManager != null) {

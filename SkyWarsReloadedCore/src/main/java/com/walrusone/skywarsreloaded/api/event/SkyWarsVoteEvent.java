@@ -1,6 +1,6 @@
 package com.walrusone.skywarsreloaded.api.event;
 
-import com.walrusone.skywarsreloaded.enums.Vote;
+import com.walrusone.skywarsreloaded.api.enums.Vote;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;

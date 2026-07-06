@@ -2,7 +2,7 @@ package com.walrusone.skywarsreloaded.managers;
 
 import com.google.common.collect.ImmutableList;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.GameType;
+import com.walrusone.skywarsreloaded.api.enums.GameType;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.game.GameMapComparator;
 import com.walrusone.skywarsreloaded.managers.worlds.FileWorldManager;

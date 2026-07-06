@@ -1,8 +1,8 @@
 package com.walrusone.skywarsreloaded.managers;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.MatchState;
-import com.walrusone.skywarsreloaded.enums.PlayerRemoveReason;
+import com.walrusone.skywarsreloaded.api.enums.MatchState;
+import com.walrusone.skywarsreloaded.api.enums.PlayerRemoveReason;
 import com.walrusone.skywarsreloaded.api.event.SkyWarsDeathEvent;
 import com.walrusone.skywarsreloaded.api.event.SkyWarsKillEvent;
 import com.walrusone.skywarsreloaded.api.event.SkyWarsLeaveEvent;

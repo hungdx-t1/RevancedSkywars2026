@@ -3,7 +3,7 @@ package com.walrusone.skywarsreloaded.menus.playeroptions;
 import com.google.common.collect.Lists;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
 import com.walrusone.skywarsreloaded.database.DataStorage;
-import com.walrusone.skywarsreloaded.enums.PlayerOptions;
+import com.walrusone.skywarsreloaded.api.enums.PlayerOptions;
 import com.walrusone.skywarsreloaded.managers.PlayerStat;
 import com.walrusone.skywarsreloaded.utilities.Messaging;
 import com.walrusone.skywarsreloaded.utilities.Util;

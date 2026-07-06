@@ -39,7 +39,7 @@ public enum CompatibleNMSVersion {
         String mcVersion = rawBukkitVersion;
 
         // cắt bỏ phần đuôi thừa
-        Pattern pattern = Pattern.compile("^([0-9.]+)");
+        Pattern pattern = Pattern.compile("^([0-9]+(?:\\.[0-9]+)*)");
         Matcher matcher = pattern.matcher(rawBukkitVersion);
         if (matcher.find()) {
             mcVersion = matcher.group(1);
