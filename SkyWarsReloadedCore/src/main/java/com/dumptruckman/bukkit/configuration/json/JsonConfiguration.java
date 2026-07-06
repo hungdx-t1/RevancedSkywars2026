@@ -3,8 +3,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package com.dumptruckman.bukkit.configuration.json;
 
-import com.dumptruckman.bukkit.configuration.SerializableSet;
-import com.dumptruckman.bukkit.configuration.util.SerializationHelper;
 import net.minidev.json.JSONValue;
 import net.minidev.json.parser.JSONParser;
 import net.minidev.json.parser.ParseException;
@@ -40,9 +38,7 @@ public class JsonConfiguration extends FileConfiguration {
             config.load(file);
         } catch (FileNotFoundException ex) {
             LOG.log(Level.SEVERE, "Cannot find file " + file, ex);
-        } catch (IOException ex) {
-            LOG.log(Level.SEVERE, "Cannot load " + file, ex);
-        } catch (InvalidConfigurationException ex) {
+        } catch (IOException | InvalidConfigurationException ex) {
             LOG.log(Level.SEVERE, "Cannot load " + file, ex);
         }
         return config;

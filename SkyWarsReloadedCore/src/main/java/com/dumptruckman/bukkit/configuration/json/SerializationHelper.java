@@ -1,6 +1,5 @@
-package com.dumptruckman.bukkit.configuration.util;
+package com.dumptruckman.bukkit.configuration.json;
 
-import com.dumptruckman.bukkit.configuration.SerializableSet;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -11,12 +10,8 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class SerializationHelper {
     private static final Logger LOG = Logger.getLogger(SerializationHelper.class.getName());
-
-    public SerializationHelper() {
-    }
 
     public static Object serialize( Object value) {
         if ((value instanceof Object[])) {

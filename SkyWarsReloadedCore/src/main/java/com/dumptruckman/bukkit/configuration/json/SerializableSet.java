@@ -1,4 +1,4 @@
-package com.dumptruckman.bukkit.configuration;
+package com.dumptruckman.bukkit.configuration.json;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
@@ -14,15 +14,6 @@ public class SerializableSet implements Set, ConfigurationSerializable {
 
     public SerializableSet(Set backingSet) {
         this.backingSet = backingSet;
-    }
-
-    public SerializableSet( Map<String, Object> serializedForm) {
-        Object o = serializedForm.get("contents");
-        if ((o instanceof List)) {
-            backingSet = new HashSet((List) o);
-        } else {
-            backingSet = Collections.emptySet();
-        }
     }
 
 

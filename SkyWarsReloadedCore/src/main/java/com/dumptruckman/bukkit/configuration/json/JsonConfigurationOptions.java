@@ -2,9 +2,7 @@ package com.dumptruckman.bukkit.configuration.json;
 
 import org.bukkit.configuration.file.FileConfigurationOptions;
 
-
-public class JsonConfigurationOptions
-        extends FileConfigurationOptions {
+public class JsonConfigurationOptions extends FileConfigurationOptions {
     protected JsonConfigurationOptions( JsonConfiguration configuration) {
         super(configuration);
     }
