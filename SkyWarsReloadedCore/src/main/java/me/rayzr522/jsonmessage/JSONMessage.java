@@ -69,15 +69,6 @@ public class JSONMessage {
     }
 
     /**
-     * Creates a new {@link JSONMessage} object
-     *
-     * @return A new {@link JSONMessage} object
-     */
-    public static JSONMessage create() {
-        return create("");
-    }
-
-    /**
      * @return The latest {@link MessagePart}
      * @throws ArrayIndexOutOfBoundsException If {@code parts.size() <= 0}.
      */
@@ -129,29 +120,6 @@ public class JSONMessage {
     }
 
     /**
-     * Sends this as a title to all the players specified
-     *
-     * @param fadeIn  How many ticks to fade in
-     * @param stay    How many ticks to stay
-     * @param fadeOut How many ticks to fade out
-     * @param players The players to send this to
-     */
-    public void title(int fadeIn, int stay, int fadeOut, Player... players) {
-        ReflectionHelper.sendPacket(ReflectionHelper.createTitleTimesPacket(fadeIn, stay, fadeOut), players);
-        ReflectionHelper.sendPacket(ReflectionHelper.createTitlePacket(toString()), players);
-    }
-
-    /**
-     * Sends this as a subtitle to all the players specified. Must be used after sending a {@link #title(int, int, int, Player...) title}.
-     *
-     * @param players The players to send this to
-     */
-    public void subtitle(Player... players) {
-        ReflectionHelper.sendPacket(ReflectionHelper.createSubtitlePacket(toString()), players);
-    }
-
-
-    /**
      * Sets the color of the current message part.
      *
      * @param color The color to set
@@ -195,7 +163,7 @@ public class JSONMessage {
      */
     public static class MessageEvent {
         private final String action;
-        private Object value;
+        private final Object value;
 
         public MessageEvent(String action, Object value) {
             this.action = action;
@@ -215,21 +183,6 @@ public class JSONMessage {
             }
             return obj;
         }
-
-        /**
-         * @return The value
-         */
-        public Object getValue() {
-            return value;
-        }
-
-        /**
-         * @param value The value to set
-         */
-        public void setValue(Object value) {
-            this.value = value;
-        }
-
     }
 
     public static class ClickEvent {
@@ -263,15 +216,10 @@ public class JSONMessage {
         private static final String version;
         private static Constructor<?> chatComponentText;
         private static Class<?> packetPlayOutChat;
-        private static Class<?> packetPlayOutTitle;
-        private static Class<?> iChatBaseComponent;
-        private static Class<?> titleAction;
         private static Field connection;
         private static MethodHandle GET_HANDLE;
         private static MethodHandle SEND_PACKET;
         private static MethodHandle STRING_TO_CHAT;
-        private static Object enumActionTitle;
-        private static Object enumActionSubtitle;
         private static Object enumChatMessage;
         private static boolean SETUP;
         private static int MAJOR_VER = -1;
@@ -292,8 +240,6 @@ public class JSONMessage {
 
                 chatComponentText = getClass("{nms}.ChatComponentText").getConstructor(String.class);
 
-                iChatBaseComponent = getClass("{nms}.IChatBaseComponent");
-
                 Method stringToChat;
 
                 if (MAJOR_VER < 8) {
@@ -307,16 +253,9 @@ public class JSONMessage {
                 STRING_TO_CHAT = MethodHandles.lookup().unreflect(stringToChat);
 
                 packetPlayOutChat = getClass("{nms}.PacketPlayOutChat");
-                packetPlayOutTitle = getClass("{nms}.PacketPlayOutTitle");
-
-                titleAction = getClass("{nms}.PacketPlayOutTitle$EnumTitleAction");
-
-                enumActionTitle = titleAction.getField("TITLE").get(null);
-                enumActionSubtitle = titleAction.getField("SUBTITLE").get(null);
 
                 if (MAJOR_VER >= 12) {
                     Method getChatMessageType = getClass("{nms}.ChatMessageType").getMethod("a", byte.class);
-
                     enumChatMessage = getChatMessageType.invoke(null, (byte) 1);
                 }
 
@@ -363,45 +302,6 @@ public class JSONMessage {
                 set("a", packet, fromJson(message));
                 setType(packet);
                 return packet;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-
-        }
-
-        static Object createTitlePacket(String message) {
-            if (!SETUP) {
-                throw new IllegalStateException("ReflectionHelper is not set up!");
-            }
-            try {
-                return packetPlayOutTitle.getConstructor(titleAction, iChatBaseComponent).newInstance(enumActionTitle, fromJson(message));
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-
-        }
-
-        static Object createSubtitlePacket(String message) {
-            if (!SETUP) {
-                throw new IllegalStateException("ReflectionHelper is not set up!");
-            }
-            try {
-                return packetPlayOutTitle.getConstructor(titleAction, iChatBaseComponent).newInstance(enumActionSubtitle, fromJson(message));
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-
-        }
-
-        static Object createTitleTimesPacket(int fadeIn, int stay, int fadeOut) {
-            if (!SETUP) {
-                throw new IllegalStateException("ReflectionHelper is not set up!");
-            }
-            try {
-                return packetPlayOutTitle.getConstructor(int.class, int.class, int.class).newInstance(fadeIn, stay, fadeOut);
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
@@ -517,7 +417,7 @@ public class JSONMessage {
         private MessageEvent onClick;
         private MessageEvent onHover;
         private ChatColor color;
-        private String text;
+        private final String text;
 
         public MessagePart(String text) {
             this.text = text == null ? "null" : text;
@@ -569,13 +469,6 @@ public class JSONMessage {
         }
 
         /**
-         * @return The color
-         */
-        public ChatColor getColor() {
-            return color;
-        }
-
-        /**
          * @param color The color to set
          */
         public void setColor(ChatColor color) {
@@ -583,20 +476,6 @@ public class JSONMessage {
                 throw new IllegalArgumentException(color.name() + " is not a color!");
             }
             this.color = color;
-        }
-
-        /**
-         * @return The raw text
-         */
-        public String getText() {
-            return text;
-        }
-
-        /**
-         * @param text The raw text to set
-         */
-        public void setText(String text) {
-            this.text = text;
         }
     }
 }
