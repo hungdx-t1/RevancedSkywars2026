@@ -173,6 +173,7 @@ public class NMSHandler implements NMS {
         }.runTaskTimer(SkyWarsReloaded.get(), 0, 1);
     }
 
+    @SuppressWarnings("DeprecatedIsStillUsed")
     @Deprecated
     private String getColorFromByte(byte color) {
         return switch (color) {

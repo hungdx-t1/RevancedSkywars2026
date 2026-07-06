@@ -11,7 +11,7 @@
 
     <properties>
         <revision>6.0.0-SNAPSHOT-1</revision>
-        <bukkit.version>1.21.11</bukkit.version>
+        <bukkit.version>26.1.2</bukkit.version>
         <maven.compiler.source>25</maven.compiler.source>
         <maven.compiler.target>25</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -20,7 +20,6 @@
     <modules>
         <module>SkyWarsReloadedCore</module>
         <module>slime-asp</module>
-        <module>v1_21_R7</module>
         <module>v26_1</module>
         <module>skywars-assembly</module>
     </modules>

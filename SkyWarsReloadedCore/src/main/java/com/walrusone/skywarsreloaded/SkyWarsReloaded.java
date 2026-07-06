@@ -39,7 +39,6 @@ import com.walrusone.skywarsreloaded.utilities.placeholders.SWRPlaceholderAPI;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
@@ -303,7 +302,6 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
             SWRServer.updateServerSigns();
 
         }
-        checkUpdates();
         // TODO: SWR API - Not finished
         swrAPI = new SkywarsReloadedImpl();
     }
@@ -708,28 +706,6 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
 
     public boolean serverLoaded() {
         return loaded;
-    }
-
-    public void checkUpdates() {
-        this.updater = new GCNTUpdater();
-
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
-            updater.checkForUpdate();
-            if (updater.getUpdateStatus() == 1) {
-                Bukkit.getLogger().info("====================");
-                Bukkit.getLogger().info("SkyWarsReloaded Updater");
-                Bukkit.getLogger().info("");
-                Bukkit.getLogger().info("We found a newer version of SkyWarsReloaded!");
-                Bukkit.getLogger().info("");
-                Bukkit.getLogger().info("New version: " + updater.getLatestVersion());
-                Bukkit.getLogger().info("Your version: " + updater.getCurrentVersion());
-                Bukkit.getLogger().info("");
-                Bukkit.getLogger().info("You can download it here:");
-                Bukkit.getLogger().info(updater.getUpdateURL());
-                Bukkit.getLogger().info("----------------------------------");
-            }
-            // Once every hour
-        }, 0, 20 * 60 * 60);
     }
 
     public GCNTUpdater getUpdater() {

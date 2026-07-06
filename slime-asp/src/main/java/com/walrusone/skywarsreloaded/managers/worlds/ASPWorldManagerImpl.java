@@ -25,6 +25,7 @@ public class ASPWorldManagerImpl implements ASPWorldManager {
         this.loader = new FileLoader(new File("slime_worlds"));
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     @Override
     public World createEmptyWorld(String name, World.Environment environment) {
         SlimePropertyMap propertyMap = new SlimePropertyMap();
@@ -127,11 +128,11 @@ public class ASPWorldManagerImpl implements ASPWorldManager {
 
     private void setWorldSettings(World world) {
         world.setSpawnFlags(true, true);
-        world.setPVP(true);
         world.setStorm(false);
         world.setThundering(false);
         world.setWeatherDuration(Integer.MAX_VALUE);
-        world.setGameRule(GameRule.SPAWN_CHUNK_RADIUS, 0);
+        world.setGameRule(GameRules.RESPAWN_RADIUS, 0);
+        world.setGameRule(GameRules.PVP, true);
         world.setTicksPerSpawns(SpawnCategory.ANIMAL, 1);
         world.setTicksPerSpawns(SpawnCategory.MONSTER, 1);
         world.setAutoSave(false);
