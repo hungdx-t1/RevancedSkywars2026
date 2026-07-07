@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class GlassColorOption extends PlayerOption {
-    private static ArrayList<PlayerOption> playerOptions = new ArrayList<>();
+    private static final ArrayList<PlayerOption> playerOptions = new ArrayList<>();
 
     private GlassColorOption(String color, String name, ItemStack item, int level, int cost, int position, int page, int menuSize) {
         this.item = item;

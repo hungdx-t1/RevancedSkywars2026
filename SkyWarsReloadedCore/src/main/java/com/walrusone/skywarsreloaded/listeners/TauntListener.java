@@ -18,9 +18,6 @@ public class TauntListener implements org.bukkit.event.Listener {
     private final HashMap<String, Long> lastHandSwap = new HashMap<>();
     private final HashMap<String, Long> lastTaunt = new HashMap<>();
 
-    public TauntListener() {
-    }
-
     @EventHandler(priority = EventPriority.HIGHEST)
     public void pressedTauntKey(PlayerToggleSneakEvent e) {
         Player player = e.getPlayer();

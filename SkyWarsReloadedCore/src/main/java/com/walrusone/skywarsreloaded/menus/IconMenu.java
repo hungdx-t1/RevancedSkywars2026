@@ -18,12 +18,12 @@ public class IconMenu {
     public IconMenu(ArrayList<Inventory> invs, OptionClickEventHandler optionClickEventHandler) {
         this.invs = invs;
         for (int i = 0; i < invs.size(); i++) {
-            addExitItem((Inventory) invs.get(i));
-            if ((invs.size() > 0) && (i + 1 < invs.size())) {
-                addNextItem((Inventory) invs.get(i));
+            addExitItem(invs.get(i));
+            if ((!invs.isEmpty()) && (i + 1 < invs.size())) {
+                addNextItem(invs.get(i));
             }
             if ((i > 0) && (i < invs.size())) {
-                addPrevItem((Inventory) invs.get(i));
+                addPrevItem(invs.get(i));
             }
         }
         handler = optionClickEventHandler;
@@ -61,7 +61,7 @@ public class IconMenu {
 
         int slot = event.getRawSlot();
         try {
-            if ((slot < 0) || (slot >= ((Inventory) invs.get(index)).getSize())) {
+            if ((slot < 0) || (slot >= invs.get(index).getSize())) {
                 return;
             }
         } catch (NullPointerException e) {
@@ -88,7 +88,7 @@ public class IconMenu {
     }
 
     public Inventory getInventory(int index) {
-        return (Inventory) invs.get(index);
+        return invs.get(index);
     }
 
     public ArrayList<Inventory> getInventories() {
@@ -97,19 +97,19 @@ public class IconMenu {
 
 
     public void openInventory(Player player, int index) {
-        player.openInventory((Inventory) invs.get(index));
+        player.openInventory(invs.get(index));
     }
 
-    public static abstract interface OptionClickEventHandler {
-        public abstract void onOptionClick(OptionClickEvent paramOptionClickEvent);
+    public interface OptionClickEventHandler {
+        void onOptionClick(OptionClickEvent paramOptionClickEvent);
     }
 
     public static class OptionClickEvent {
-        private Player player;
-        private String name;
-        private ClickType clickType;
-        private ItemStack item;
-        private int slot;
+        private final Player player;
+        private final String name;
+        private final ClickType clickType;
+        private final ItemStack item;
+        private final int slot;
 
         OptionClickEvent(Player player, String name, ClickType clickType, ItemStack itemStack, int slot) {
             this.player = player;
@@ -127,7 +127,7 @@ public class IconMenu {
             return name;
         }
 
-        ClickType getClick() {
+        public ClickType getClick() {
             return clickType;
         }
 

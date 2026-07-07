@@ -29,7 +29,7 @@ public abstract class MatchEvent {
     protected String startMessage;
     protected String endMessage;
     protected boolean announceEvent;
-    protected org.bukkit.inventory.ItemStack material;
+    protected ItemStack material;
     protected int slot;
     protected String eventName;
     private boolean useThisMatch;
@@ -104,7 +104,7 @@ public abstract class MatchEvent {
         if (!enabled) return;
 
         for (org.bukkit.entity.Player player : gMap.getAlivePlayers()) {
-            if (com.walrusone.skywarsreloaded.SkyWarsReloaded.getCfg().titlesEnabled()) {
+            if (SkyWarsReloaded.getCfg().titlesEnabled()) {
                 Util.get().sendTitle(player, 2, 20, 2, ChatColor.translateAlternateColorCodes('&', title),
                         ChatColor.translateAlternateColorCodes('&', subtitle));
             }
@@ -220,7 +220,7 @@ public abstract class MatchEvent {
         this.title = title;
     }
 
-    public org.bukkit.inventory.ItemStack getMaterial() {
+    public ItemStack getMaterial() {
         return material;
     }
 

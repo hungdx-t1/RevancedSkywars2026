@@ -7,9 +7,6 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.ProjectileHitEvent;
 
 public class ProjectileSpleefListener implements org.bukkit.event.Listener {
-    public ProjectileSpleefListener() {
-    }
-
     @org.bukkit.event.EventHandler
     public void projectileHitEvent(ProjectileHitEvent e) {
         if (!(e.getEntity().getShooter() instanceof org.bukkit.entity.Player)) {

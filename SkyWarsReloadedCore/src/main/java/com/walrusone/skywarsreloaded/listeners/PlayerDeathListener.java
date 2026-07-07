@@ -22,8 +22,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerDeathListener implements org.bukkit.event.Listener {
-    public PlayerDeathListener() {
-    }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onDeathByDamageEvent(EntityDamageEvent e) {

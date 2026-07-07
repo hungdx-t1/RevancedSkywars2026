@@ -17,13 +17,9 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class IconMenuController
-        implements Listener {
+public class IconMenuController implements Listener {
     private final Map<Player, IconMenu> menu = Maps.newHashMap();
     private final Map<String, IconMenu> persistantMenus = Maps.newHashMap();
-
-    public IconMenuController() {
-    }
 
     public void create(Player player, ArrayList<Inventory> invs, OptionClickEventHandler optionClickEventHandler) {
         if (player != null) {
@@ -38,12 +34,12 @@ public class IconMenuController
     }
 
     public IconMenu getMenu(String string) {
-        return (IconMenu) persistantMenus.get(string);
+        return persistantMenus.get(string);
     }
 
     public boolean hasViewers(String key) {
         if (persistantMenus.get(key) != null) {
-            for (Inventory inv : ((IconMenu) persistantMenus.get(key)).getInventories()) {
+            for (Inventory inv : (persistantMenus.get(key)).getInventories()) {
                 if (!inv.getViewers().isEmpty()) {
                     return true;
                 }
@@ -55,10 +51,10 @@ public class IconMenuController
     public void show(Player player, @Nullable String key) {
         if (key != null) {
             if (persistantMenus.containsKey(key)) {
-                ((IconMenu) persistantMenus.get(key)).openInventory(player, 0);
+                (persistantMenus.get(key)).openInventory(player, 0);
             }
         } else if (menu.containsKey(player)) {
-            ((IconMenu) menu.get(player)).openInventory(player, 0);
+            (menu.get(player)).openInventory(player, 0);
         }
     }
 
@@ -77,7 +73,7 @@ public class IconMenuController
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onInventoryClick(InventoryClickEvent event) {
         if (((event.getWhoClicked() instanceof Player)) && (this.menu.containsKey(event.getWhoClicked()))) {
-            ((IconMenu) this.menu.get(event.getWhoClicked())).onInventoryClick(event);
+            (this.menu.get(event.getWhoClicked())).onInventoryClick(event);
         }
         for (IconMenu menu : persistantMenus.values()) {
             if (menu.getInventories().contains(event.getInventory())) {
@@ -94,7 +90,7 @@ public class IconMenuController
 
             new BukkitRunnable() {
                 public void run() {
-                    if (((IconMenu) menu.get(event.getPlayer())).getInventories().contains(event.getPlayer().getOpenInventory())) {
+                    if ((menu.get(event.getPlayer())).getInventories().contains(event.getPlayer().getOpenInventory())) {
                         IconMenuController.this.destroy((Player) event.getPlayer());
                     }
                 }

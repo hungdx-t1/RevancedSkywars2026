@@ -7,8 +7,6 @@ import com.walrusone.skywarsreloaded.utilities.Messaging;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 public class PlayerCommandPrepocessListener implements org.bukkit.event.Listener {
-    public PlayerCommandPrepocessListener() {
-    }
 
     @org.bukkit.event.EventHandler(priority = org.bukkit.event.EventPriority.HIGHEST, ignoreCancelled = true)
     public void onCommandPrepocess(PlayerCommandPreprocessEvent e) {

@@ -1,11 +1,8 @@
 package com.walrusone.skywarsreloaded.managers;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.api.enums.MatchState;
-import com.walrusone.skywarsreloaded.api.enums.PlayerRemoveReason;
-import com.walrusone.skywarsreloaded.api.event.SkyWarsDeathEvent;
-import com.walrusone.skywarsreloaded.api.event.SkyWarsKillEvent;
-import com.walrusone.skywarsreloaded.api.event.SkyWarsLeaveEvent;
+import com.walrusone.skywarsreloaded.api.enums.*;
+import com.walrusone.skywarsreloaded.api.event.*;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.game.PlayerCard;
 import com.walrusone.skywarsreloaded.game.PlayerData;
@@ -32,11 +29,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class PlayerManager {
-
     private final SkyWarsReloaded swr;
-
     private final boolean debug;
-
     private final MatchManager matchManager;
 
     public PlayerManager(SkyWarsReloaded swrIn) {
@@ -196,22 +190,18 @@ public class PlayerManager {
                     // Send titles
                     for (final Player p : alivePlayers) {
                         Util.get().sendTitle(p, 2, 20, 2, "",
-                                new Messaging.MessageFormatter()
-                                        .setVariable("player", playerRemoved.getDisplayName())
+                                new Messaging.MessageFormatter().setVariable("player", playerRemoved.getDisplayName())
                                         .setVariable("players", "" + gameMap.getPlayerCount())
                                         .setVariable("playercount", "" + gameMap.getPlayerCount())
-                                        .setVariable("maxplayers", "" + gameMap.getMaxPlayers())
-                                        .format("game.left-the-game"));
+                                        .setVariable("maxplayers", "" + gameMap.getMaxPlayers()).format("game.left-the-game"));
                     }
                 }
 
                 // Send leave message to all players (waiting before start or during ending state)
-                matchManager.message(gameMap, new Messaging.MessageFormatter()
-                        .setVariable("player", playerRemoved.getDisplayName())
+                matchManager.message(gameMap, new Messaging.MessageFormatter().setVariable("player", playerRemoved.getDisplayName())
                         .setVariable("players", "" + gameMap.getPlayerCount())
                         .setVariable("playercount", "" + gameMap.getPlayerCount())
-                        .setVariable("maxplayers", "" + gameMap.getMaxPlayers())
-                        .format("game.waitstart-left-the-game"), playerRemoved);
+                        .setVariable("maxplayers", "" + gameMap.getMaxPlayers()).format("game.waitstart-left-the-game"), playerRemoved);
             }
         }
     }
@@ -326,7 +316,7 @@ public class PlayerManager {
         Bukkit.getPluginManager().callEvent(new SkyWarsLeaveEvent(playerRemoved, gameMap));
 
         // ---------------- GAME MAP UPDATES -----------------
-        gameMap.removePlayer(pUuid, false);
+        gameMap.removePlayer(pUuid);
         if (SkyWarsReloaded.getCfg().spectateEnable() && removeReason.equals(PlayerRemoveReason.DEATH)) {
             this.addSpectator(gameMap, playerRemoved);
             shouldSendToLobby = false;

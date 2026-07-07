@@ -18,11 +18,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.logging.Level;
 
 public class PlayerJoinListener implements Listener {
-
-
-    public PlayerJoinListener() {
-    }
-
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(final PlayerJoinEvent event) {
 

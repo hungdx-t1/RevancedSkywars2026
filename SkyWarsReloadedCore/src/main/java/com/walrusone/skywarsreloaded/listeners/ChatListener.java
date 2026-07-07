@@ -31,9 +31,8 @@ import java.util.Map;
 import java.util.UUID;
 
 public class ChatListener implements Listener {
-
-    private static Map<UUID, Long> chatList = Maps.newHashMap();
-    private static Map<UUID, String> toChange = Maps.newHashMap();
+    private static final Map<UUID, Long> chatList = Maps.newHashMap();
+    private static final Map<UUID, String> toChange = Maps.newHashMap();
 
     public static void setTime(UUID uuid, long time) {
         chatList.put(uuid, time);
@@ -41,9 +40,6 @@ public class ChatListener implements Listener {
 
     public static void setSetting(UUID uuid, String setting) {
         toChange.put(uuid, setting);
-    }
-
-    public ChatListener() {
     }
 
     @EventHandler
@@ -146,7 +142,7 @@ public class ChatListener implements Listener {
         // Handle scope of chat for alive players
         if (playingMap != null)
             applyRecipientsPlaying(event, playingMap, cfg, chatIntent);
-        // Handle scope of chat for spectators
+            // Handle scope of chat for spectators
         else if (specMap != null)
             applyRecipientsSpec(event, player, specMap, cfg);
     }
@@ -311,7 +307,7 @@ public class ChatListener implements Listener {
         return null;
     }
 
-    private class ChatIntent {
+    private static class ChatIntent {
         public boolean wantsGameChat = false;
         public boolean forceGameChat = false;
         public boolean isLobbyChat = false;

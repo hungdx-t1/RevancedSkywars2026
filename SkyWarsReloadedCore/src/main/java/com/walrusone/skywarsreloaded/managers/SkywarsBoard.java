@@ -61,6 +61,7 @@ public class SkywarsBoard {
         cache.put(arg0, arg1);
 
         ArrayList<String> arg3 = convertIntoPieces(arg1, 64);
+
         arg2.setPrefix(fixIssues(arg3.get(0)));
         arg2.setSuffix(fixIssues(arg3.get(1)));
     }
@@ -76,15 +77,15 @@ public class SkywarsBoard {
             arg2.add(arg0);
             arg2.add("");
         } else {
-            if (!ChatColor.getLastColors(arg0.substring(arg1 - 2, arg1)).equals("")) {
+            if (!ChatColor.getLastColors(arg0.substring(arg1 - 2, arg1)).isEmpty()) {
                 arg2.add(arg0.substring(0, arg1 - 2));
                 arg2.add(arg0.substring(arg1 - 2));
-            } else if (!ChatColor.getLastColors(arg0.substring(arg1 - 1, arg1 + 1)).equals("")) {
+            } else if (!ChatColor.getLastColors(arg0.substring(arg1 - 1, arg1 + 1)).isEmpty()) {
                 arg2.add(arg0.substring(0, arg1 - 1));
                 arg2.add(arg0.substring(arg1 - 1));
             } else {
                 arg2.add(arg0.substring(0, arg1));
-                String arg3 = ChatColor.getLastColors(arg2.get(0));
+                String arg3 = ChatColor.getLastColors(arg2.getFirst());
                 arg2.add(arg3 + arg0.substring(arg1));
             }
 

@@ -6,11 +6,7 @@ import me.ebonjaeger.perworldinventory.event.InventoryLoadEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-public class PerWorldInventoryListener
-        implements Listener {
-    public PerWorldInventoryListener() {
-    }
-
+public class PerWorldInventoryListener implements Listener {
     @EventHandler
     public void perWorldInventoryLoad(InventoryLoadEvent e) {
         GameMap gMap = MatchManager.get().getPlayerMap(e.getPlayer());

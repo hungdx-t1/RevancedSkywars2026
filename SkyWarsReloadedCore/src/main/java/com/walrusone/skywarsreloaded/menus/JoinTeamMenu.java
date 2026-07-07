@@ -39,13 +39,13 @@ public class JoinTeamMenu {
             if ((SkyWarsReloaded.getIC().hasViewers("jointeammenu") || SkyWarsReloaded.getIC().hasViewers("spectateteam"))) {
                 ArrayList<GameMap> normalGames = SkyWarsReloaded.getGameMapMgr().getPlayableArenas(GameType.TEAM);
                 ArrayList<SWRServer> bungeeGames = Lists.newArrayList();
-                
+
                 for (SWRServer s : SWRServer.getServersCopy()) {
                     if (s.getTeamSize() > 1) {
                         bungeeGames.add(s);
                     }
                 }
-                
+
                 ArrayList<Inventory> invs1 = SkyWarsReloaded.getIC().getMenu("jointeammenu").getInventories();
 
                 for (Inventory inv : invs1) {
@@ -55,7 +55,7 @@ public class JoinTeamMenu {
                 }
 
                 int gameSize = SkyWarsReloaded.getCfg().bungeeMode() && SkyWarsReloaded.getCfg().isLobbyServer() ? bungeeGames.size() : normalGames.size();
-                
+
                 for (int iii = 0; iii < gameSize; iii++) {
                     int invent = Math.floorDiv(iii, menuSize);
                     if (invs1.isEmpty() || invs1.size() < invent + 1) {
@@ -68,7 +68,7 @@ public class JoinTeamMenu {
                     String displayName = "";
                     int teamsize = 1;
                     String name = "";
-                    
+
                     GameMap gMap = null;
                     SWRServer server = null;
                     if (!SkyWarsReloaded.getCfg().bungeeMode() || !SkyWarsReloaded.getCfg().isLobbyServer()) {
@@ -97,7 +97,7 @@ public class JoinTeamMenu {
                         name = server.getServerName();
                     }
 
-                    
+
 
                     List<String> loreList = Lists.newLinkedList();
                     if (state != MatchState.OFFLINE) {
@@ -163,7 +163,7 @@ public class JoinTeamMenu {
                         if (state.equals(MatchState.PLAYING)) {
                             gameIcon = SkyWarsReloaded.getNMS().getItemStack(customIcon, loreList, ChatColor.translateAlternateColorCodes('&',
                                     new Messaging.MessageFormatter()
-                                    .setVariable("playercount", "" + alivePlayers)
+                                            .setVariable("playercount", "" + alivePlayers)
                                             .setVariable("maxplayers", "" + maxPlayers)
                                             .setVariable("arena", displayName)
                                             .setVariable("teamsize", teamsize + "")

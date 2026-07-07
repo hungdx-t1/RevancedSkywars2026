@@ -15,8 +15,7 @@ import org.bukkit.scheduler.BukkitTask;
 import java.io.File;
 import java.io.IOException;
 
-public class DisableRegenEvent
-        extends MatchEvent {
+public class DisableRegenEvent extends MatchEvent {
     private BukkitTask br;
 
     public DisableRegenEvent(GameMap map, boolean b) {

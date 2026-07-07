@@ -33,7 +33,7 @@ public class ArenaDamageListener implements org.bukkit.event.Listener {
                 }
             }
 
-         }
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -46,15 +46,15 @@ public class ArenaDamageListener implements org.bukkit.event.Listener {
                 if ((gameMap.getMatchState() == MatchState.ENDING || gameMap.getMatchState() == MatchState.WAITINGSTART || gameMap.getMatchState() == MatchState.WAITINGLOBBY) ||
                         gameMap.isDisableDamage()) {
                     event.setCancelled(true);
-                // Friendly fire attack
+                    // Friendly fire attack
                 } else if (!gameMap.allowFriendlyFire() && damager instanceof Player && gameMap.getMatchState() == MatchState.PLAYING && gameMap.getTeamCard(target).equals(gameMap.getTeamCard((Player)damager))) {
                     event.setCancelled(true);
-                // Friendly fire shoot
+                    // Friendly fire shoot
                 } else if (!gameMap.allowFriendlyFire() && event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE && gameMap.getMatchState() == MatchState.PLAYING && ((Projectile)damager).getShooter() != null
                         && ((Projectile)damager).getShooter() instanceof Player
                         && gameMap.getTeamCard(target).equals(gameMap.getTeamCard((Player) ((Projectile)damager).getShooter()))) {
                     event.setCancelled(true);
-                // Process pvp events
+                    // Process pvp events
                 } else {
                     event.setCancelled(false);
                     if (gameMap.getProjectilesOnly()) {

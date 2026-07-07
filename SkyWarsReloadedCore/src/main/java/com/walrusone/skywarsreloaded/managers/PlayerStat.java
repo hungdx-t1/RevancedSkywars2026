@@ -23,9 +23,8 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 public class PlayerStat {
-
     private static ArrayList<PlayerStat> players;
-    private static HashMap<Player, SkywarsBoard> scoreboards = new HashMap<>();
+    private static final HashMap<Player, SkywarsBoard> scoreboards = new HashMap<>();
 
     static {
         PlayerStat.players = new ArrayList<>();
@@ -190,7 +189,7 @@ public class PlayerStat {
             scoreboard =  new SkywarsBoard(player, scores.size());
             scoreboards.put(player, scoreboard);
         }
-        scoreboard.setTitle(ChatColor.translateAlternateColorCodes('&', lines.get(0)));
+        scoreboard.setTitle(ChatColor.translateAlternateColorCodes('&', lines.getFirst()));
         for (int i=0; i< scores.size();i++) {
             String line = scores.get(i);
             if (!scoreboard.getLine(i).equals(line)) {
@@ -208,12 +207,12 @@ public class PlayerStat {
             if (ps.getWins() == 0) {
                 winloss = "0.00";
             } else {
-                winloss = String.format("%1$,.2f", ((double) ((double) ps.getWins() / (double) ps.getLosses())));
+                winloss = String.format("%1$,.2f", (((double) ps.getWins() / (double) ps.getLosses())));
             }
             if (ps.getKills() == 0) {
                 killdeath = "0.00";
             } else {
-                killdeath = String.format("%1$,.2f", ((double) ((double) ps.getKills() / (double) ps.getDeaths())));
+                killdeath = String.format("%1$,.2f", (((double) ps.getKills() / (double) ps.getDeaths())));
             }
 
             GameMap gMap = MatchManager.get().getPlayerMap(player);
@@ -250,10 +249,11 @@ public class PlayerStat {
                         .replace("{nextevent_name}", eventName)
                         .replace("{kills}", gMap.getPlayerKills(player) + "")
                         .replace("{mapname}", gMap.getDisplayName())
-                        .replace("{time}", "" + Util.get().getFormattedTime(gMap.getTimer()))
+                        .replace("{time}", Util.get().getFormattedTime(gMap.getTimer()))
                         .replace("{aliveplayers}", "" + gMap.getAlivePlayers().size())
                         .replace("{players}", "" + currentPlayers)
-                        .replace("{maxplayers}", "" + gMap.getMaxPlayers())
+                        // .replace("{maxplayers}", "" + gMap.getMaxPlayers())
+                        .replace("{maxplayers}", "" + gMap.getTeamCards().size() * gMap.getTeamSize())
                         .replace("{winner}", SkyWarsReloaded.getCfg().usePlayerNames() ? getWinnerName(gMap,0) : getWinningTeamName(gMap))
                         .replace("{winner1}", SkyWarsReloaded.getCfg().usePlayerNames() ? getWinnerName(gMap,0) : getWinningTeamName(gMap))
                         .replace("{winner2}", SkyWarsReloaded.getCfg().usePlayerNames() ? getWinnerName(gMap,1) : "remove")

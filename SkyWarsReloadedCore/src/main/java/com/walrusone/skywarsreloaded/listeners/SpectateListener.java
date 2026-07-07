@@ -21,10 +21,7 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.HashMap;
 
 public class SpectateListener implements org.bukkit.event.Listener {
-    private HashMap<String, BukkitTask> teleportRequests = new HashMap();
-
-    public SpectateListener() {
-    }
+    private final HashMap<String, BukkitTask> teleportRequests = new HashMap<>();
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent e) {
@@ -108,7 +105,7 @@ public class SpectateListener implements org.bukkit.event.Listener {
         if ((teleportRequests.containsKey(e.getPlayer().getUniqueId().toString())) && (
                 (e.getTo().getBlockX() != e.getFrom().getBlockX()) || (e.getTo().getBlockY() != e.getFrom().getBlockY()) || (e.getTo().getBlockZ() != e.getFrom().getBlockZ()))) {
             e.getPlayer().sendMessage(new Messaging.MessageFormatter().format("error.spectate-cancelled"));
-            ((BukkitTask) teleportRequests.get(e.getPlayer().getUniqueId().toString())).cancel();
+            (teleportRequests.get(e.getPlayer().getUniqueId().toString())).cancel();
             teleportRequests.remove(e.getPlayer().getUniqueId().toString());
         }
     }

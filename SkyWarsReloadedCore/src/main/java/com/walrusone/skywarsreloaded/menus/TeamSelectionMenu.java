@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TeamSelectionMenu {
-
     public TeamSelectionMenu(GameMap gMap) {
         String menuName = new Messaging.MessageFormatter().setVariable("mapname", gMap.getDisplayName()).format("menu.teamselection-menu-title");
         List<TeamCard> teamCards = gMap.getTeamCards();
@@ -41,7 +40,6 @@ public class TeamSelectionMenu {
         } else if (tsize <= 45) {
             msize = 45;
         }
-
 
         Inventory menu = Bukkit.createInventory(null, msize, menuName);
         ArrayList<Inventory> invs = new ArrayList<>();
@@ -66,8 +64,12 @@ public class TeamSelectionMenu {
                             .setVariable("teamsize", tCard.getSize() + "")
                             .setVariable("teamcolor", tCard.getTeamName())
                             .format("menu.team_select_menu.item_title");
-                    byte color = SkyWarsReloaded.getCfg().isUseTeamMaterialBytes() ? tCard.getByte() : (byte) SkyWarsReloaded.getCfg().getStandardTeamMaterialByte();
-                    ItemStack item = SkyWarsReloaded.getNMS().getColorItem(mat, color);
+
+                    // old
+//                    byte color = SkyWarsReloaded.getCfg().isUseTeamMaterialBytes() ? tCard.getByte() : (byte) SkyWarsReloaded.getCfg().getStandardTeamMaterialByte();
+//                    ItemStack item = SkyWarsReloaded.getNMS().getColorItem(mat, color);
+
+                    ItemStack item = new ItemStack(Material.valueOf(mat.toUpperCase()));
                     if (SkyWarsReloaded.getCfg().isUseTeamNumberInMenu()) {
                         // + 1 since item count cannot be 0 and human prefer starting at 1
                         item.setAmount(tCard.getPosition() + 1);
@@ -78,9 +80,9 @@ public class TeamSelectionMenu {
                     for (String line : SkyWarsReloaded.getMessaging().getFile().getStringList("menu.team_select_menu.lore.general-lore")) {
                         // +1 position for index to be human readable
                         lores.add(ChatColor.translateAlternateColorCodes('&', line.replace("{team}", (tCard.getPosition()+1)+"")
-                            .replace("{playercount}", tCard.getPlayersSize() + "")
-                            .replace("{teamsize}", tCard.getSize()+"")
-                            .replace("{teamcolor}", tCard.getTeamName())));
+                                .replace("{playercount}", tCard.getPlayersSize() + "")
+                                .replace("{teamsize}", tCard.getSize()+"")
+                                .replace("{teamcolor}", tCard.getTeamName())));
                     }
 
                     for (PlayerCard pCard : tCard.getPlayerCards()) {

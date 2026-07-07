@@ -184,7 +184,7 @@ public class MinecraftPing {
         // Put all together
         return new MinecraftPingReply(pingDescription, pingPlayers, pingVersion, "");
 
-       // return new Gson().fromJson(json, MinecraftPingReply.class);
+        // return new Gson().fromJson(json, MinecraftPingReply.class);
     }
 
     private String getMotdTextFromJsonResponse(JsonObject obj) {
@@ -203,5 +203,4 @@ public class MinecraftPing {
         if (jsonElement instanceof JsonPrimitive)  return jsonElement.getAsString();
         return "";
     }
-
 }

@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameKit {
-
     private static ArrayList<GameKit> kits = new ArrayList<>();
     private ItemStack[] inventory;
     private ItemStack[] armor;

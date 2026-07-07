@@ -19,9 +19,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 public class PlayerTeleportListener implements org.bukkit.event.Listener {
-    public PlayerTeleportListener() {
-    }
-
     private static final List<Player> cooldowns = Lists.newArrayList();
     private static final Object cooldownsLock = new Object();
 
@@ -133,12 +130,12 @@ public class PlayerTeleportListener implements org.bukkit.event.Listener {
                     String lobbyWorldName = spawnLoc.getWorld().getName();
                     boolean shouldSendToLobby = config.bungeeMode() || !lobbyWorldName.equals(toWorldName);
                     SkyWarsReloaded.get().getPlayerManager().removePlayer(
-                           player,
-                           PlayerRemoveReason.PLAYER_QUIT_GAME,
-                           null,
+                            player,
+                            PlayerRemoveReason.PLAYER_QUIT_GAME,
+                            null,
                             shouldSendToLobby,
-                           true
-                   );
+                            true
+                    );
                     // MatchManager.get().removeAlivePlayer(player, damageCause, true, true);
                 } else {
                     e.setCancelled(true);

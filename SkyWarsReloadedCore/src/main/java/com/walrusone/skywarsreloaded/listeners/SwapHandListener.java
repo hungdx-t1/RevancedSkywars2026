@@ -8,9 +8,6 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class SwapHandListener implements org.bukkit.event.Listener {
-    public SwapHandListener() {
-    }
-
     @org.bukkit.event.EventHandler(priority = org.bukkit.event.EventPriority.HIGHEST)
     public void playerSwapHand(PlayerSwapHandItemsEvent event) {
         GameMap gMap = MatchManager.get().getPlayerMap(event.getPlayer());

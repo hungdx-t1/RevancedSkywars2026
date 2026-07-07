@@ -18,8 +18,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class KillSoundOption extends PlayerOption {
-
-    private static ArrayList<PlayerOption> playerOptions = new ArrayList<>();
+    private static final ArrayList<PlayerOption> playerOptions = new ArrayList<>();
     private String sound;
     private float volume;
     private float pitch;
@@ -38,17 +37,6 @@ public class KillSoundOption extends PlayerOption {
         this.position = position;
         this.page = page;
         this.menuSize = menuSize;
-    }
-
-    private static void saveKillFile(String filename) {
-        SkyWarsReloaded.get().saveResource(filename, false);
-        File sf = new File(SkyWarsReloaded.get().getDataFolder(), filename);
-        if (sf.exists()) {
-            boolean result = sf.renameTo(new File(SkyWarsReloaded.get().getDataFolder(), "killsounds.yml"));
-            if (!result) {
-                SkyWarsReloaded.get().getLogger().info("Failed to rename Killsounds File");
-            }
-        }
     }
 
     public static void loadPlayerOptions() {

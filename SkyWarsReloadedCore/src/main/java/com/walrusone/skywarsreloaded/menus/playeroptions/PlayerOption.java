@@ -1,9 +1,9 @@
 package com.walrusone.skywarsreloaded.menus.playeroptions;
 
 import org.bukkit.inventory.ItemStack;
+import org.jspecify.annotations.NonNull;
 
-public abstract class PlayerOption
-        implements Comparable<PlayerOption> {
+public abstract class PlayerOption implements Comparable<PlayerOption> {
     protected ItemStack item;
     protected int level;
     protected int cost;
@@ -72,7 +72,7 @@ public abstract class PlayerOption
         menuSize = x;
     }
 
-    public int compareTo(@javax.annotation.Nonnull PlayerOption o) {
-        return Integer.compare(level, level);
+    public int compareTo(@NonNull PlayerOption o) {
+        return Integer.compare(level, o.level);
     }
 }

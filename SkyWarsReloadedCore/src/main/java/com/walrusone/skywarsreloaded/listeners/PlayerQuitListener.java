@@ -12,9 +12,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.util.UUID;
 
 public class PlayerQuitListener implements org.bukkit.event.Listener {
-    public PlayerQuitListener() {
-    }
-
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         final Player player = event.getPlayer();
