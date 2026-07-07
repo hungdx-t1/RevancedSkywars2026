@@ -5,7 +5,6 @@ import org.bukkit.Location;
 import java.util.Objects;
 
 public class CoordLoc {
-
     private final int x;
     private final int z;
     private final int y;
@@ -38,8 +37,7 @@ public class CoordLoc {
 
     public boolean equals(Object object) {
         boolean result = false;
-        if ((object instanceof CoordLoc)) {
-            CoordLoc loc = (CoordLoc) object;
+        if ((object instanceof CoordLoc loc)) {
             result = (loc.getX() == x) && (loc.getY() == y) && (loc.getZ() == z);
         }
         return result;

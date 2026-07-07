@@ -1196,20 +1196,14 @@ public class Config {
     }
 
     public boolean isTypeEnabled(LeaderType type) {
-        switch (type) {
-            case WINS:
-                return winsEnabled;
-            case LOSSES:
-                return lossesEnabled;
-            case KILLS:
-                return killsEnabled;
-            case DEATHS:
-                return deathsEnabled;
-            case XP:
-                return xpEnabled;
-            default:
-                return false;
-        }
+        return switch (type) {
+            case WINS -> winsEnabled;
+            case LOSSES -> lossesEnabled;
+            case KILLS -> killsEnabled;
+            case DEATHS -> deathsEnabled;
+            case XP -> xpEnabled;
+            default -> false;
+        };
     }
 
     public int getSpeed() {

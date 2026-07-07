@@ -15,6 +15,7 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.logging.Level;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class FileWorldManager implements WorldManager {
 
     public World createEmptyWorld(String name, Environment environment) {

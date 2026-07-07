@@ -28,10 +28,10 @@ public class TauntListener implements org.bukkit.event.Listener {
         String uuid = e.getPlayer().getUniqueId().toString();
         if (!player.isSneaking()) {
             if (lastHandSwap.containsKey(uuid)) {
-                if (System.currentTimeMillis() - ((Long)lastHandSwap.get(uuid)) < 500L) {
+                if (System.currentTimeMillis() - lastHandSwap.get(uuid) < 500L) {
                     if (lastTaunt.containsKey(uuid)) {
-                        if (System.currentTimeMillis() - ((Long) lastTaunt.get(uuid)) < SkyWarsReloaded.getCfg().getCooldown() * 1000L) {
-                            int cooldown = (int) ((SkyWarsReloaded.getCfg().getCooldown() * 1000 - (System.currentTimeMillis() - ((Long) lastTaunt.get(uuid)))) / 1000L);
+                        if (System.currentTimeMillis() - lastTaunt.get(uuid) < SkyWarsReloaded.getCfg().getCooldown() * 1000L) {
+                            int cooldown = (int) ((SkyWarsReloaded.getCfg().getCooldown() * 1000 - (System.currentTimeMillis() - lastTaunt.get(uuid))) / 1000L);
                             int seconds = cooldown % 60 + 1;
                             int minutes = (cooldown - (seconds - 1)) / 60;
                             String cooldownText = "";

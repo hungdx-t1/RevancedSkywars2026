@@ -5,6 +5,7 @@ import org.bukkit.World;
 
 import java.io.File;
 
+@SuppressWarnings("JavadocDeclaration")
 public interface WorldManager {
 
     World createEmptyWorld(String name, World.Environment environment);

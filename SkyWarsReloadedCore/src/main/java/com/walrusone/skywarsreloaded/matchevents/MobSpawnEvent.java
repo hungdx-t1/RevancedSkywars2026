@@ -30,8 +30,8 @@ public class MobSpawnEvent extends MatchEvent {
     private int minMobsPerPlayer;
     private BukkitTask br1;
     private BukkitTask br2;
-    private List<String> mobs = new ArrayList();
-    private ArrayList<Entity> mobsSpawned = new ArrayList();
+    private List<String> mobs = new ArrayList<>();
+    private ArrayList<Entity> mobsSpawned = new ArrayList<>();
 
     public MobSpawnEvent(GameMap map, boolean b) {
         gMap = map;
@@ -66,7 +66,7 @@ public class MobSpawnEvent extends MatchEvent {
     }
 
     private static List<Block> getSpawnableBlocks(Location location) {
-        List<Block> blocks = new ArrayList();
+        List<Block> blocks = new ArrayList<>();
         for (int x = location.getBlockX() - 5; x <= location.getBlockX() + 5; x++) {
             for (int y = location.getBlockY() - 2; y <= location.getBlockY() + 2; y++) {
                 for (int z = location.getBlockZ() - 5; z <= location.getBlockZ() + 5; z++) {
@@ -87,7 +87,7 @@ public class MobSpawnEvent extends MatchEvent {
             sendTitle();
             final World world = gMap.getCurrentWorld();
             for (int i = 0; i < gMap.getAlivePlayers().size(); i++) {
-                final Player player = (Player) gMap.getAlivePlayers().get(i);
+                final Player player = gMap.getAlivePlayers().get(i);
 
 
                 br1 = new BukkitRunnable() {
@@ -96,8 +96,8 @@ public class MobSpawnEvent extends MatchEvent {
                             List<Block> blocks = MobSpawnEvent.getSpawnableBlocks(player.getLocation());
                             Collections.shuffle(blocks);
                             for (int i = 0; i < Util.get().getRandomNum(minMobsPerPlayer, maxMobsPerPlayer); i++) {
-                                Location spawn = ((Block) blocks.get(i)).getLocation().clone().add(0.0D, 1.0D, 0.0D);
-                                LivingEntity ent = (LivingEntity) world.spawnEntity(spawn, EntityType.valueOf(((String) mobs.get(ThreadLocalRandom.current().nextInt(0, mobs.size()))).toUpperCase()));
+                                Location spawn = blocks.get(i).getLocation().clone().add(0.0D, 1.0D, 0.0D);
+                                LivingEntity ent = (LivingEntity) world.spawnEntity(spawn, EntityType.valueOf(mobs.get(ThreadLocalRandom.current().nextInt(0, mobs.size())).toUpperCase()));
                                 if (((ent instanceof Zombie)) || ((ent instanceof Skeleton))) {
                                     ent.getEquipment().setHelmet(new ItemStack(Material.CHAINMAIL_HELMET, 1));
                                 }

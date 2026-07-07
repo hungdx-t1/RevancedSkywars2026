@@ -73,7 +73,7 @@ public class GameMapManager {
                     if (SkyWarsReloaded.getCfg().bungeeMode() &&
                             SkyWarsReloaded.getCfg().getBungeeRandomMapPickOnStart()) {
                         Collections.shuffle(filesList);
-                        File first = filesList.get(0);
+                        File first = filesList.getFirst();
                         if (first != null) {
                             GameMap gameMap = addMap(first.getName().replace(".yml", ""));
                             int code = gameMap.registerMap(null);

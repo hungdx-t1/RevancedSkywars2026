@@ -63,8 +63,8 @@ public class JoinSingleMenu {
                     int alivePlayers;
                     int maxPlayers;
                     String displayName;
-                    int teamsize = 1;
-                    String name = "";
+                    int teamsize;
+                    String name;
 
                     GameMap gMap = null;
                     SWRServer server;

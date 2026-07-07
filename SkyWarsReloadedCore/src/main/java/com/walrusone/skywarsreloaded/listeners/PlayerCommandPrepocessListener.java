@@ -6,6 +6,7 @@ import com.walrusone.skywarsreloaded.managers.MatchManager;
 import com.walrusone.skywarsreloaded.utilities.Messaging;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
+@SuppressWarnings("StatementWithEmptyBody")
 public class PlayerCommandPrepocessListener implements org.bukkit.event.Listener {
 
     @org.bukkit.event.EventHandler(priority = org.bukkit.event.EventPriority.HIGHEST, ignoreCancelled = true)

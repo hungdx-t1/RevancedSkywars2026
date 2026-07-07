@@ -107,17 +107,9 @@ public final class Messaging {
         }
 
         public String format(String message) {
-            if ((message == null) || (message.isEmpty())) {
-                return "";
-            }
-
-            if (SkyWarsReloaded.getMessaging().getMessage(message) != null) {
-                message = SkyWarsReloaded.getMessaging().getMessage(message);
-            }
-
-            if (message == null) {
-                return "";
-            }
+            if ((message == null) || (message.isEmpty())) return "";
+            if (SkyWarsReloaded.getMessaging().getMessage(message) != null) message = SkyWarsReloaded.getMessaging().getMessage(message);
+            if (message == null) return "";
 
             Matcher matcher = PATTERN.matcher(message);
 
@@ -126,16 +118,11 @@ public final class Messaging {
                 variable = variable.substring(1, variable.length() - 1);
 
                 String value = variableMap.get(variable);
-                if (value == null) {
-                    value = "";
-                }
-
+                if (value == null) value = "";
                 message = message.replaceFirst(Pattern.quote(matcher.group()), Matcher.quoteReplacement(value));
             }
 
-            if (prefix) {
-                message = SkyWarsReloaded.getMessaging().getPrefix() + message;
-            }
+            if (prefix) message = SkyWarsReloaded.getMessaging().getPrefix() + message;
 
             return ChatColor.translateAlternateColorCodes('&', message);
         }

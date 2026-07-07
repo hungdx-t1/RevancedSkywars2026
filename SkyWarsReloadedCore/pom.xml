@@ -41,18 +41,14 @@
             <id>simonsators-repo</id>
             <url>https://simonsator.de/repo/</url>
         </repository>
-        <repository>
-            <id>rapture-releases</id>
-            <url>https://repo.rapture.pw/repository/maven-releases/</url>
-        </repository>
-        <repository>
-            <id>rapture-snapshots</id>
-            <url>https://repo.rapture.pw/repository/maven-snapshots/</url>
-        </repository>
-        <!--<repository>
-            <id>simonsators-repo</id>
-            <url>http://simonsator.de/repo/</url>
-        </repository>-->
+<!--        <repository>-->
+<!--            <id>rapture-releases</id>-->
+<!--            <url>https://repo.rapture.pw/repository/maven-releases/</url>-->
+<!--        </repository>-->
+<!--        <repository>-->
+<!--            <id>rapture-snapshots</id>-->
+<!--            <url>https://repo.rapture.pw/repository/maven-snapshots/</url>-->
+<!--        </repository>-->
         <repository>
             <id>jitpack</id>
             <url>https://jitpack.io</url>

@@ -273,7 +273,7 @@ public class NMSHandler implements NMS {
     }
 
     /**
-     * @deprecated Sử dụng chính xác material list từ <a href="https://jd.papermc.io/paper/1.21.1/org/bukkit/Material.html">đây</a>
+     * @deprecated Sử dụng chính xác material list từ <a href="https://jd.papermc.io/paper/26.1.2/org/bukkit/Material.html">đây</a>
      */
     @Deprecated
     public ItemStack getMaterial(String item) {

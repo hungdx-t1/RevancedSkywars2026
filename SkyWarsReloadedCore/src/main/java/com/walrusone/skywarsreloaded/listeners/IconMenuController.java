@@ -11,7 +11,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -29,6 +28,7 @@ public class IconMenuController implements Listener {
 
     public void create(String key, ArrayList<Inventory> invs, OptionClickEventHandler optionClickEventHandler) {
         if (key != null) {
+            // persistantMenus.put(key, new IconMenu(invs, DisplayName)); // Giữ cấu hình gộp menu
             persistantMenus.put(key, new IconMenu(invs, optionClickEventHandler));
         }
     }
@@ -38,8 +38,9 @@ public class IconMenuController implements Listener {
     }
 
     public boolean hasViewers(String key) {
-        if (persistantMenus.get(key) != null) {
-            for (Inventory inv : (persistantMenus.get(key)).getInventories()) {
+        IconMenu iconMenu = persistantMenus.get(key);
+        if (iconMenu != null) {
+            for (Inventory inv : iconMenu.getInventories()) {
                 if (!inv.getViewers().isEmpty()) {
                     return true;
                 }
@@ -72,8 +73,8 @@ public class IconMenuController implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onInventoryClick(InventoryClickEvent event) {
-        if (((event.getWhoClicked() instanceof Player)) && (this.menu.containsKey(event.getWhoClicked()))) {
-            (this.menu.get(event.getWhoClicked())).onInventoryClick(event);
+        if ((event.getWhoClicked() instanceof Player player) && this.menu.containsKey(player)) {
+            this.menu.get(player).onInventoryClick(event);
         }
         for (IconMenu menu : persistantMenus.values()) {
             if (menu.getInventories().contains(event.getInventory())) {
@@ -85,16 +86,23 @@ public class IconMenuController implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInventoryClose(final InventoryCloseEvent event) {
-        if (((event.getPlayer() instanceof Player)) && (menu.containsKey(event.getPlayer()))) {
+        if ((event.getPlayer() instanceof Player player) && menu.containsKey(player)) {
+            SkyWarsReloaded plugin = SkyWarsReloaded.get();
 
+            plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+                IconMenu currentMenu = menu.get(player);
+                if (currentMenu != null) {
+                    // 🌟 SỬA CHÍ MẠNG: Lấy kho đồ hàng đầu hiện tại (getTopInventory) từ InventoryView
+                    // Để trả về đúng kiểu đối tượng `Inventory`, giúp hàm .contains() đối chiếu chính xác!
 
-            new BukkitRunnable() {
-                public void run() {
-                    if ((menu.get(event.getPlayer())).getInventories().contains(event.getPlayer().getOpenInventory())) {
-                        IconMenuController.this.destroy((Player) event.getPlayer());
+                    // old: var inventory = player.getOpenInventory(); if (currentMenu.getInventories().contains(inventory))...
+                    Inventory topInventory = player.getOpenInventory().getTopInventory();
+
+                    if (currentMenu.getInventories().contains(topInventory)) {
+                        IconMenuController.this.destroy(player);
                     }
                 }
-            }.runTaskLater(SkyWarsReloaded.get(), 5L);
+            }, 5L);
         }
     }
 }

@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class Party {
-    private static ArrayList<Party> parties = new ArrayList<>();
-    private UUID leader;
+    private static final ArrayList<Party> parties = new ArrayList<>();
+    private final UUID leader;
     private String name;
-    private ArrayList<UUID> members;
-    private ArrayList<UUID> invited;
+    private final ArrayList<UUID> members;
+    private final ArrayList<UUID> invited;
 
     public Party(Player player, String partyName) {
         leader = player.getUniqueId();

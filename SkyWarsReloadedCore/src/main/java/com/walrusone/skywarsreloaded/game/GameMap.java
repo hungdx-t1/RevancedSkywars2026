@@ -532,7 +532,7 @@ public class GameMap {
         boolean result = false;
         if (teamSize == 1 && players.size() == party.getSize()) {
             for (TeamCard tCard : players.keySet()) {
-                result = tCard.joinGame(players.get(tCard).get(0));
+                result = tCard.joinGame(players.get(tCard).getFirst());
             }
         } else if (teamSize > 1 && team != null && players.get(team).size() == party.getSize()) {
             for (int i = 0; i < players.get(team).size(); i++) {
@@ -741,7 +741,7 @@ public class GameMap {
             List<String> spawns = new ArrayList<>();
             for (List<CoordLoc> coords : spawnLocations.values()) {
                 // Purposefully only taking index 0 in case a teams map was converted to a solo map
-                spawns.add(coords.get(0).getLocationString());
+                spawns.add(coords.getFirst().getLocationString());
             }
             fc.set("spawns", spawns);
         } else {

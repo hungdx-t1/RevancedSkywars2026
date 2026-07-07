@@ -36,9 +36,13 @@ public class SetStatsCmd extends BaseCmd {
             if (Util.get().isInteger(args[4])) {
                 PlayerStat pStat = PlayerStat.getPlayerStats(swPlayer);
                 if (pStat != null) {
+                    boolean isSetAddOrRemoveMethod = (method.equalsIgnoreCase("set"))
+                            || (method.equalsIgnoreCase("add"))
+                            || (method.equalsIgnoreCase("remove"));
+
                     if (stat.equalsIgnoreCase("wins")) {
                         if (Util.get().isInteger(args[4])) {
-                            if ((method.equalsIgnoreCase("set")) || (method.equalsIgnoreCase("add")) || (method.equalsIgnoreCase("remove"))) {
+                            if (isSetAddOrRemoveMethod) {
                                 int value = Integer.parseInt(args[4]);
                                 int currentValue = pStat.getWins();
                                 int newValue = getNewValue(method, currentValue, value);
@@ -54,7 +58,7 @@ public class SetStatsCmd extends BaseCmd {
                         }
                     } else if (stat.equalsIgnoreCase("losses")) {
                         if (Util.get().isInteger(args[4])) {
-                            if ((method.equalsIgnoreCase("set")) || (method.equalsIgnoreCase("add")) || (method.equalsIgnoreCase("remove"))) {
+                            if (isSetAddOrRemoveMethod) {
                                 int value = Integer.parseInt(args[4]);
                                 int currentValue = pStat.getLosses();
                                 int newValue = getNewValue(method, currentValue, value);
@@ -70,7 +74,7 @@ public class SetStatsCmd extends BaseCmd {
                         }
                     } else if (stat.equalsIgnoreCase("kills")) {
                         if (Util.get().isInteger(args[4])) {
-                            if ((method.equalsIgnoreCase("set")) || (method.equalsIgnoreCase("add")) || (method.equalsIgnoreCase("remove"))) {
+                            if (isSetAddOrRemoveMethod) {
                                 int value = Integer.parseInt(args[4]);
                                 int currentValue = pStat.getKills();
                                 int newValue = getNewValue(method, currentValue, value);
@@ -86,7 +90,7 @@ public class SetStatsCmd extends BaseCmd {
                         }
                     } else if (stat.equalsIgnoreCase("deaths")) {
                         if (Util.get().isInteger(args[4])) {
-                            if ((method.equalsIgnoreCase("set")) || (method.equalsIgnoreCase("add")) || (method.equalsIgnoreCase("remove"))) {
+                            if (isSetAddOrRemoveMethod) {
                                 int value = Integer.parseInt(args[4]);
                                 int currentValue = pStat.getDeaths();
                                 int newValue = getNewValue(method, currentValue, value);
@@ -102,7 +106,7 @@ public class SetStatsCmd extends BaseCmd {
                         }
                     }  else if (stat.equalsIgnoreCase("xp")) {
                         if (Util.get().isInteger(args[4])) {
-                            if ((method.equalsIgnoreCase("set")) || (method.equalsIgnoreCase("add")) || (method.equalsIgnoreCase("remove"))) {
+                            if (isSetAddOrRemoveMethod) {
                                 int value = Integer.parseInt(args[4]);
                                 int currentValue = pStat.getXp();
                                 int newValue = getNewValue(method, currentValue, value);

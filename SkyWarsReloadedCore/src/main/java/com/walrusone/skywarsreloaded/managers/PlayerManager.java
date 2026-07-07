@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@SuppressWarnings("StatementWithEmptyBody")
 public class PlayerManager {
     private final SkyWarsReloaded swr;
     private final boolean debug;

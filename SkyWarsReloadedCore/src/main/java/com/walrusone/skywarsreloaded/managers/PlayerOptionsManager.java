@@ -84,7 +84,7 @@ public class PlayerOptionsManager {
                     @Override
                     public void run() {
                         for (int i = 0; i < 3; i++) {
-                            Util.get().sendParticles(location.getWorld(), p.getType(), (float) location.getX(), (float) location.getY(), (float) location.getZ(), (float) (random.nextFloat() * (0.5 - -0.5) + -0.5), (float) (random.nextFloat() * (0.5 - -0.5) + -0.5), (float) (random.nextFloat() * (0.5 - -0.5) + -0.5), getData(p), 1);
+                            Util.get().sendParticles(location.getWorld(), p.getType(), (float) location.getX(), (float) location.getY(), (float) location.getZ(), (float) (random.nextFloat() * (0.5 + 0.5) - 0.5), (float) (random.nextFloat() * (0.5 + 0.5) - 0.5), (float) (random.nextFloat() * (0.5 + 0.5) - 0.5), getData(p), 1);
                         }
                     }
                 }.runTaskLater(SkyWarsReloaded.get(), 3);

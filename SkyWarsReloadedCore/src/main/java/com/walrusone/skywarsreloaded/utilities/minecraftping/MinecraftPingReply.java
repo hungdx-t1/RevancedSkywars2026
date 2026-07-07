@@ -32,11 +32,11 @@ import java.util.List;
 
 /**
  * References:
- * http://wiki.vg/Server_List_Ping
- * https://gist.github.com/thinkofdeath/6927216
+ * <a href="http://wiki.vg/Server_List_Ping">...2</a>
+ * <a href="https://gist.github.com/thinkofdeath/6927216">...</a>
  */
+@SuppressWarnings("unused")
 public class MinecraftPingReply {
-
     private Description description;
     private Players players;
     private Version version;
@@ -109,8 +109,8 @@ public class MinecraftPingReply {
     }
 
     public static class Players {
-        private int max;
-        private int online;
+        private final int max;
+        private final int online;
         private List<Player> sample;
 
         public Players(int max, int online) {
@@ -140,53 +140,34 @@ public class MinecraftPingReply {
         }
     }
 
-    public static class Version {
-        private String name;
-        private int protocol;
-
-        public Version(String name, int protocol) {
-            this.name = name;
-            this.protocol = protocol;
-        }
-
+    public record Version(String name, int protocol) {
         /**
          * @return Version name (ex: 13w41a)
          */
-        public String getName() {
+        @Override
+        public String name() {
             return this.name;
         }
 
         /**
          * @return Protocol version
          */
-        public int getProtocol() {
+        @Override
+        public int protocol() {
             return this.protocol;
         }
     }
 
-    public class Player {
-        private String name;
-        private String id;
-
-        public Player(String name, String id) {
-            this.name = name;
-            this.id = id;
-        }
-
-        /**
-         * @return Name of player
-         */
-        public String getName() {
+    private record Player(String name, String id) {
+        @Override
+        public String name() {
             return this.name;
         }
 
-        /**
-         * @return Unknown
-         */
-        public String getId() {
+        @Override
+        public String id() {
             return this.id;
         }
-
     }
 
 }

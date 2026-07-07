@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class GhastEvent extends MatchEvent {
-    private ArrayList<Entity> mobsSpawned = new ArrayList();
+    private ArrayList<Entity> mobsSpawned = new ArrayList<>();
     private BukkitTask br1;
     private BukkitTask br2;
 
@@ -67,7 +67,7 @@ public class GhastEvent extends MatchEvent {
             br1 = new BukkitRunnable() {
                 public void run() {
                     for (int i = 0; i < gMap.getTeamCards().size(); i++) {
-                        Location loc = new Location(gMap.getCurrentWorld(), ((TeamCard) gMap.getTeamCards().get(i)).getSpawns().get(0).getX(), ((TeamCard) gMap.getTeamCards().get(i)).getSpawns().get(0).getY(), ((TeamCard) gMap.getTeamCards().get(i)).getSpawns().get(0).getZ());
+                        Location loc = new Location(gMap.getCurrentWorld(), gMap.getTeamCards().get(i).getSpawns().getFirst().getX(), gMap.getTeamCards().get(i).getSpawns().getFirst().getY(), gMap.getTeamCards().get(i).getSpawns().getFirst().getZ());
                         Location spawn;
                         do {
                             spawn = loc.clone().add(0.0D, 10.0D, 0.0D);

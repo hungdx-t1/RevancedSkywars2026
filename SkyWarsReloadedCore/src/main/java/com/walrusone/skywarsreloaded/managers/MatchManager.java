@@ -88,7 +88,7 @@ public class MatchManager {
             // Allow joining as spec if you have permission
             if (player.hasPermission("sw.admin.joinBypass")) { // TODO: Not fully tested, issues may arise
                 if (!games.isEmpty()) {
-                    GameMap gameMap = games.get(0);
+                    GameMap gameMap = games.getFirst();
                     SkyWarsReloaded.get().getPlayerManager().addSpectator(gameMap, player);
                     map = gameMap;
                 }

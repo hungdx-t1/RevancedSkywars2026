@@ -79,7 +79,7 @@ public class ShrinkingBorderEvent extends MatchEvent {
                         endEvent(false);
                     }
                 }
-            }.runTaskTimer(SkyWarsReloaded.get(), delay * 20, 20);
+            }.runTaskTimer(SkyWarsReloaded.get(), delay * 20L, 20);
         }
     }
 

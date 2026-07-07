@@ -63,14 +63,14 @@ public class JoinTeamMenu {
                     }
 
                     MatchState state;
-                    int alivePlayers = 0;
-                    int maxPlayers = 0;
-                    String displayName = "";
-                    int teamsize = 1;
-                    String name = "";
+                    int alivePlayers;
+                    int maxPlayers;
+                    String displayName;
+                    int teamsize;
+                    String name;
 
                     GameMap gMap = null;
-                    SWRServer server = null;
+                    SWRServer server;
                     if (!SkyWarsReloaded.getCfg().bungeeMode() || !SkyWarsReloaded.getCfg().isLobbyServer()) {
                         gMap = normalGames.get(iii);
                         state = gMap.getMatchState();
@@ -136,7 +136,7 @@ public class JoinTeamMenu {
                             }
                         }
 
-                        double xy = ((double) (alivePlayers / maxPlayers));
+                        double xy = (double) alivePlayers / maxPlayers;
 
                         ItemStack gameIcon = SkyWarsReloaded.getNMS().getItemStack(SkyWarsReloaded.getIM().getItem("blockwaiting"), loreList, ChatColor.translateAlternateColorCodes('&', displayName));
 
@@ -246,7 +246,7 @@ public class JoinTeamMenu {
                         if (specs.get(i) == null) {
                             specs.add(Bukkit.createInventory(null, menuSize, new Messaging.MessageFormatter().format("menu.spectateteammenu-menu-title")));
                         }
-                        specs.get(0).setContents(inv.getContents());
+                        specs.getFirst().setContents(inv.getContents());
                         i++;
                     }
                 }
