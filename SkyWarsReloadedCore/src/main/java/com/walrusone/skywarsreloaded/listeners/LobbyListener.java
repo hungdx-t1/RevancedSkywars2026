@@ -1,8 +1,8 @@
 package com.walrusone.skywarsreloaded.listeners;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.GameType;
-import com.walrusone.skywarsreloaded.enums.LeaderType;
+import com.walrusone.skywarsreloaded.api.enums.GameType;
+import com.walrusone.skywarsreloaded.api.enums.LeaderType;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
 import com.walrusone.skywarsreloaded.utilities.Messaging;
@@ -16,7 +16,6 @@ import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -28,7 +27,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.UUID;
 
-public class LobbyListener implements Listener {
+public class LobbyListener implements org.bukkit.event.Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent e) {
@@ -43,7 +42,6 @@ public class LobbyListener implements Listener {
             e.setQuitMessage("");
         }
     }
-
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onEntityDamage(EntityDamageByEntityEvent e) {

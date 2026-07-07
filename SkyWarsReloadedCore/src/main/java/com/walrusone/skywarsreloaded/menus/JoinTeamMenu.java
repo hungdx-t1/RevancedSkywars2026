@@ -2,8 +2,8 @@ package com.walrusone.skywarsreloaded.menus;
 
 import com.google.common.collect.Lists;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.GameType;
-import com.walrusone.skywarsreloaded.enums.MatchState;
+import com.walrusone.skywarsreloaded.api.enums.GameType;
+import com.walrusone.skywarsreloaded.api.enums.MatchState;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
 import com.walrusone.skywarsreloaded.utilities.Messaging;
@@ -39,13 +39,13 @@ public class JoinTeamMenu {
             if ((SkyWarsReloaded.getIC().hasViewers("jointeammenu") || SkyWarsReloaded.getIC().hasViewers("spectateteam"))) {
                 ArrayList<GameMap> normalGames = SkyWarsReloaded.getGameMapMgr().getPlayableArenas(GameType.TEAM);
                 ArrayList<SWRServer> bungeeGames = Lists.newArrayList();
-                
+
                 for (SWRServer s : SWRServer.getServersCopy()) {
                     if (s.getTeamSize() > 1) {
                         bungeeGames.add(s);
                     }
                 }
-                
+
                 ArrayList<Inventory> invs1 = SkyWarsReloaded.getIC().getMenu("jointeammenu").getInventories();
 
                 for (Inventory inv : invs1) {
@@ -55,7 +55,7 @@ public class JoinTeamMenu {
                 }
 
                 int gameSize = SkyWarsReloaded.getCfg().bungeeMode() && SkyWarsReloaded.getCfg().isLobbyServer() ? bungeeGames.size() : normalGames.size();
-                
+
                 for (int iii = 0; iii < gameSize; iii++) {
                     int invent = Math.floorDiv(iii, menuSize);
                     if (invs1.isEmpty() || invs1.size() < invent + 1) {
@@ -63,14 +63,14 @@ public class JoinTeamMenu {
                     }
 
                     MatchState state;
-                    int alivePlayers = 0;
-                    int maxPlayers = 0;
-                    String displayName = "";
-                    int teamsize = 1;
-                    String name = "";
-                    
+                    int alivePlayers;
+                    int maxPlayers;
+                    String displayName;
+                    int teamsize;
+                    String name;
+
                     GameMap gMap = null;
-                    SWRServer server = null;
+                    SWRServer server;
                     if (!SkyWarsReloaded.getCfg().bungeeMode() || !SkyWarsReloaded.getCfg().isLobbyServer()) {
                         gMap = normalGames.get(iii);
                         state = gMap.getMatchState();
@@ -97,7 +97,7 @@ public class JoinTeamMenu {
                         name = server.getServerName();
                     }
 
-                    
+
 
                     List<String> loreList = Lists.newLinkedList();
                     if (state != MatchState.OFFLINE) {
@@ -136,7 +136,7 @@ public class JoinTeamMenu {
                             }
                         }
 
-                        double xy = ((double) (alivePlayers / maxPlayers));
+                        double xy = (double) alivePlayers / maxPlayers;
 
                         ItemStack gameIcon = SkyWarsReloaded.getNMS().getItemStack(SkyWarsReloaded.getIM().getItem("blockwaiting"), loreList, ChatColor.translateAlternateColorCodes('&', displayName));
 
@@ -163,7 +163,7 @@ public class JoinTeamMenu {
                         if (state.equals(MatchState.PLAYING)) {
                             gameIcon = SkyWarsReloaded.getNMS().getItemStack(customIcon, loreList, ChatColor.translateAlternateColorCodes('&',
                                     new Messaging.MessageFormatter()
-                                    .setVariable("playercount", "" + alivePlayers)
+                                            .setVariable("playercount", "" + alivePlayers)
                                             .setVariable("maxplayers", "" + maxPlayers)
                                             .setVariable("arena", displayName)
                                             .setVariable("teamsize", teamsize + "")
@@ -246,7 +246,7 @@ public class JoinTeamMenu {
                         if (specs.get(i) == null) {
                             specs.add(Bukkit.createInventory(null, menuSize, new Messaging.MessageFormatter().format("menu.spectateteammenu-menu-title")));
                         }
-                        specs.get(0).setContents(inv.getContents());
+                        specs.getFirst().setContents(inv.getContents());
                         i++;
                     }
                 }

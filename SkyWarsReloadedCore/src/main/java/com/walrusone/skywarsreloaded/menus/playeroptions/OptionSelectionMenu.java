@@ -3,7 +3,7 @@ package com.walrusone.skywarsreloaded.menus.playeroptions;
 import com.google.common.collect.Lists;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
 import com.walrusone.skywarsreloaded.database.DataStorage;
-import com.walrusone.skywarsreloaded.enums.PlayerOptions;
+import com.walrusone.skywarsreloaded.api.enums.PlayerOptions;
 import com.walrusone.skywarsreloaded.managers.PlayerStat;
 import com.walrusone.skywarsreloaded.utilities.Messaging;
 import com.walrusone.skywarsreloaded.utilities.Util;
@@ -20,32 +20,17 @@ import java.util.List;
 public class OptionSelectionMenu {
 
     public OptionSelectionMenu(final Player player, PlayerOptions p, boolean commandOpen) {
-        List<PlayerOption> availableItems;
-        switch (p) {
-            case GLASSCOLOR:
-                availableItems = GlassColorOption.getPlayerOptions();
-                break;
-            case PARTICLEEFFECT:
-                availableItems = ParticleEffectOption.getPlayerOptions();
-                break;
-            case PROJECTILEEFFECT:
-                availableItems = ProjectileEffectOption.getPlayerOptions();
-                break;
-            case WINSOUND:
-                availableItems = WinSoundOption.getPlayerOptions();
-                break;
-            case KILLSOUND:
-                availableItems = KillSoundOption.getPlayerOptions();
-                break;
-            case TAUNT:
-                availableItems = TauntOption.getPlayerOptions();
-                break;
-            default:
-                availableItems = GlassColorOption.getPlayerOptions();
-        }
+        List<PlayerOption> availableItems = switch (p) {
+            case PARTICLEEFFECT -> ParticleEffectOption.getPlayerOptions();
+            case PROJECTILEEFFECT -> ProjectileEffectOption.getPlayerOptions();
+            case WINSOUND -> WinSoundOption.getPlayerOptions();
+            case KILLSOUND -> KillSoundOption.getPlayerOptions();
+            case TAUNT -> TauntOption.getPlayerOptions();
+            default -> GlassColorOption.getPlayerOptions(); // also support GLASSCOLOR
+        };
 
-        String menuName = new Messaging.MessageFormatter().format(availableItems.get(0).getMenuName());
-        int menuSize = availableItems.get(0).getMenuSize();
+        String menuName = new Messaging.MessageFormatter().format(availableItems.getFirst().getMenuName());
+        int menuSize = availableItems.getFirst().getMenuSize();
 
         ArrayList<Inventory> invs = new ArrayList<>();
 
@@ -110,29 +95,14 @@ public class OptionSelectionMenu {
                 new OptionsSelectionMenu(player);
                 return;
             }
-            PlayerOption option;
-            switch (p) {
-                case GLASSCOLOR:
-                    option = GlassColorOption.getPlayerOptionByName(name);
-                    break;
-                case PARTICLEEFFECT:
-                    option = ParticleEffectOption.getPlayerOptionByName(name);
-                    break;
-                case PROJECTILEEFFECT:
-                    option = ProjectileEffectOption.getPlayerOptionByName(name);
-                    break;
-                case WINSOUND:
-                    option = WinSoundOption.getPlayerOptionByName(name);
-                    break;
-                case KILLSOUND:
-                    option = KillSoundOption.getPlayerOptionByName(name);
-                    break;
-                case TAUNT:
-                    option = TauntOption.getPlayerOptionByName(name);
-                    break;
-                default:
-                    option = null;
-            }
+            PlayerOption option = switch (p) {
+                case GLASSCOLOR -> GlassColorOption.getPlayerOptionByName(name);
+                case PARTICLEEFFECT -> ParticleEffectOption.getPlayerOptionByName(name);
+                case PROJECTILEEFFECT -> ProjectileEffectOption.getPlayerOptionByName(name);
+                case WINSOUND -> WinSoundOption.getPlayerOptionByName(name);
+                case KILLSOUND -> KillSoundOption.getPlayerOptionByName(name);
+                case TAUNT -> TauntOption.getPlayerOptionByName(name);
+            };
 
             if (option == null) {
                 return;

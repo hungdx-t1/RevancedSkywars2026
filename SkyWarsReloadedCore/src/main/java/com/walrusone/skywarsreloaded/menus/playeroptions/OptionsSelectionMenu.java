@@ -1,7 +1,7 @@
 package com.walrusone.skywarsreloaded.menus.playeroptions;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.PlayerOptions;
+import com.walrusone.skywarsreloaded.api.enums.PlayerOptions;
 import com.walrusone.skywarsreloaded.utilities.Messaging;
 import com.walrusone.skywarsreloaded.utilities.Util;
 import org.bukkit.Bukkit;

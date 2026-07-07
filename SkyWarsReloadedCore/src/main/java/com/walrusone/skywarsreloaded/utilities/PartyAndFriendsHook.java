@@ -1,7 +1,7 @@
 package com.walrusone.skywarsreloaded.utilities;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.events.SkyWarsJoinEvent;
+import com.walrusone.skywarsreloaded.api.event.SkyWarsJoinEvent;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.game.TeamCard;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
@@ -15,7 +15,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 public class PartyAndFriendsHook implements Listener {
-
     public PartyAndFriendsHook() {
         if (SkyWarsReloaded.getCfg().debugEnabled()) {
             SkyWarsReloaded.get().getLogger().info("PartyAndFriends Hook is enabled");

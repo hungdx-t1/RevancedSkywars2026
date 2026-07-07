@@ -1,14 +1,13 @@
 package com.walrusone.skywarsreloaded.listeners;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.PlayerRemoveReason;
+import com.walrusone.skywarsreloaded.api.enums.PlayerRemoveReason;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
 import com.walrusone.skywarsreloaded.utilities.Messaging;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
+@SuppressWarnings("StatementWithEmptyBody")
 public class PlayerCommandPrepocessListener implements org.bukkit.event.Listener {
-    public PlayerCommandPrepocessListener() {
-    }
 
     @org.bukkit.event.EventHandler(priority = org.bukkit.event.EventPriority.HIGHEST, ignoreCancelled = true)
     public void onCommandPrepocess(PlayerCommandPreprocessEvent e) {

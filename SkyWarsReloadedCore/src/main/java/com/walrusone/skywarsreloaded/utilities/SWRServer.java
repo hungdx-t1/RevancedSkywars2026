@@ -1,8 +1,8 @@
 package com.walrusone.skywarsreloaded.utilities;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.MatchState;
-import com.walrusone.skywarsreloaded.events.SkyWarsMatchStateChangeEvent;
+import com.walrusone.skywarsreloaded.api.enums.MatchState;
+import com.walrusone.skywarsreloaded.api.event.SkyWarsMatchStateChangeEvent;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SWRServer {
-
-
     private static ArrayList<SWRServer> servers = new ArrayList<>();
     private static final Object serversLock = new Object();
 
@@ -44,7 +42,7 @@ public class SWRServer {
 
     public SWRServer(final String name, final int port) {
         this.serverName = name;
-        signs = new ArrayList<Location>();
+        signs = new ArrayList<>();
         this.displayName = "Initializing";
         this.playerCount = 0;
         this.maxPlayers = 0;
@@ -144,16 +142,6 @@ public class SWRServer {
         ItemStack itemStack = SkyWarsReloaded.getIM().getItem(item);
         Material material = itemStack.getType();
         block.setType(material);
-        if (SkyWarsReloaded.getNMS().getVersion() < 13 && (
-                material.equals(Material.valueOf("WOOL")) ||
-                material.equals(Material.valueOf("STAINED_GLASS")) ||
-                material.equals(Material.valueOf("STAINED_CLAY")))
-        ) {
-            SkyWarsReloaded.getNMS().setBlockWithColor(
-                    block.getWorld(), block.getX(), block.getY(), block.getZ(),
-                    material,
-                    itemStack.getData().getData());
-        }
     }
 
     public int getTeamSize() {

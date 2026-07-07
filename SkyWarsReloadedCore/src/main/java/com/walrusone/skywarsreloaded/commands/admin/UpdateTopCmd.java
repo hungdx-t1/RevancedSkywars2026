@@ -3,7 +3,7 @@ package com.walrusone.skywarsreloaded.commands.admin;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
 import com.walrusone.skywarsreloaded.commands.BaseCmd;
 import com.walrusone.skywarsreloaded.database.DataStorage;
-import com.walrusone.skywarsreloaded.enums.LeaderType;
+import com.walrusone.skywarsreloaded.api.enums.LeaderType;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

@@ -2,10 +2,8 @@ package com.walrusone.skywarsreloaded.menus.gameoptions;
 
 import com.google.common.collect.Lists;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.MatchState;
-import com.walrusone.skywarsreloaded.enums.ScoreVar;
-import com.walrusone.skywarsreloaded.enums.Vote;
-import com.walrusone.skywarsreloaded.events.SkyWarsVoteEvent;
+import com.walrusone.skywarsreloaded.api.enums.*;
+import com.walrusone.skywarsreloaded.api.event.SkyWarsVoteEvent;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.game.PlayerCard;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
@@ -113,14 +111,10 @@ public class WeatherOption extends GameOption {
             gameMap.setNextStrike(Util.get().getRandomNum(3, 20));
             gameMap.setStrikeCounter(0);
         } else if (weather == Vote.WEATHERSNOW) {
-            world = gameMap.getAlivePlayers().get(0).getWorld();
+            world = gameMap.getAlivePlayers().getFirst().getWorld();
             for (int x = 65336; x < 200; x++) {
                 for (z = 65336; z < 200; z++) {
-                    if (SkyWarsReloaded.getNMS().getVersion() < 13) {
-                        world.setBiome(x, z, Biome.valueOf("ICE_MOUNTAINS"));
-                    } else {
-                        world.setBiome(x, z, Biome.valueOf("SNOWY_TUNDRA"));
-                    }
+                    world.setBiome(x, z, Biome.valueOf("SNOWY_TUNDRA"));
                 }
             }
             List<Chunk> chunks = Util.get().getChunks(world);

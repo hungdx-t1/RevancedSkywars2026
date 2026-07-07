@@ -1,13 +1,13 @@
 package com.walrusone.skywarsreloaded.menus;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.MatchState;
+import com.walrusone.skywarsreloaded.api.enums.MatchState;
+import com.walrusone.skywarsreloaded.api.enums.cages.CageType;
 import com.walrusone.skywarsreloaded.game.GameMap;
-import com.walrusone.skywarsreloaded.game.cages.CageType;
 import com.walrusone.skywarsreloaded.game.signs.SWRSign;
 import com.walrusone.skywarsreloaded.listeners.ChatListener;
+import com.walrusone.skywarsreloaded.utilities.JSONMessage;
 import com.walrusone.skywarsreloaded.utilities.Messaging;
-import me.rayzr522.jsonmessage.JSONMessage;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -77,11 +77,7 @@ public class ArenaMenu {
                 lores.add(ChatColor.AQUA + "Left Click for a list");
                 lores.add(ChatColor.AQUA + "of Sign Locations.");
 
-
-                String signItem = "SIGN";
-                if (SkyWarsReloaded.getNMS().getVersion() >= 13) {
-                    signItem = "BIRCH_SIGN";
-                }
+                String signItem = "BIRCH_SIGN";
 
                 ItemStack signs = SkyWarsReloaded.getNMS().getItemStack(new ItemStack(Material.valueOf(signItem), 1), lores, "Join Signs");
 
@@ -229,10 +225,7 @@ public class ArenaMenu {
                                 case SOUTH:
                                     loc.setX(loc.getX() + 1);
                                     break;
-                                case EAST:
-                                    loc.setZ(loc.getZ() + 1);
-                                    break;
-                                case WEST:
+                                case EAST, WEST:
                                     loc.setZ(loc.getZ() + 1);
                                     break;
                                 default:
@@ -240,15 +233,7 @@ public class ArenaMenu {
                             }
 
                             World world = swSign.getLocation().getWorld();
-                            int x = loc.getBlockX();
-                            int y = loc.getBlockY();
-                            int z = loc.getBlockZ();
-
-                            JSONMessage.create("Sign " + i + ": " + world.getName() + " - " + block.getLocation().getBlockX() + ", " + block.getLocation().getBlockY() + ", " + block.getLocation().getBlockZ())
-                                    .color(ChatColor.GOLD)
-                                    .tooltip("Click to teleport")
-                                    .runCommand("/teleport " + x + " " + y + " " + z)
-                                    .color(ChatColor.GOLD).send(player);
+                            JSONMessage.generateArenaMenuMessage(world, i, block, player);
                         }
 
                     }

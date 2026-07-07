@@ -17,7 +17,7 @@ import java.util.*;
 
 public class TauntOption extends PlayerOption {
 
-    private static ArrayList<PlayerOption> playerOptions = new ArrayList<>();
+    private static final ArrayList<PlayerOption> playerOptions = new ArrayList<>();
     private List<String> lore;
     private String message;
     private String sound;
@@ -64,13 +64,7 @@ public class TauntOption extends PlayerOption {
         File tauntFile = new File(SkyWarsReloaded.get().getDataFolder(), "taunts.yml");
 
         if (!tauntFile.exists()) {
-            if (SkyWarsReloaded.getNMS().getVersion() < 9) {
-                saveTauntFile("taunts18.yml");
-            } else if (SkyWarsReloaded.getNMS().getVersion() < 13) {
-                saveTauntFile("taunts112.yml");
-            } else {
-                SkyWarsReloaded.get().saveResource("taunts.yml", false);
-            }
+            SkyWarsReloaded.get().saveResource("taunts.yml", false);
         }
 
         if (tauntFile.exists()) {
@@ -166,7 +160,7 @@ public class TauntOption extends PlayerOption {
 
             doTauntParticles(player.getUniqueId().toString());
 
-            if (this.getMessage() != null && this.getMessage().length() != 0) {
+            if (this.getMessage() != null && !this.getMessage().isEmpty()) {
                 String prefix = new Messaging.MessageFormatter().setVariable("player", player.getDisplayName()).format("taunt.prefix");
                 List<Player> players = player.getWorld().getPlayers();
                 for (Player p : players) {

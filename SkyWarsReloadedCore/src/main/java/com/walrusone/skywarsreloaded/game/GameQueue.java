@@ -6,9 +6,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-
 public class GameQueue {
-    private ConcurrentLinkedQueue<PlayerCard> queue = new ConcurrentLinkedQueue<>();
+    private final ConcurrentLinkedQueue<PlayerCard> queue = new ConcurrentLinkedQueue<>();
     private GameMap map;
     private BukkitRunnable runnableQueue;
 

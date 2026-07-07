@@ -2,10 +2,7 @@ package com.walrusone.skywarsreloaded.listeners;
 
 import com.google.common.collect.Lists;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.ChestPlacementType;
-import com.walrusone.skywarsreloaded.enums.GameType;
-import com.walrusone.skywarsreloaded.enums.MatchState;
-import com.walrusone.skywarsreloaded.enums.PlayerRemoveReason;
+import com.walrusone.skywarsreloaded.api.enums.*;
 import com.walrusone.skywarsreloaded.game.Crate;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.game.TeamCard;
@@ -268,8 +265,7 @@ public class PlayerInteractListener implements Listener {
                         if (SkyWarsReloaded.getCfg().debugEnabled())
                             SkyWarsReloaded.get().getLogger().info("PlayerInteractEvent::onClick kitvote");
                         if (MatchManager.get().getPlayerMap(player).getPlayerCard(player) == null) {
-                            String sound = SkyWarsReloaded.getNMS().getVersion() < 9 ? "VILLAGER_NO" : "ENTITY_VILLAGER_NO";
-                            Util.get().playSound(player, player.getLocation(), sound, 1, 1);
+                            Util.get().playSound(player, player.getLocation(), "ENTITY_VILLAGER_NO", 1, 1);
                             SkyWarsReloaded.getNMS().sendActionBar(player, new Messaging.MessageFormatter().format("game.select-team-before-kit"));
                             return;
                         }
@@ -286,8 +282,7 @@ public class PlayerInteractListener implements Listener {
                             SkyWarsReloaded.get().getLogger().info("PlayerInteractEvent::onClick votingItem");
                         if (player.hasPermission("sw.votemenu")) {
                             if (MatchManager.get().getPlayerMap(player).getPlayerCard(player) == null) {
-                                String sound = SkyWarsReloaded.getNMS().getVersion() < 9 ? "VILLAGER_NO" : "ENTITY_VILLAGER_NO";
-                                Util.get().playSound(player, player.getLocation(), sound, 1, 1);
+                                Util.get().playSound(player, player.getLocation(), "ENTITY_VILLAGER_NO", 1, 1);
                                 SkyWarsReloaded.getNMS().sendActionBar(player, new Messaging.MessageFormatter().format("game.select-team-before-voting"));
                                 return;
                             }
@@ -329,11 +324,8 @@ public class PlayerInteractListener implements Listener {
                             for (Crate crate : gMap.getCrates()) {
                                 if (crate.getLocation().equals(block.getLocation())) {
                                     event.setCancelled(true);
-                                    if (SkyWarsReloaded.getNMS().getVersion() < 9) {
-                                        player.getWorld().playSound(player.getLocation(), Sound.valueOf("CHEST_OPEN"), 1, 1);
-                                    } else {
-                                        player.getWorld().playSound(player.getLocation(), Sound.valueOf("BLOCK_CHEST_OPEN"), 1, 1);
-                                    }
+
+                                    player.getWorld().playSound(player.getLocation(), Sound.valueOf("BLOCK_CHEST_OPEN"), 1, 1);
                                     player.openInventory(crate.getInventory());
                                     SkyWarsReloaded.get().getServer().getScheduler().runTaskLater(SkyWarsReloaded.get(), () ->
                                             SkyWarsReloaded.getNMS().playChestAction(block, true), 1
@@ -359,11 +351,7 @@ public class PlayerInteractListener implements Listener {
             for (GameMap gMap : SkyWarsReloaded.getGameMapMgr().getPlayableArenas(GameType.ALL)) {
                 for (Crate crate : gMap.getCrates()) {
                     if (crate.getInventory().equals(inv) && inv.getViewers().size() <= 1) {
-                        if (SkyWarsReloaded.getNMS().getVersion() < 9) {
-                            e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.valueOf("CHEST_CLOSE"), 1, 1);
-                        } else {
-                            e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 1);
-                        }
+                        e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 1);
                         SkyWarsReloaded.getNMS().playChestAction(crate.getLocation().getBlock(), false);
                         return;
                     }
@@ -438,8 +426,7 @@ public class PlayerInteractListener implements Listener {
                         // Remove from map
                         map.removeChest(chest);
                         InventoryHolder ih = chest.getInventory().getHolder();
-                        if (ih instanceof DoubleChest) {
-                            DoubleChest dc = (DoubleChest) ih;
+                        if (ih instanceof DoubleChest dc) {
                             Chest left = (Chest) dc.getLeftSide();
                             Chest right = (Chest) dc.getRightSide();
                             Location locLeft = left.getLocation();

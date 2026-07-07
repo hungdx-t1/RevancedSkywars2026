@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class GlassColorOption extends PlayerOption {
-    private static ArrayList<PlayerOption> playerOptions = new ArrayList<>();
+    private static final ArrayList<PlayerOption> playerOptions = new ArrayList<>();
 
     private GlassColorOption(String color, String name, ItemStack item, int level, int cost, int position, int page, int menuSize) {
         this.item = item;
@@ -34,18 +34,7 @@ public class GlassColorOption extends PlayerOption {
         File glassFile = new File(SkyWarsReloaded.get().getDataFolder(), "glasscolors.yml");
 
         if (!glassFile.exists()) {
-            if (SkyWarsReloaded.getNMS().getVersion() < 9) {
-                SkyWarsReloaded.get().saveResource("glasscolors18.yml", false);
-                File sf = new File(SkyWarsReloaded.get().getDataFolder(), "glasscolors18.yml");
-                if (sf.exists()) {
-                    boolean result = sf.renameTo(new File(SkyWarsReloaded.get().getDataFolder(), "glasscolors.yml"));
-                    if (!result) {
-                        SkyWarsReloaded.get().getLogger().info("Failed to rename 1.8 Glasscolors File");
-                    }
-                }
-            } else {
-                SkyWarsReloaded.get().saveResource("glasscolors.yml", false);
-            }
+            SkyWarsReloaded.get().saveResource("glasscolors.yml", false);
         }
 
         if (glassFile.exists()) {

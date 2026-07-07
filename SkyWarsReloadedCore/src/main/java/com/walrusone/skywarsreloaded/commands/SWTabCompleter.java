@@ -2,8 +2,8 @@ package com.walrusone.skywarsreloaded.commands;
 
 import com.google.common.collect.Lists;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.ChestType;
-import com.walrusone.skywarsreloaded.enums.LeaderType;
+import com.walrusone.skywarsreloaded.api.enums.ChestType;
+import com.walrusone.skywarsreloaded.api.enums.LeaderType;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.menus.gameoptions.objects.GameKit;
 import com.walrusone.skywarsreloaded.utilities.Util;
@@ -12,6 +12,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class SWTabCompleter implements TabCompleter {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] args) {
+    public List<String> onTabComplete(@NonNull CommandSender commandSender, Command command, @NonNull String s, String @NonNull [] args) {
         List<String> possibilities = Lists.newArrayList();
         List<String> responses = Lists.newArrayList();
 

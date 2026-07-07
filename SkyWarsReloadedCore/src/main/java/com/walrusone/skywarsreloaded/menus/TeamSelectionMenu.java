@@ -1,9 +1,9 @@
 package com.walrusone.skywarsreloaded.menus;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.MatchState;
-import com.walrusone.skywarsreloaded.enums.Vote;
-import com.walrusone.skywarsreloaded.events.SkyWarsSelectTeamEvent;
+import com.walrusone.skywarsreloaded.api.enums.MatchState;
+import com.walrusone.skywarsreloaded.api.enums.Vote;
+import com.walrusone.skywarsreloaded.api.event.SkyWarsSelectTeamEvent;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.game.PlayerCard;
 import com.walrusone.skywarsreloaded.game.TeamCard;
@@ -24,15 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TeamSelectionMenu {
-
     public TeamSelectionMenu(GameMap gMap) {
         String menuName = new Messaging.MessageFormatter().setVariable("mapname", gMap.getDisplayName()).format("menu.teamselection-menu-title");
-        if (SkyWarsReloaded.getNMS().getVersion() < 9) {
-            if (menuName.length() > 32) {
-                menuName = menuName.substring(0, 31);
-            }
-        }
-
         List<TeamCard> teamCards = gMap.getTeamCards();
         final int tsize = teamCards.size();
         int msize = 54;
@@ -47,7 +40,6 @@ public class TeamSelectionMenu {
         } else if (tsize <= 45) {
             msize = 45;
         }
-
 
         Inventory menu = Bukkit.createInventory(null, msize, menuName);
         ArrayList<Inventory> invs = new ArrayList<>();
@@ -72,14 +64,12 @@ public class TeamSelectionMenu {
                             .setVariable("teamsize", tCard.getSize() + "")
                             .setVariable("teamcolor", tCard.getTeamName())
                             .format("menu.team_select_menu.item_title");
-                    byte color = SkyWarsReloaded.getCfg().isUseTeamMaterialBytes() ? tCard.getByte() : (byte) SkyWarsReloaded.getCfg().getStandardTeamMaterialByte();
-                    ItemStack item;
-                    if (SkyWarsReloaded.getNMS().getVersion() >= 13) {
-                        item = new ItemStack(Material.valueOf(mat.toUpperCase()));
-                    }
-                    else {
-                        item = SkyWarsReloaded.getNMS().getColorItem(mat, color);
-                    }
+
+                    // old
+//                    byte color = SkyWarsReloaded.getCfg().isUseTeamMaterialBytes() ? tCard.getByte() : (byte) SkyWarsReloaded.getCfg().getStandardTeamMaterialByte();
+//                    ItemStack item = SkyWarsReloaded.getNMS().getColorItem(mat, color);
+
+                    ItemStack item = new ItemStack(Material.valueOf(mat.toUpperCase()));
                     if (SkyWarsReloaded.getCfg().isUseTeamNumberInMenu()) {
                         // + 1 since item count cannot be 0 and human prefer starting at 1
                         item.setAmount(tCard.getPosition() + 1);
@@ -90,9 +80,9 @@ public class TeamSelectionMenu {
                     for (String line : SkyWarsReloaded.getMessaging().getFile().getStringList("menu.team_select_menu.lore.general-lore")) {
                         // +1 position for index to be human readable
                         lores.add(ChatColor.translateAlternateColorCodes('&', line.replace("{team}", (tCard.getPosition()+1)+"")
-                            .replace("{playercount}", tCard.getPlayersSize() + "")
-                            .replace("{teamsize}", tCard.getSize()+"")
-                            .replace("{teamcolor}", tCard.getTeamName())));
+                                .replace("{playercount}", tCard.getPlayersSize() + "")
+                                .replace("{teamsize}", tCard.getSize()+"")
+                                .replace("{teamcolor}", tCard.getTeamName())));
                     }
 
                     for (PlayerCard pCard : tCard.getPlayerCards()) {
@@ -109,7 +99,7 @@ public class TeamSelectionMenu {
                                     .format("menu.team_select_menu.lore.player-list-lore-line"));
                         }
                     }
-                    invs1.get(0).setItem(tCard.getPosition(), SkyWarsReloaded.getNMS().getItemStack(item, lores, name));
+                    invs1.getFirst().setItem(tCard.getPosition(), SkyWarsReloaded.getNMS().getItemStack(item, lores, name));
                 }
             }
         };

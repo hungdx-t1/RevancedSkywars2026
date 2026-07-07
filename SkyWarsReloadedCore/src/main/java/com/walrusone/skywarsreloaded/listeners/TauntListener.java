@@ -1,7 +1,7 @@
 package com.walrusone.skywarsreloaded.listeners;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.MatchState;
+import com.walrusone.skywarsreloaded.api.enums.MatchState;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
 import com.walrusone.skywarsreloaded.managers.PlayerStat;
@@ -18,9 +18,6 @@ public class TauntListener implements org.bukkit.event.Listener {
     private final HashMap<String, Long> lastHandSwap = new HashMap<>();
     private final HashMap<String, Long> lastTaunt = new HashMap<>();
 
-    public TauntListener() {
-    }
-
     @EventHandler(priority = EventPriority.HIGHEST)
     public void pressedTauntKey(PlayerToggleSneakEvent e) {
         Player player = e.getPlayer();
@@ -31,10 +28,10 @@ public class TauntListener implements org.bukkit.event.Listener {
         String uuid = e.getPlayer().getUniqueId().toString();
         if (!player.isSneaking()) {
             if (lastHandSwap.containsKey(uuid)) {
-                if (System.currentTimeMillis() - ((Long)lastHandSwap.get(uuid)) < 500L) {
+                if (System.currentTimeMillis() - lastHandSwap.get(uuid) < 500L) {
                     if (lastTaunt.containsKey(uuid)) {
-                        if (System.currentTimeMillis() - ((Long) lastTaunt.get(uuid)) < SkyWarsReloaded.getCfg().getCooldown() * 1000L) {
-                            int cooldown = (int) ((SkyWarsReloaded.getCfg().getCooldown() * 1000 - (System.currentTimeMillis() - ((Long) lastTaunt.get(uuid)))) / 1000L);
+                        if (System.currentTimeMillis() - lastTaunt.get(uuid) < SkyWarsReloaded.getCfg().getCooldown() * 1000L) {
+                            int cooldown = (int) ((SkyWarsReloaded.getCfg().getCooldown() * 1000 - (System.currentTimeMillis() - lastTaunt.get(uuid))) / 1000L);
                             int seconds = cooldown % 60 + 1;
                             int minutes = (cooldown - (seconds - 1)) / 60;
                             String cooldownText = "";

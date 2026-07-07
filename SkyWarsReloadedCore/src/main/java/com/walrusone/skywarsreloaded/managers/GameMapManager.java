@@ -2,7 +2,7 @@ package com.walrusone.skywarsreloaded.managers;
 
 import com.google.common.collect.ImmutableList;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.GameType;
+import com.walrusone.skywarsreloaded.api.enums.GameType;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.game.GameMapComparator;
 import com.walrusone.skywarsreloaded.managers.worlds.FileWorldManager;
@@ -73,7 +73,7 @@ public class GameMapManager {
                     if (SkyWarsReloaded.getCfg().bungeeMode() &&
                             SkyWarsReloaded.getCfg().getBungeeRandomMapPickOnStart()) {
                         Collections.shuffle(filesList);
-                        File first = filesList.get(0);
+                        File first = filesList.getFirst();
                         if (first != null) {
                             GameMap gameMap = addMap(first.getName().replace(".yml", ""));
                             int code = gameMap.registerMap(null);

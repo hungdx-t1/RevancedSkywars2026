@@ -1,7 +1,7 @@
 package com.walrusone.skywarsreloaded.matchevents;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.MatchState;
+import com.walrusone.skywarsreloaded.api.enums.MatchState;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.game.TeamCard;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class GhastEvent extends MatchEvent {
-    private ArrayList<Entity> mobsSpawned = new ArrayList();
+    private ArrayList<Entity> mobsSpawned = new ArrayList<>();
     private BukkitTask br1;
     private BukkitTask br2;
 
@@ -67,7 +67,7 @@ public class GhastEvent extends MatchEvent {
             br1 = new BukkitRunnable() {
                 public void run() {
                     for (int i = 0; i < gMap.getTeamCards().size(); i++) {
-                        Location loc = new Location(gMap.getCurrentWorld(), ((TeamCard) gMap.getTeamCards().get(i)).getSpawns().get(0).getX(), ((TeamCard) gMap.getTeamCards().get(i)).getSpawns().get(0).getY(), ((TeamCard) gMap.getTeamCards().get(i)).getSpawns().get(0).getZ());
+                        Location loc = new Location(gMap.getCurrentWorld(), gMap.getTeamCards().get(i).getSpawns().getFirst().getX(), gMap.getTeamCards().get(i).getSpawns().getFirst().getY(), gMap.getTeamCards().get(i).getSpawns().getFirst().getZ());
                         Location spawn;
                         do {
                             spawn = loc.clone().add(0.0D, 10.0D, 0.0D);

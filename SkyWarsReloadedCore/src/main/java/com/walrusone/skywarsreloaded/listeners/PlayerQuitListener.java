@@ -1,7 +1,7 @@
 package com.walrusone.skywarsreloaded.listeners;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.PlayerRemoveReason;
+import com.walrusone.skywarsreloaded.api.enums.PlayerRemoveReason;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.managers.PlayerStat;
 import com.walrusone.skywarsreloaded.utilities.Party;
@@ -12,9 +12,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.util.UUID;
 
 public class PlayerQuitListener implements org.bukkit.event.Listener {
-    public PlayerQuitListener() {
-    }
-
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         final Player player = event.getPlayer();

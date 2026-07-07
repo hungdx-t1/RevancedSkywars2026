@@ -40,12 +40,12 @@ public class CreateCmd extends com.walrusone.skywarsreloaded.commands.BaseCmd {
             }
             GameMap.GameMapCreationResult result = SkyWarsReloaded.getGameMapMgr().createNewMap(worldName, environment);
             // Sanity check for the map name
-            if (!result.isValidName()) {
+            if (!result.validName()) {
                 player.sendMessage(new Messaging.MessageFormatter().format("error.map-id-invalid"));
                 return true;
             }
             // Sanity check for the world creation
-            World resultWorld = result.getWorld();
+            World resultWorld = result.world();
             if (resultWorld == null) {
                 player.sendMessage(new Messaging.MessageFormatter().format("error.map-world-exists"));
                 return true;

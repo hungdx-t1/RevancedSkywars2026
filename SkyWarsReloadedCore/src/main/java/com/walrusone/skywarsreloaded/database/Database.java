@@ -1,16 +1,15 @@
 package com.walrusone.skywarsreloaded.database;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 
 public class Database {
-
     private final String connectionUri;
     private final String username;
     private final String password;
@@ -34,10 +33,9 @@ public class Database {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connect();
-
-        } catch (SQLException sqlException) {
+        } catch (SQLException e) {
             close();
-            throw sqlException;
+            throw e;
         }
     }
 
@@ -45,14 +43,11 @@ public class Database {
         if (connection != null) {
             try {
                 connection.createStatement().execute("SELECT 1;");
-
-            } catch (SQLException sqlException) {
-                if (sqlException.getSQLState().equals("08S01")) {
+            } catch (SQLException e) {
+                if (e.getSQLState().equals("08S01")) {
                     try {
                         connection.close();
-
-                    } catch (SQLException ignored) {
-                    }
+                    } catch (SQLException ignored) { }
                 }
             }
         }
@@ -71,99 +66,54 @@ public class Database {
             if (connection != null && !connection.isClosed()) {
                 connection.close();
             }
-
-        } catch (SQLException ignored) {
-
-        }
-
+        } catch (SQLException ignored) { }
         connection = null;
     }
 
     boolean checkConnection() {
         try {
             connect();
-        } catch (SQLException sqlException) {
+        } catch (SQLException e) {
             close();
-            sqlException.printStackTrace();
+            e.printStackTrace();
             return true;
         }
         return false;
     }
 
-    @SuppressWarnings("UnstableApiUsage")
     public void createTables() throws IOException, SQLException {
         URL resource = Resources.getResource(SkyWarsReloaded.class, "/tables.sql");
-        String[] databaseStructure = Resources.toString(resource, Charsets.UTF_8).split(";");
+        String[] databaseStructure = Resources.toString(resource, StandardCharsets.UTF_8).split(";");
+        connection.setAutoCommit(false);
 
-        if (databaseStructure.length == 0) {
-            return;
-        }
+        if (databaseStructure.length == 0) return;
 
-        Statement statement = null;
-
-        try {
-            connection.setAutoCommit(false);
-            statement = connection.createStatement();
-
+        try (Statement stmt = connection.createStatement()) {
             for (String query : databaseStructure) {
                 query = query.trim();
-
-                if (query.isEmpty()) {
-                    continue;
-                }
-
-                statement.execute(query);
+                if (query.isEmpty()) continue;
+                stmt.execute(query);
             }
-
             connection.commit();
-
-        } finally {
-            connection.setAutoCommit(true);
-
-            if (statement != null && !statement.isClosed()) {
-                statement.close();
-            }
         }
     }
 
     boolean doesPlayerExist(String fId) {
-        if (checkConnection()) {
-            return false;
-        }
+        if (checkConnection()) return false;
 
         int count = 0;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        String query = "SELECT Count(`player_id`) FROM `sw_player` WHERE `uuid` = ? LIMIT 1;";
 
-        try {
-            String query = "SELECT Count(`player_id`) FROM `sw_player` WHERE `uuid` = ? LIMIT 1;";
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, fId);
-            resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                count = resultSet.getInt(1);
-            }
-
-        } catch (final SQLException sqlException) {
-            sqlException.printStackTrace();
-
-        } finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (final SQLException ignored) {
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, fId);
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                if (resultSet.next()) {
+                    count = resultSet.getInt(1);
                 }
             }
-
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (final SQLException ignored) {
-                }
-            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
         return count > 0;
     }
 
@@ -172,34 +122,20 @@ public class Database {
             return;
         }
 
-        PreparedStatement preparedStatement = null;
-
-        try {
-            String query = "INSERT INTO `sw_player` (`player_id`, `uuid`, `player_name`, `wins`, `losses`, `kills`, `deaths`, `xp`, " +
-                    "`pareffect`, `proeffect`, `glasscolor`, `killsound`, `winsound`, `taunt`) VALUES (NULL, ?, ?, 0, 0, 0, 0, 0, ?, ?, ?, ?, ?, ?);";
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, fId);
-            preparedStatement.setString(2, name);
-            preparedStatement.setString(3, "none");
-            preparedStatement.setString(4, "none");
-            preparedStatement.setString(5, "none");
-            preparedStatement.setString(6, "none");
-            preparedStatement.setString(7, "none");
-            preparedStatement.setString(8, "none");
-
-            preparedStatement.executeUpdate();
-
-        } catch (final SQLException sqlException) {
-            sqlException.printStackTrace();
-
-        } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (final SQLException ignored) {
-                }
-            }
+        String query = "INSERT INTO `sw_player` (`player_id`, `uuid`, `player_name`, `wins`, `losses`, `kills`, `deaths`, `xp`, " +
+                "`pareffect`, `proeffect`, `glasscolor`, `killsound`, `winsound`, `taunt`) VALUES (NULL, ?, ?, 0, 0, 0, 0, 0, ?, ?, ?, ?, ?, ?);";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, fId);
+            stmt.setString(2, name);
+            stmt.setString(3, "none");
+            stmt.setString(4, "none");
+            stmt.setString(5, "none");
+            stmt.setString(6, "none");
+            stmt.setString(7, "none");
+            stmt.setString(8, "none");
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
-
 }

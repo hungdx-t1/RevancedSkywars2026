@@ -1,7 +1,7 @@
 package com.walrusone.skywarsreloaded.matchevents;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.MatchState;
+import com.walrusone.skywarsreloaded.api.enums.MatchState;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
 import org.bukkit.ChatColor;
@@ -15,8 +15,7 @@ import org.bukkit.scheduler.BukkitTask;
 import java.io.File;
 import java.io.IOException;
 
-public class DisableRegenEvent
-        extends MatchEvent {
+public class DisableRegenEvent extends MatchEvent {
     private BukkitTask br;
 
     public DisableRegenEvent(GameMap map, boolean b) {

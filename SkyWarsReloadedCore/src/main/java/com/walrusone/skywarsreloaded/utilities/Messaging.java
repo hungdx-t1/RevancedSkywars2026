@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 public final class Messaging {
     private static final Pattern COLOR_PATTERN = Pattern.compile("(?i)([&§])[0-9A-FK-OR]");
     private final FileConfiguration storage;
@@ -78,9 +77,6 @@ public final class Messaging {
         private final Map<String, String> variableMap = Maps.newHashMap();
         private boolean prefix;
 
-        public MessageFormatter() {
-        }
-
         public MessageFormatter withPrefix() {
             prefix = true;
             return this;
@@ -111,17 +107,9 @@ public final class Messaging {
         }
 
         public String format(String message) {
-            if ((message == null) || (message.isEmpty())) {
-                return "";
-            }
-
-            if (SkyWarsReloaded.getMessaging().getMessage(message) != null) {
-                message = SkyWarsReloaded.getMessaging().getMessage(message);
-            }
-
-            if (message == null) {
-                return "";
-            }
+            if ((message == null) || (message.isEmpty())) return "";
+            if (SkyWarsReloaded.getMessaging().getMessage(message) != null) message = SkyWarsReloaded.getMessaging().getMessage(message);
+            if (message == null) return "";
 
             Matcher matcher = PATTERN.matcher(message);
 
@@ -129,17 +117,12 @@ public final class Messaging {
                 String variable = matcher.group();
                 variable = variable.substring(1, variable.length() - 1);
 
-                String value = (String) variableMap.get(variable);
-                if (value == null) {
-                    value = "";
-                }
-
+                String value = variableMap.get(variable);
+                if (value == null) value = "";
                 message = message.replaceFirst(Pattern.quote(matcher.group()), Matcher.quoteReplacement(value));
             }
 
-            if (prefix) {
-                message = SkyWarsReloaded.getMessaging().getPrefix() + message;
-            }
+            if (prefix) message = SkyWarsReloaded.getMessaging().getPrefix() + message;
 
             return ChatColor.translateAlternateColorCodes('&', message);
         }

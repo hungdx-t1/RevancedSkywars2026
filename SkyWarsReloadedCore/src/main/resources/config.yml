@@ -18,9 +18,6 @@ enabledLobbyGuard: false
 economyEnabled: false
 clearInventoryOnLobbyJoin: true
 timeFormat: simplified
-slimeworldmanager:
-  enable: false
-  source: file
 game:
   win:
     clearInventory: true

@@ -11,9 +11,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 
 public class ParticleEffectListener implements org.bukkit.event.Listener {
-    public ParticleEffectListener() {
-    }
-
     @EventHandler
     public void projectileLaunch(ProjectileLaunchEvent e) {
         Projectile projectile = e.getEntity();

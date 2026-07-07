@@ -3,11 +3,10 @@ package com.walrusone.skywarsreloaded.listeners;
 import com.google.common.collect.Maps;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
 import com.walrusone.skywarsreloaded.config.Config;
-import com.walrusone.skywarsreloaded.enums.MatchState;
+import com.walrusone.skywarsreloaded.api.enums.MatchState;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.game.PlayerCard;
 import com.walrusone.skywarsreloaded.game.TeamCard;
-import com.walrusone.skywarsreloaded.managers.GameMapManager;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
 import com.walrusone.skywarsreloaded.managers.PlayerStat;
 import com.walrusone.skywarsreloaded.utilities.Messaging;
@@ -32,9 +31,8 @@ import java.util.Map;
 import java.util.UUID;
 
 public class ChatListener implements Listener {
-
-    private static Map<UUID, Long> chatList = Maps.newHashMap();
-    private static Map<UUID, String> toChange = Maps.newHashMap();
+    private static final Map<UUID, Long> chatList = Maps.newHashMap();
+    private static final Map<UUID, String> toChange = Maps.newHashMap();
 
     public static void setTime(UUID uuid, long time) {
         chatList.put(uuid, time);
@@ -42,9 +40,6 @@ public class ChatListener implements Listener {
 
     public static void setSetting(UUID uuid, String setting) {
         toChange.put(uuid, setting);
-    }
-
-    public ChatListener() {
     }
 
     @EventHandler
@@ -147,7 +142,7 @@ public class ChatListener implements Listener {
         // Handle scope of chat for alive players
         if (playingMap != null)
             applyRecipientsPlaying(event, playingMap, cfg, chatIntent);
-        // Handle scope of chat for spectators
+            // Handle scope of chat for spectators
         else if (specMap != null)
             applyRecipientsSpec(event, player, specMap, cfg);
     }
@@ -312,7 +307,7 @@ public class ChatListener implements Listener {
         return null;
     }
 
-    private class ChatIntent {
+    private static class ChatIntent {
         public boolean wantsGameChat = false;
         public boolean forceGameChat = false;
         public boolean isLobbyChat = false;

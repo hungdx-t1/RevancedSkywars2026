@@ -1,7 +1,7 @@
 package com.walrusone.skywarsreloaded.matchevents;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.MatchState;
+import com.walrusone.skywarsreloaded.api.enums.MatchState;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
 import org.bukkit.ChatColor;
@@ -79,7 +79,7 @@ public class ShrinkingBorderEvent extends MatchEvent {
                         endEvent(false);
                     }
                 }
-            }.runTaskTimer(SkyWarsReloaded.get(), delay * 20, 20);
+            }.runTaskTimer(SkyWarsReloaded.get(), delay * 20L, 20);
         }
     }
 

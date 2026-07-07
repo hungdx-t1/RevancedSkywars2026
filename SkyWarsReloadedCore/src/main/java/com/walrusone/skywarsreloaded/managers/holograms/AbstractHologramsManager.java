@@ -1,7 +1,7 @@
 package com.walrusone.skywarsreloaded.managers.holograms;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.LeaderType;
+import com.walrusone.skywarsreloaded.api.enums.LeaderType;
 import com.walrusone.skywarsreloaded.managers.LeaderboardManager;
 import com.walrusone.skywarsreloaded.utilities.Util;
 import com.walrusone.skywarsreloaded.utilities.placeholders.SWRPlaceholderAPI;
@@ -116,9 +116,7 @@ public abstract class AbstractHologramsManager<T> implements HologramManager {
             Player player = Bukkit.getPlayer(topList.get(rank).getUUID());
             if (player == null) return null;
 
-            ItemStack head = (SkyWarsReloaded.getNMS().getVersion() < 13)
-                    ? new ItemStack(Material.valueOf("SKULL_ITEM"), 1, (short) 3)
-                    : new ItemStack(Material.valueOf("PLAYER_HEAD"), 1);
+            ItemStack head = new ItemStack(Material.valueOf("PLAYER_HEAD"), 1);
 
             SkullMeta meta = (SkullMeta) head.getItemMeta();
             if (meta != null) {

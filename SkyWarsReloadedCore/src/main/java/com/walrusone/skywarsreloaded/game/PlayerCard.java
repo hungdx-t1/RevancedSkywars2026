@@ -1,6 +1,6 @@
 package com.walrusone.skywarsreloaded.game;
 
-import com.walrusone.skywarsreloaded.enums.Vote;
+import com.walrusone.skywarsreloaded.api.enums.Vote;
 import com.walrusone.skywarsreloaded.menus.gameoptions.objects.CoordLoc;
 import com.walrusone.skywarsreloaded.menus.gameoptions.objects.GameKit;
 import org.bukkit.Bukkit;
@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 
 public class PlayerCard {
-
     private TeamCard tCard;
     private UUID uuid;
     // The index at which the player used for this PlayerCard joined the game

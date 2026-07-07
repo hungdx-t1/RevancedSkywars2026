@@ -2,10 +2,12 @@ package com.walrusone.skywarsreloaded.config;
 
 import com.google.common.collect.Lists;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.LeaderType;
+import com.walrusone.skywarsreloaded.api.enums.LeaderType;
 import com.walrusone.skywarsreloaded.utilities.Util;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,7 +16,45 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 public class Config {
+    private static boolean initialized = false;
+    private static FileConfiguration config;
 
+    public static void initialize(SkyWarsReloaded plugin) {
+        if (initialized) {
+            throw new IllegalStateException("Config is already initialized");
+        }
+        initialized = true;
+        config = plugin.getConfig();
+    }
+
+    private static void ensureInitialized() throws IllegalStateException {
+        if (!initialized) {
+            throw new IllegalStateException("Config is not initialized");
+        }
+    }
+
+    @Nullable
+    public static String getString(String section) throws IllegalStateException {
+        ensureInitialized();
+        return config.getString(section);
+    }
+
+    public static int getInt(String section) throws IllegalStateException {
+        ensureInitialized();
+        return config.getInt(section);
+    }
+
+    public static boolean getBoolean(String section) throws IllegalStateException {
+        ensureInitialized();
+        return config.getBoolean(section);
+    }
+
+    public static double getDouble(String section) throws IllegalStateException {
+        ensureInitialized();
+        return config.getDouble(section);
+    }
+
+    // todo remove all
     private final List<String> itemNames = Arrays.asList("kitvote", "votingItem", "teamSelectItem",
             "exitMenuItem", "nextPageItem", "prevPageItem",
             "exitGameItem",
@@ -491,24 +531,15 @@ public class Config {
             for (int i = 0; i < itemNames.size(); i++) {
                 String name = itemNames.get(i);
                 String def;
-                if (SkyWarsReloaded.getNMS().getVersion() < 9) {
-                    def = defItems8.get(i);
-                } else if (SkyWarsReloaded.getNMS().getVersion() > 8 && SkyWarsReloaded.getNMS().getVersion() < 13) {
-                    def = defItems12.get(i);
-                } else {
-                    def = defItems13.get(i);
-                }
+                def = defItems13.get(i);
                 addMaterial(name, SkyWarsReloaded.get().getConfig().getString("items." + name), def);
             }
 
             for (int i = 0; i < signItems.size(); i++) {
                 String name = signItems.get(i);
                 String def;
-                if (SkyWarsReloaded.getNMS().getVersion() < 13) {
-                    def = signDef8.get(i);
-                } else {
-                    def = signDef13.get(i);
-                }
+
+                def = signDef13.get(i);
 
                 addMaterial(name, SkyWarsReloaded.get().getConfig().getString("signs." + name), def);
             }
@@ -1165,20 +1196,14 @@ public class Config {
     }
 
     public boolean isTypeEnabled(LeaderType type) {
-        switch (type) {
-            case WINS:
-                return winsEnabled;
-            case LOSSES:
-                return lossesEnabled;
-            case KILLS:
-                return killsEnabled;
-            case DEATHS:
-                return deathsEnabled;
-            case XP:
-                return xpEnabled;
-            default:
-                return false;
-        }
+        return switch (type) {
+            case WINS -> winsEnabled;
+            case LOSSES -> lossesEnabled;
+            case KILLS -> killsEnabled;
+            case DEATHS -> deathsEnabled;
+            case XP -> xpEnabled;
+            default -> false;
+        };
     }
 
     public int getSpeed() {

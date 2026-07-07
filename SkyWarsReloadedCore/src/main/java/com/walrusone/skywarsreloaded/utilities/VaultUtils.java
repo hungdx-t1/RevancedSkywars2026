@@ -8,6 +8,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+// todo optimize this class
 public class VaultUtils {
     private static VaultUtils instance;
     private Economy econ = null;
@@ -83,13 +87,8 @@ public class VaultUtils {
         return chat;
     }
 
-    // PRIVATE UTILS
-
     private void handleException(Exception e) {
-        if (SkyWarsReloaded.getCfg().debugEnabled()) e.printStackTrace();
-        else SkyWarsReloaded.get().getLogger().severe(
-                "An exception was thrown while attempting to deposit eco: " + e.getMessage() +
-                        ". Please enable debugMode in the config file before reporting this issue!");
+        Logger logger = SkyWarsReloaded.get().getLogger();
+        logger.log(Level.SEVERE, "An exception was thrown while attempting to deposit eco.", e);
     }
-
 }

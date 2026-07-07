@@ -35,8 +35,8 @@ public class SpectateMenu {
         ItemStack team = SkyWarsReloaded.getNMS().getItemStack(SkyWarsReloaded.getIM().getItem("teammenu"), lores,
                 new Messaging.MessageFormatter().format("items.jointeam"));
 
-        invs.get(0).setItem(SkyWarsReloaded.getCfg().getSingleSlot(), single);
-        invs.get(0).setItem(SkyWarsReloaded.getCfg().getTeamSlot(), team);
+        invs.getFirst().setItem(SkyWarsReloaded.getCfg().getSingleSlot(), single);
+        invs.getFirst().setItem(SkyWarsReloaded.getCfg().getTeamSlot(), team);
 
         SkyWarsReloaded.getIC().create("spectatemenu", invs, event -> {
             Player player = event.getPlayer();

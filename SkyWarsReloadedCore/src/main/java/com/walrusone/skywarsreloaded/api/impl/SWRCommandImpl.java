@@ -7,9 +7,9 @@ import com.walrusone.skywarsreloaded.commands.MainCmdManager;
 import com.walrusone.skywarsreloaded.commands.MapCmdManager;
 import com.walrusone.skywarsreloaded.commands.PartyCmdManager;
 
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class SWRCommandImpl implements SWRCommandAPI {
-
-    SkywarsReloadedAPI swrAPI;
+    private final SkywarsReloadedAPI swrAPI;
 
     public SWRCommandImpl(SkywarsReloadedAPI swrAPIIn) {
         this.swrAPI = swrAPIIn;

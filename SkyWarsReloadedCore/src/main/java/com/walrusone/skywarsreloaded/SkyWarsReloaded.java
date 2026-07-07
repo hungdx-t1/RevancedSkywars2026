@@ -11,51 +11,53 @@ import com.walrusone.skywarsreloaded.commands.*;
 import com.walrusone.skywarsreloaded.config.Config;
 import com.walrusone.skywarsreloaded.database.DataStorage;
 import com.walrusone.skywarsreloaded.database.Database;
-import com.walrusone.skywarsreloaded.enums.LeaderType;
-import com.walrusone.skywarsreloaded.enums.MatchState;
-import com.walrusone.skywarsreloaded.enums.PlayerRemoveReason;
+import com.walrusone.skywarsreloaded.api.enums.LeaderType;
+import com.walrusone.skywarsreloaded.api.enums.MatchState;
+import com.walrusone.skywarsreloaded.api.enums.PlayerRemoveReason;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.game.PlayerData;
 import com.walrusone.skywarsreloaded.listeners.*;
 import com.walrusone.skywarsreloaded.managers.*;
 import com.walrusone.skywarsreloaded.managers.holograms.DecentHologramManager;
 import com.walrusone.skywarsreloaded.managers.holograms.HologramManager;
-import com.walrusone.skywarsreloaded.managers.holograms.HolographicHologramManager;
 import com.walrusone.skywarsreloaded.managers.worlds.ASPWorldManager;
 import com.walrusone.skywarsreloaded.managers.worlds.FileWorldManager;
 import com.walrusone.skywarsreloaded.managers.worlds.WorldManager;
 import com.walrusone.skywarsreloaded.menus.*;
 import com.walrusone.skywarsreloaded.menus.gameoptions.objects.GameKit;
+import com.walrusone.skywarsreloaded.nms.CompatibleNMSVersion;
 import com.walrusone.skywarsreloaded.nms.NMS;
-import com.walrusone.skywarsreloaded.nms.NMSUtils;
 import com.walrusone.skywarsreloaded.utilities.Messaging;
 import com.walrusone.skywarsreloaded.utilities.SWRServer;
 import com.walrusone.skywarsreloaded.utilities.Util;
 import com.walrusone.skywarsreloaded.utilities.minecraftping.MinecraftPing;
 import com.walrusone.skywarsreloaded.utilities.minecraftping.MinecraftPingOptions;
 import com.walrusone.skywarsreloaded.utilities.minecraftping.MinecraftPingReply;
-import com.walrusone.skywarsreloaded.utilities.mygcnt.GCNTUpdater;
 import com.walrusone.skywarsreloaded.utilities.placeholders.SWRPlaceholderAPI;
+import com.walrusone.skywarsreloaded.utilities.pluginmanager.PluginSupport;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.jspecify.annotations.NonNull;
 
 import java.io.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@SuppressWarnings({"unused", "InstantiationOfUtilityClass", "CallToPrintStackTrace"})
 public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener {
-
+    public static final String extensionVersionSupport = "1.7.15";
     private static SkyWarsReloaded instance;
     private final ArrayList<String> leaderTypes = new ArrayList<>();
+
     private String servername;
     private Database db;
     private NMS nmsHandler;
@@ -83,11 +85,6 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
 
     private boolean loaded;
     private BukkitTask specObserver;
-
-    // Utils
-    private GCNTUpdater updater;
-    private boolean extensionCompatible = false;
-    private boolean extensionHasCompatCheck = false;
 
     public static SkyWarsReloaded get() {
         return instance;
@@ -133,21 +130,6 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
         return instance.pom;
     }
 
-    public boolean isNewVersion() throws Exception {
-        // Prevent mix-and-match incompatible versions of SWR & SWR-Extension
-        Thread thread = Thread.currentThread();
-        StackTraceElement[] stackTrace = thread.getStackTrace();
-
-        // Check who is asking - if it's the extension, ensure use of compatibility check
-        String callingClassName = stackTrace[2].getClassName();
-        if (callingClassName.equals("me.gaagjescraft.network.team.skywarsreloaded.extension.SWExtension")) {
-            if (extensionCompatible) return true; // everything checks out
-            else if (extensionHasCompatCheck) return false; // non-legacy extension version, we can return false
-            else throw new Exception("Incompatible extension version!"); // legacy extension, requires exception to prevent enable
-        }
-        return true;
-    }
-
     @Override
     public void onLoad() {
         instance = this;
@@ -155,47 +137,23 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
 
     @Override
     public void onEnable() {
+        PluginSupport.initialize();
+        Config.initialize(this);
+        if (Config.getBoolean("debugMode")) this.getLogger().info("Debug mode enabled");
+
         loaded = false;
 
         // NMS Init
-        this.nmsHandler = NMSUtils.loadNMS(this);
+        this.nmsHandler = CompatibleNMSVersion.loadNMS(this);
         if (this.nmsHandler == null) {
-            this.setEnabled(false);
+            // disable plugin
+            getServer().getPluginManager().disablePlugin(this);
             return;
         }
 
-        // Updater init
-        this.updater = new GCNTUpdater();
-
+        // Utils
         servername = "none";
 
-        // Load config for 1.8
-        if (nmsHandler.getVersion() < 9) {
-            File config = new File(SkyWarsReloaded.get().getDataFolder(), "config.yml");
-            if (!config.exists()) {
-                SkyWarsReloaded.get().saveResource("config18.yml", false);
-                config = new File(SkyWarsReloaded.get().getDataFolder(), "config18.yml");
-                if (config.exists()) {
-                    boolean result = config.renameTo(new File(SkyWarsReloaded.get().getDataFolder(), "config.yml"));
-                    if (result) {
-                        getLogger().info("Loading 1.8 Configuration Files");
-                    }
-                }
-            }
-            // Load config for 1.12
-        } else if (nmsHandler.getVersion() < 13 && nmsHandler.getVersion() > 8) {
-            File config = new File(SkyWarsReloaded.get().getDataFolder(), "config.yml");
-            if (!config.exists()) {
-                SkyWarsReloaded.get().saveResource("config112.yml", false);
-                config = new File(SkyWarsReloaded.get().getDataFolder(), "config112.yml");
-                if (config.exists()) {
-                    boolean result = config.renameTo(new File(SkyWarsReloaded.get().getDataFolder(), "config.yml"));
-                    if (result) {
-                        getLogger().info("Loading 1.9 - 1.12 Configuration Files");
-                    }
-                }
-            }
-        }
         // Copy missing attributes
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
@@ -204,9 +162,6 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
 
         // Load config data
         config = new Config();
-
-        // State using debug mode or not
-        if (getCfg().debugEnabled()) this.getLogger().info("Debug mode enabled");
 
         // Managers
         if (this.gameMapManager == null) this.gameMapManager = new GameMapManager(this);
@@ -221,12 +176,8 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
             }
         }
 
-        // ------ All external integrations --------
-        // PAPI
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            new SWRPlaceholderAPI().register();
-        }
-        // PER WORLD INV
+        // Integrations
+        if (PluginSupport.isHasPlaceholderAPI()) new SWRPlaceholderAPI().register();
         if (Bukkit.getPluginManager().isPluginEnabled("PerWorldInventory")) {
             this.getServer().getPluginManager().registerEvents(new PerWorldInventoryListener(), this);
         }
@@ -235,43 +186,17 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
         // Currently disabled due to inability to access bungeecord PAF from spigot
         // this.getServer().getPluginManager().registerEvents(new PartyAndFriendsHook(), this);
 //        }
+
         // SLIME WORLD MANAGER
-        if (Bukkit.getPluginManager().isPluginEnabled("SlimeWorldManager") && getCfg().isUseSlimeWorldManager()) {
-            getLogger().info("SlimeWorldManager option enabled. Checking for AdvancedSlimePaper...");
+        if(PluginSupport.isHasSlimeWorldPlugin()) {
             try {
-                Class.forName("com.infernalsuite.aswm.SlimeNMSBridgeImpl");
-                getLogger().info("Found AdvancedSlimePaper!");
                 wm = (ASPWorldManager) Class.forName("com.walrusone.skywarsreloaded.managers.worlds.ASPWorldManagerImpl")
                         .getConstructor()
                         .newInstance();
             } catch (Exception e) {
-                e.printStackTrace();
-                getLogger().info("AdvancedSlimePaper not found");
-                int serverFeatureVersion = Integer.parseInt(getServer().getVersion().split("\\.")[1]);
-                if (serverFeatureVersion > 19) {
-                    getLogger().info("SlimeWorldManager cannot be used on 1.20 or higher. We expected the server to be running AdvancedSlimePaper.");
-                    wm = null;
-                } else if (serverFeatureVersion > 14) {
-                    try {
-                        getLogger().info("Using ASWM World Manager");
-                        wm = (WorldManager) Class.forName("com.walrusone.skywarsreloaded.managers.worlds.ASWMWorldManager")
-                                .getConstructor()
-                                .newInstance();
-                    } catch (Exception ex) {
-                        getLogger().info("Using Bukkit World Manager");
-                        wm = null;
-                    }
-                } else {
-                    try {
-                        getLogger().info("Using Legacy SWM World Manager");
-                        wm = (WorldManager) Class.forName("com.walrusone.skywarsreloaded.managers.worlds.LegacySWMWorldManager")
-                                .getConstructor()
-                                .newInstance();
-                    } catch (Exception ex) {
-                        getLogger().info("Using Bukkit World Manager");
-                        wm = null;
-                    }
-                }
+                getLogger().log(Level.SEVERE, "Failed to load ASPWorldManager!", e);
+                getServer().getPluginManager().disablePlugin(this);
+                return;
             }
         }
 
@@ -284,9 +209,7 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
         ic = new IconMenuController();
 
         // LISTENERS
-        if (nmsHandler.getVersion() > 8) {
-            this.getServer().getPluginManager().registerEvents(new SwapHandListener(), this);
-        }
+        this.getServer().getPluginManager().registerEvents(new SwapHandListener(), this); // 1.9+
         this.getServer().getPluginManager().registerEvents(ic, this);
         this.getServer().getPluginManager().registerEvents(new ArenaDamageListener(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
@@ -347,7 +270,6 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
             SWRServer.updateServerSigns();
 
         }
-        checkUpdates();
         // TODO: SWR API - Not finished
         swrAPI = new SkywarsReloadedImpl();
     }
@@ -570,7 +492,7 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
         }
     }
 
-    public void onPluginMessageReceived(String channel, Player player, byte[] message) {
+    public void onPluginMessageReceived(String channel, @NonNull Player player, byte @NonNull [] message) {
         if (!channel.equals("BungeeCord")) {
             return;
         }
@@ -646,7 +568,7 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
                     }
                     if (header.equalsIgnoreCase("RequestUpdate")) {
                         String sendToServer = msgin.readUTF();
-                        GameMap gMap = SkyWarsReloaded.getGameMapMgr().getMapsCopy().get(0);
+                        GameMap gMap = SkyWarsReloaded.getGameMapMgr().getMapsCopy().getFirst();
                         String playerCount = "" + gMap.getAlivePlayers().size();
                         String maxPlayers = "" + gMap.getMaxPlayers();
                         String gameStarted = gMap.getMatchState().toString();
@@ -754,86 +676,10 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
         return loaded;
     }
 
-    public void checkUpdates() {
-        this.updater = new GCNTUpdater();
-
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
-            updater.checkForUpdate();
-            if (updater.getUpdateStatus() == 1) {
-                Bukkit.getLogger().info("====================");
-                Bukkit.getLogger().info("SkyWarsReloaded Updater");
-                Bukkit.getLogger().info("");
-                Bukkit.getLogger().info("We found a newer version of SkyWarsReloaded!");
-                Bukkit.getLogger().info("");
-                Bukkit.getLogger().info("New version: " + updater.getLatestVersion());
-                Bukkit.getLogger().info("Your version: " + updater.getCurrentVersion());
-                Bukkit.getLogger().info("");
-                Bukkit.getLogger().info("You can download it here:");
-                Bukkit.getLogger().info(updater.getUpdateURL());
-                Bukkit.getLogger().info("----------------------------------");
-            }
-            // Once every hour
-        }, 0, 20 * 60 * 60);
-    }
-
-    public GCNTUpdater getUpdater() {
-        return updater;
-    }
-
-    @SuppressWarnings("unused")
-    public boolean extensionCompatCheck(JavaPlugin ext) {
-        extensionHasCompatCheck = true;
-
-        PluginDescriptionFile desc = ext.getDescription();
-        String compatibleExtensionVersion = "1.7.15";
-        String foundVersion = desc.getVersion();
-
-        String[] compatVersionParts = compatibleExtensionVersion.split("\\.");
-        String[] foundVersionParts = foundVersion.split("\\.");
-
-        boolean majorMatch = compatVersionParts[0].equals(foundVersionParts[0]);
-        boolean featureMatch = compatVersionParts[1].equals(foundVersionParts[1]);
-        boolean patchMatch = compatVersionParts[2].equals(foundVersionParts[2]);
-
-        if (!patchMatch) {
-            try {
-                int compatPatchVer = Integer.parseInt(compatVersionParts[2]);
-                int foundPatchVer = Integer.parseInt(foundVersionParts[2]);
-                if (foundPatchVer > compatPatchVer) {
-                    this.getLogger().warning(String.format(
-                            "You are using a newer Skywars-Extension version than expected but this should still work (%s). " +
-                                    "This message is for debugging purposes. Skywars will attempt to start as normal.",
-                            foundVersion
-                    ));
-
-                    // Allow newer patch versions
-                    patchMatch = true;
-                }
-            } catch (Exception ignored) {
-            }
-        }
-
-        if (desc.getName().equals("Skywars-Extension") && majorMatch && featureMatch && patchMatch) {
-            extensionCompatible = true;
-            return true;
-        } else {
-            String msg = "\n" +
-                    "-------------------------------------------------------------------------------\n" +
-                    "You are trying to load an incompatible version of the Skywars-Extension plugin!\n" +
-                    "Expected version %s but found %s! Make sure you download the latest version on\n" +
-                    "SpigotMC or our website. You won't receive support for using outdated versions!\n" +
-                    "-------------------------------------------------------------------------------\n";
-            this.getLogger().severe(String.format(msg, compatibleExtensionVersion, foundVersion));
-            return false;
-        }
-    }
-
     protected void loadHologramManager() {
         hologramManager = null;
         if (Bukkit.getPluginManager().isPluginEnabled("DecentHolograms")) {
             hologramManager = new DecentHologramManager(this);
-        } else if (Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays")) {
-            hologramManager = new HolographicHologramManager(this);
         }
 
         if (hologramManager != null) {

@@ -1,8 +1,7 @@
 package com.walrusone.skywarsreloaded.menus.gameoptions;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.MatchState;
-import com.walrusone.skywarsreloaded.enums.Vote;
+import com.walrusone.skywarsreloaded.api.enums.*;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.game.PlayerCard;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
@@ -190,60 +189,33 @@ public abstract class GameOption {
     }
 
     public String getVoteString(Vote vote) {
-        switch (vote) {
-            case CHESTRANDOM:
-                return new Messaging.MessageFormatter().format("items.chest-random");
-            case CHESTBASIC:
-                return new Messaging.MessageFormatter().format("items.chest-basic");
-            case CHESTNORMAL:
-                return new Messaging.MessageFormatter().format("items.chest-normal");
-            case CHESTOP:
-                return new Messaging.MessageFormatter().format("items.chest-op");
-            case CHESTSCAVENGER:
-                return new Messaging.MessageFormatter().format("items.chest-scavenger");
-            case TIMERANDOM:
-                return new Messaging.MessageFormatter().format("items.time-random");
-            case TIMEDAWN:
-                return new Messaging.MessageFormatter().format("items.time-dawn");
-            case TIMENOON:
-                return new Messaging.MessageFormatter().format("items.time-noon");
-            case TIMEDUSK:
-                return new Messaging.MessageFormatter().format("items.time-dusk");
-            case TIMEMIDNIGHT:
-                return new Messaging.MessageFormatter().format("items.time-midnight");
-            case WEATHERRANDOM:
-                return new Messaging.MessageFormatter().format("items.weather-random");
-            case WEATHERSUN:
-                return new Messaging.MessageFormatter().format("items.weather-sunny");
-            case WEATHERRAIN:
-                return new Messaging.MessageFormatter().format("items.weather-rain");
-            case WEATHERTHUNDER:
-                return new Messaging.MessageFormatter().format("items.weather-storm");
-            case WEATHERSNOW:
-                return new Messaging.MessageFormatter().format("items.weather-snow");
-            case MODIFIERRANDOM:
-                return new Messaging.MessageFormatter().format("items.modifier-random");
-            case MODIFIERSPEED:
-                return new Messaging.MessageFormatter().format("items.modifier-speed");
-            case MODIFIERJUMP:
-                return new Messaging.MessageFormatter().format("items.modifier-jump");
-            case MODIFIERSTRENGTH:
-                return new Messaging.MessageFormatter().format("items.modifier-strength");
-            case MODIFIERNONE:
-                return new Messaging.MessageFormatter().format("items.modifier-none");
-            case HEALTHRANDOM:
-                return new Messaging.MessageFormatter().format("items.health-random");
-            case HEALTHFIVE:
-                return new Messaging.MessageFormatter().format("items.health-five");
-            case HEALTHTEN:
-                return new Messaging.MessageFormatter().format("items.health-ten");
-            case HEALTHFIFTEEN:
-                return new Messaging.MessageFormatter().format("items.health-fifteen");
-            case HEALTHTWENTY:
-                return new Messaging.MessageFormatter().format("items.health-twenty");
-            default:
-                return "";
-        }
+        return switch (vote) {
+            case CHESTRANDOM -> new Messaging.MessageFormatter().format("items.chest-random");
+            case CHESTBASIC -> new Messaging.MessageFormatter().format("items.chest-basic");
+            case CHESTNORMAL -> new Messaging.MessageFormatter().format("items.chest-normal");
+            case CHESTOP -> new Messaging.MessageFormatter().format("items.chest-op");
+            case CHESTSCAVENGER -> new Messaging.MessageFormatter().format("items.chest-scavenger");
+            case TIMERANDOM -> new Messaging.MessageFormatter().format("items.time-random");
+            case TIMEDAWN -> new Messaging.MessageFormatter().format("items.time-dawn");
+            case TIMENOON -> new Messaging.MessageFormatter().format("items.time-noon");
+            case TIMEDUSK -> new Messaging.MessageFormatter().format("items.time-dusk");
+            case TIMEMIDNIGHT -> new Messaging.MessageFormatter().format("items.time-midnight");
+            case WEATHERRANDOM -> new Messaging.MessageFormatter().format("items.weather-random");
+            case WEATHERSUN -> new Messaging.MessageFormatter().format("items.weather-sunny");
+            case WEATHERRAIN -> new Messaging.MessageFormatter().format("items.weather-rain");
+            case WEATHERTHUNDER -> new Messaging.MessageFormatter().format("items.weather-storm");
+            case WEATHERSNOW -> new Messaging.MessageFormatter().format("items.weather-snow");
+            case MODIFIERRANDOM -> new Messaging.MessageFormatter().format("items.modifier-random");
+            case MODIFIERSPEED -> new Messaging.MessageFormatter().format("items.modifier-speed");
+            case MODIFIERJUMP -> new Messaging.MessageFormatter().format("items.modifier-jump");
+            case MODIFIERSTRENGTH -> new Messaging.MessageFormatter().format("items.modifier-strength");
+            case MODIFIERNONE -> new Messaging.MessageFormatter().format("items.modifier-none");
+            case HEALTHRANDOM -> new Messaging.MessageFormatter().format("items.health-random");
+            case HEALTHFIVE -> new Messaging.MessageFormatter().format("items.health-five");
+            case HEALTHTEN -> new Messaging.MessageFormatter().format("items.health-ten");
+            case HEALTHFIFTEEN -> new Messaging.MessageFormatter().format("items.health-fifteen");
+            case HEALTHTWENTY -> new Messaging.MessageFormatter().format("items.health-twenty");
+        };
     }
 
     public String getKey() {

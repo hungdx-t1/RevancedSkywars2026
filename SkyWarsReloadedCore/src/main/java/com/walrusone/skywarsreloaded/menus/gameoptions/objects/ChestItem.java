@@ -22,6 +22,6 @@ public class ChestItem implements Comparable<ChestItem> {
     }
 
     public int compareTo(@Nonnull ChestItem o) {
-        return Integer.compare(chance, chance);
+        return Integer.compare(chance, o.chance);
     }
 }

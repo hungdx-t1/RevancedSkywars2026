@@ -9,6 +9,7 @@ import com.walrusone.skywarsreloaded.utilities.Util;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,7 @@ public class MapCmdManager implements CommandExecutor, SWRCmdManagerAPI {
         return mapCommands;
     }
 
-    public boolean onCommand(CommandSender s, Command command, String label, String[] args) {
+    public boolean onCommand(@NonNull CommandSender s, @NonNull Command command, @NonNull String label, String[] args) {
         if (args.length == 0 || getCommand(args[0]) == null) {
             s.sendMessage(new Messaging.MessageFormatter().format("helpList.header"));
             sendHelp(mapCommands, s);

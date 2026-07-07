@@ -1,7 +1,7 @@
 package com.walrusone.skywarsreloaded.listeners;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.PlayerRemoveReason;
+import com.walrusone.skywarsreloaded.api.enums.PlayerRemoveReason;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
 import com.walrusone.skywarsreloaded.utilities.Messaging;
@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -20,11 +21,8 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 
-public class SpectateListener implements org.bukkit.event.Listener {
-    private HashMap<String, BukkitTask> teleportRequests = new HashMap();
-
-    public SpectateListener() {
-    }
+public class SpectateListener implements Listener {
+    private final HashMap<String, BukkitTask> teleportRequests = new HashMap<>();
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent e) {
@@ -108,7 +106,7 @@ public class SpectateListener implements org.bukkit.event.Listener {
         if ((teleportRequests.containsKey(e.getPlayer().getUniqueId().toString())) && (
                 (e.getTo().getBlockX() != e.getFrom().getBlockX()) || (e.getTo().getBlockY() != e.getFrom().getBlockY()) || (e.getTo().getBlockZ() != e.getFrom().getBlockZ()))) {
             e.getPlayer().sendMessage(new Messaging.MessageFormatter().format("error.spectate-cancelled"));
-            ((BukkitTask) teleportRequests.get(e.getPlayer().getUniqueId().toString())).cancel();
+            (teleportRequests.get(e.getPlayer().getUniqueId().toString())).cancel();
             teleportRequests.remove(e.getPlayer().getUniqueId().toString());
         }
     }

@@ -2,6 +2,7 @@ package com.walrusone.skywarsreloaded.managers.worlds;
 
 import com.google.common.collect.Lists;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
+import com.walrusone.skywarsreloaded.api.enums.worldmanager.WorldManagerType;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.WorldCreator;
@@ -14,6 +15,7 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.logging.Level;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class FileWorldManager implements WorldManager {
 
     public World createEmptyWorld(String name, Environment environment) {

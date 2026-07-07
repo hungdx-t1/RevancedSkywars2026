@@ -1,7 +1,8 @@
 package com.walrusone.skywarsreloaded.game.cages;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.MatchState;
+import com.walrusone.skywarsreloaded.api.enums.MatchState;
+import com.walrusone.skywarsreloaded.api.enums.cages.CageType;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.game.PlayerCard;
 import com.walrusone.skywarsreloaded.game.TeamCard;
@@ -61,54 +62,54 @@ public abstract class Cage {
         if (gMap.getMatchState() == MatchState.WAITINGSTART) {
             if (tCard != null) {
                 //for (CoordLoc loc1 : tCard.getSpawn()) {
-                    World world = gMap.getCurrentWorld();
-                    Random rand = new Random();
+                World world = gMap.getCurrentWorld();
+                Random rand = new Random();
 
-                    ArrayList<MaterialWithByte> colors = new ArrayList<>();
+                ArrayList<MaterialWithByte> colors = new ArrayList<>();
 
-                    if (gMap.getTeamSize() > 1 && !SkyWarsReloaded.getCfg().usePlayerGlassColors()) {
-                        colors.add(new MaterialWithByte(SkyWarsReloaded.getNMS().getColorItem(SkyWarsReloaded.getCfg().getTeamMaterial(), tCard.getByte()).getType(), tCard.getByte()));
-                    } else {
-                        for (PlayerCard p : tCard.getPlayerCards()) {
-                            Player player = p.getPlayer();
-                            if (player != null) {
-                                PlayerStat pStat = PlayerStat.getPlayerStats(player);
-                                if (pStat != null) {
-                                    String col = pStat.getGlassColor() == null ? "none" : pStat.getGlassColor().toLowerCase();
-                                    byte cByte = Util.get().getByteFromColor(col);
-                                    GlassColorOption color = (GlassColorOption) GlassColorOption.getPlayerOptionByKey(col);
-                                    if (SkyWarsReloaded.getCfg().isUseSeparateCages()) {
-                                        colors.clear();
-                                    }
-                                    if (color != null) {
-                                        colors.add(new MaterialWithByte(color.getItem().getType(), cByte));
+                if (gMap.getTeamSize() > 1 && !SkyWarsReloaded.getCfg().usePlayerGlassColors()) {
+                    colors.add(new MaterialWithByte(SkyWarsReloaded.getNMS().getColorItem(SkyWarsReloaded.getCfg().getTeamMaterial(), tCard.getByte()).getType(), tCard.getByte()));
+                } else {
+                    for (PlayerCard p : tCard.getPlayerCards()) {
+                        Player player = p.getPlayer();
+                        if (player != null) {
+                            PlayerStat pStat = PlayerStat.getPlayerStats(player);
+                            if (pStat != null) {
+                                String col = pStat.getGlassColor() == null ? "none" : pStat.getGlassColor().toLowerCase();
+                                byte cByte = Util.get().getByteFromColor(col);
+                                GlassColorOption color = (GlassColorOption) GlassColorOption.getPlayerOptionByKey(col);
+                                if (SkyWarsReloaded.getCfg().isUseSeparateCages()) {
+                                    colors.clear();
+                                }
+                                if (color != null) {
+                                    colors.add(new MaterialWithByte(color.getItem().getType(), cByte));
+                                } else {
+                                    if (cByte <= -1) {
+                                        colors.add(new MaterialWithByte(Material.GLASS, cByte));
                                     } else {
-                                        if (cByte <= -1) {
-                                            colors.add(new MaterialWithByte(Material.GLASS, cByte));
-                                        } else {
-                                            colors.add(new MaterialWithByte(SkyWarsReloaded.getNMS().getColorItem("STAINED_GLASS", cByte).getType(), cByte));
-                                        }
+                                        colors.add(new MaterialWithByte(SkyWarsReloaded.getNMS().getColorItem("STAINED_GLASS", cByte).getType(), cByte));
                                     }
+                                }
 
-                                    CoordLoc loc1 = p.getSpawn();
-                                    int x = loc1.getX();
-                                    int y = loc1.getY();
-                                    int z = loc1.getZ();
+                                CoordLoc loc1 = p.getSpawn();
+                                int x = loc1.getX();
+                                int y = loc1.getY();
+                                int z = loc1.getZ();
 
-                                    for (CoordLoc loc : bottomCoordOffsets) {
-                                        setBlockColor(loc, x, y, z, world, colors.get(rand.nextInt(colors.size())));
-                                    }
-                                    for (CoordLoc loc : middleCoordOffsets) {
-                                        setBlockColor(loc, x, y, z, world, colors.get(rand.nextInt(colors.size())));
-                                    }
-                                    for (CoordLoc loc : topCoordOffsets) {
-                                        setBlockColor(loc, x, y, z, world, colors.get(rand.nextInt(colors.size())));
-                                    }
+                                for (CoordLoc loc : bottomCoordOffsets) {
+                                    setBlockColor(loc, x, y, z, world, colors.get(rand.nextInt(colors.size())));
+                                }
+                                for (CoordLoc loc : middleCoordOffsets) {
+                                    setBlockColor(loc, x, y, z, world, colors.get(rand.nextInt(colors.size())));
+                                }
+                                for (CoordLoc loc : topCoordOffsets) {
+                                    setBlockColor(loc, x, y, z, world, colors.get(rand.nextInt(colors.size())));
                                 }
                             }
                         }
                     }
-                    return true;
+                }
+                return true;
                 //}
             }
         }
@@ -189,9 +190,7 @@ public abstract class Cage {
             }
 
             for (CoordLoc loc : tCard.getSpawns()) {
-                Bukkit.getScheduler().runTask(SkyWarsReloaded.get(), () -> {
-                    removeSpawnHousing(gMap, loc);
-                });
+                Bukkit.getScheduler().runTask(SkyWarsReloaded.get(), () -> removeSpawnHousing(gMap, loc));
             }
         }
     }
@@ -200,13 +199,5 @@ public abstract class Cage {
         return cageType;
     }
 
-    private class MaterialWithByte {
-        private Material mat;
-        private byte cByte;
-
-        MaterialWithByte(Material mat, byte cByte) {
-            this.mat = mat;
-            this.cByte = cByte;
-        }
-    }
+    private record MaterialWithByte(Material mat, byte cByte) { }
 }

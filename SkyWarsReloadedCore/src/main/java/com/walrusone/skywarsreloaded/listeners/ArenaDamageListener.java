@@ -1,10 +1,10 @@
 package com.walrusone.skywarsreloaded.listeners;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.MatchState;
+import com.walrusone.skywarsreloaded.api.enums.GameType;
+import com.walrusone.skywarsreloaded.api.enums.MatchState;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.game.PlayerData;
-import com.walrusone.skywarsreloaded.managers.GameMapManager;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
 import com.walrusone.skywarsreloaded.matchevents.EnderDragonEvent;
 import com.walrusone.skywarsreloaded.matchevents.MatchEvent;
@@ -33,7 +33,7 @@ public class ArenaDamageListener implements org.bukkit.event.Listener {
                 }
             }
 
-         }
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -46,15 +46,15 @@ public class ArenaDamageListener implements org.bukkit.event.Listener {
                 if ((gameMap.getMatchState() == MatchState.ENDING || gameMap.getMatchState() == MatchState.WAITINGSTART || gameMap.getMatchState() == MatchState.WAITINGLOBBY) ||
                         gameMap.isDisableDamage()) {
                     event.setCancelled(true);
-                // Friendly fire attack
+                    // Friendly fire attack
                 } else if (!gameMap.allowFriendlyFire() && damager instanceof Player && gameMap.getMatchState() == MatchState.PLAYING && gameMap.getTeamCard(target).equals(gameMap.getTeamCard((Player)damager))) {
                     event.setCancelled(true);
-                // Friendly fire shoot
+                    // Friendly fire shoot
                 } else if (!gameMap.allowFriendlyFire() && event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE && gameMap.getMatchState() == MatchState.PLAYING && ((Projectile)damager).getShooter() != null
                         && ((Projectile)damager).getShooter() instanceof Player
                         && gameMap.getTeamCard(target).equals(gameMap.getTeamCard((Player) ((Projectile)damager).getShooter()))) {
                     event.setCancelled(true);
-                // Process pvp events
+                    // Process pvp events
                 } else {
                     event.setCancelled(false);
                     if (gameMap.getProjectilesOnly()) {
@@ -169,7 +169,7 @@ public class ArenaDamageListener implements org.bukkit.event.Listener {
         if ((event.getEntity() instanceof FallingBlock)) {
             fb = (FallingBlock) event.getEntity();
             if (com.walrusone.skywarsreloaded.SkyWarsReloaded.getNMS().checkMaterial(fb, org.bukkit.Material.ANVIL)) {
-                for (GameMap gMap : SkyWarsReloaded.getGameMapMgr().getPlayableArenas(com.walrusone.skywarsreloaded.enums.GameType.ALL)) {
+                for (GameMap gMap : SkyWarsReloaded.getGameMapMgr().getPlayableArenas(GameType.ALL)) {
                     if (gMap.getAnvils().contains(event.getEntity().getUniqueId().toString())) {
                         event.setCancelled(true);
                         gMap.getAnvils().remove(event.getEntity().getUniqueId().toString());
@@ -177,7 +177,7 @@ public class ArenaDamageListener implements org.bukkit.event.Listener {
                     }
                 }
             } else if (com.walrusone.skywarsreloaded.SkyWarsReloaded.getNMS().checkMaterial(fb, org.bukkit.Material.SAND)) {
-                for (GameMap gMap : SkyWarsReloaded.getGameMapMgr().getPlayableArenas(com.walrusone.skywarsreloaded.enums.GameType.ALL)) {
+                for (GameMap gMap : SkyWarsReloaded.getGameMapMgr().getPlayableArenas(GameType.ALL)) {
                     for (com.walrusone.skywarsreloaded.game.Crate crate : gMap.getCrates()) {
                         if (fb.equals(crate.getEntity())) {
                             event.setCancelled(true);

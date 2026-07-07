@@ -1,12 +1,13 @@
 package com.walrusone.skywarsreloaded.api;
 
-import com.walrusone.skywarsreloaded.enums.GameType;
+import com.walrusone.skywarsreloaded.api.enums.GameType;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public interface SWRGameAPI {
 
     /**

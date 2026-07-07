@@ -1,16 +1,13 @@
 package com.walrusone.skywarsreloaded.listeners;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.MatchState;
+import com.walrusone.skywarsreloaded.api.enums.MatchState;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class SwapHandListener implements org.bukkit.event.Listener {
-    public SwapHandListener() {
-    }
-
     @org.bukkit.event.EventHandler(priority = org.bukkit.event.EventPriority.HIGHEST)
     public void playerSwapHand(PlayerSwapHandItemsEvent event) {
         GameMap gMap = MatchManager.get().getPlayerMap(event.getPlayer());

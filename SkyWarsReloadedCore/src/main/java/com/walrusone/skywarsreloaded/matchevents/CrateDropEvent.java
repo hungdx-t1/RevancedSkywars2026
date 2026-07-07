@@ -1,9 +1,8 @@
 package com.walrusone.skywarsreloaded.matchevents;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.MatchState;
+import com.walrusone.skywarsreloaded.api.enums.MatchState;
 import com.walrusone.skywarsreloaded.game.GameMap;
-import com.walrusone.skywarsreloaded.game.TeamCard;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
 import com.walrusone.skywarsreloaded.utilities.Util;
 import org.bukkit.Location;
@@ -104,7 +103,7 @@ public class CrateDropEvent extends MatchEvent {
         int cratesToAdd = Util.get().getRandomNum(0, maxNumOfCrates);
         for (int i = 0; i < cratesToAdd; i++) {
             Location loc = new Location(world, gMap.getSpectateSpawn().getX(), 0.0D, gMap.getSpectateSpawn().getZ());
-            Location loc2 = new Location(world, ((TeamCard) gMap.getTeamCards().get(0)).getSpawns().get(0).getX(), ((TeamCard) gMap.getTeamCards().get(0)).getSpawns().get(0).getY(), ((TeamCard) gMap.getTeamCards().get(0)).getSpawns().get(0).getZ());
+            Location loc2 = new Location(world, (gMap.getTeamCards().getFirst()).getSpawns().getFirst().getX(), (gMap.getTeamCards().getFirst()).getSpawns().getFirst().getY(), (gMap.getTeamCards().getFirst()).getSpawns().getFirst().getZ());
             int distance = (int) Math.hypot(loc.getX() - loc2.getX(), loc.getZ() - loc2.getZ());
             int y = loc2.getBlockY();
             Location spawn = new Location(world, loc.getBlockX() + Util.get().getRandomNum(-distance, distance), 0.0D, loc.getBlockZ() + Util.get().getRandomNum(-distance, distance));

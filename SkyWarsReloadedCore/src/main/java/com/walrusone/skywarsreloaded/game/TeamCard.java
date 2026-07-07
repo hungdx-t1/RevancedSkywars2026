@@ -1,8 +1,8 @@
 package com.walrusone.skywarsreloaded.game;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
-import com.walrusone.skywarsreloaded.enums.MatchState;
-import com.walrusone.skywarsreloaded.events.SkyWarsJoinEvent;
+import com.walrusone.skywarsreloaded.api.enums.MatchState;
+import com.walrusone.skywarsreloaded.api.event.SkyWarsJoinEvent;
 import com.walrusone.skywarsreloaded.game.cages.schematics.SchematicCage;
 import com.walrusone.skywarsreloaded.managers.PlayerStat;
 import com.walrusone.skywarsreloaded.menus.gameoptions.objects.CoordLoc;
@@ -45,7 +45,7 @@ public class TeamCard {
                 if (SkyWarsReloaded.getCfg().isUseSeparateCages()) {
                     loc = teamSpawns.size() >= i + 1 ? teamSpawns.get(i) : null;
                 } else {
-                    loc = teamSpawns.size() >= 1 ? teamSpawns.get(0) : null;
+                    loc = !teamSpawns.isEmpty() ? teamSpawns.getFirst() : null;
                 }
             }
             playerCards.add(new PlayerCard(this, null, loc));
@@ -56,7 +56,7 @@ public class TeamCard {
         boolean useSeparateCages = SkyWarsReloaded.getCfg().isUseSeparateCages();
         if (size > playerCards.size()) {
             for (int i = playerCards.size(); i < size; i++) {
-                CoordLoc playerSpawn = spawns.get(0);
+                CoordLoc playerSpawn = spawns.getFirst();
                 if (useSeparateCages) {
                     playerSpawn = new CoordLoc(playerSpawn.getX() + i, playerSpawn.getY(), playerSpawn.getZ() + i);
                 } else {
@@ -66,7 +66,7 @@ public class TeamCard {
             }
         } else {
             while (size < playerCards.size()) {
-                playerCards.remove(playerCards.size() - 1);
+                playerCards.removeLast();
             }
         }
     }
@@ -137,9 +137,7 @@ public class TeamCard {
                 }, 10L);
             }
         } else {
-            Runnable setCageTask = () -> {
-                gMap.getCage().setGlassColor(gMap, this);
-            };
+            Runnable setCageTask = () -> gMap.getCage().setGlassColor(gMap, this);
             if (Bukkit.isPrimaryThread()) setCageTask.run();
             else Bukkit.getScheduler().runTask(SkyWarsReloaded.get(), setCageTask); // if somehow the an event is async, ensure that it doesn't break
         }
@@ -207,7 +205,7 @@ public class TeamCard {
         int count = 0;
         for (PlayerCard pCard : this.playerCards) {
             if (pCard.getUUID() != null && pCard.isDead())
-               count++;
+                count++;
         }
         return count;
     }

@@ -2,7 +2,6 @@ package com.walrusone.skywarsreloaded.menus;
 
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
 import com.walrusone.skywarsreloaded.game.GameMap;
-import com.walrusone.skywarsreloaded.managers.GameMapManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -80,14 +79,8 @@ public class ArenasMenu {
                 return;
             }
 
-            if (SkyWarsReloaded.getNMS().getVersion() < 13) {
-                if (event.getClick().equals(ClickType.LEFT) && event.getItem().getType().equals(Material.valueOf("WOOL"))) {
-                    attemptUpdate(name, player);
-                }
-            } else {
-                if (event.getClick().equals(ClickType.LEFT) && (event.getItem().getType().equals(Material.valueOf("GREEN_WOOL")) || event.getItem().getType().equals(Material.valueOf("RED_WOOL")))) {
-                    attemptUpdate(name, player);
-                }
+            if (event.getClick().equals(ClickType.LEFT) && (event.getItem().getType().equals(Material.valueOf("GREEN_WOOL")) || event.getItem().getType().equals(Material.valueOf("RED_WOOL")))) {
+                attemptUpdate(name, player);
             }
         });
 

@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class Schematic13 {
-
     public void pasteSchematic(File schematicFile, GameMap map, CoordLoc spawn, Player player) {
         try {
             Clipboard clipboard;
