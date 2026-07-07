@@ -2,8 +2,8 @@ name: Skywars
 main: com.walrusone.skywarsreloaded.SkyWarsReloaded
 version: ${revision}
 api-version: 1.13
-website: https://devmart.net/
-author: Devmart (GCNT)
+website: https://gcnt.net/
+author: GaagjesCraft Network Team (GCNT)
 softdepend:
   - Vault
   - PlaceholderAPI
@@ -14,7 +14,7 @@ softdepend:
   - PerWorldInventory
   - WorldEdit
   - PartyAndFriends
-  - SlimeWorldManager
+  - ASPaperPlugin
   - My_Worlds
 
 commands:
