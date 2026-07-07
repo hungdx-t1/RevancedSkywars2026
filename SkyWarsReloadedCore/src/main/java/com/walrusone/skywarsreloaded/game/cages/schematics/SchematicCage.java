@@ -49,7 +49,6 @@ public class SchematicCage {
                     }
                 }
 
-
                 String cage = pStat.getGlassColor();
                 if (cage != null && cage.startsWith("custom-")) {
                     cage = cage.replace("custom-", "");
@@ -99,5 +98,4 @@ public class SchematicCage {
             }
         }.runTaskLater(SkyWarsReloaded.get(), 5);
     }
-
 }

@@ -1,7 +1,7 @@
 name: Skywars
 main: com.walrusone.skywarsreloaded.SkyWarsReloaded
 version: ${revision}
-api-version: 1.13
+api-version: 1.21
 website: https://gcnt.net/
 author: GaagjesCraft Network Team (GCNT)
 softdepend:
@@ -15,25 +15,24 @@ softdepend:
   - WorldEdit
   - PartyAndFriends
   - ASPaperPlugin
-  - My_Worlds
 
 commands:
   skywars:
     description: This is the main plugin command.
     aliases: [sw]
-    usage: /<command> [args]. Get this error? Then check your console as there was an error somewhere. Please report it here https://gcnt.net/discord !
+    usage: /<command> [args]. 
   swparty:
     description: This is the main party command.
     aliases: [swp]
-    usage: /<command> [args]. Get this error? Then check your console as there was an error somewhere. Please report it here https://gcnt.net/discord !
+    usage: /<command> [args]. 
   swkit:
     description: This is the main party command.
     aliases: [swk]
-    usage: /<command> [args]. Get this error? Then check your console as there was an error somewhere. Please report it here https://gcnt.net/discord !
+    usage: /<command> [args]. 
   swmap:
     description: This is the main party command.
     aliases: [swm]
-    usage: /<command> [args]. Get this error? Then check your console as there was an error somewhere. Please report it here https://gcnt.net/discord !
+    usage: /<command> [args]. 
 permissions:
   sw.*:
     description: Gives access to all sw commands

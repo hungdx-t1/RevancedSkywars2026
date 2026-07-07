@@ -5,19 +5,17 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
 import com.walrusone.skywarsreloaded.api.enums.cages.CageType;
-import com.walrusone.skywarsreloaded.api.enums.worldmanager.WorldManagerType;
 import com.walrusone.skywarsreloaded.config.Config;
-import com.walrusone.skywarsreloaded.api.enums.ChestPlacementType;
-import com.walrusone.skywarsreloaded.api.enums.MatchState;
-import com.walrusone.skywarsreloaded.api.enums.PlayerRemoveReason;
-import com.walrusone.skywarsreloaded.api.enums.Vote;
-import com.walrusone.skywarsreloaded.api.event.SkyWarsJoinEvent;
-import com.walrusone.skywarsreloaded.api.event.SkyWarsMatchStateChangeEvent;
+import com.walrusone.skywarsreloaded.api.enums.*;
+import com.walrusone.skywarsreloaded.api.event.*;
 import com.walrusone.skywarsreloaded.game.cages.*;
 import com.walrusone.skywarsreloaded.game.signs.SWRSign;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
 import com.walrusone.skywarsreloaded.managers.PlayerStat;
-import com.walrusone.skywarsreloaded.managers.worlds.*;
+import com.walrusone.skywarsreloaded.managers.worlds.ASPWorldManager;
+import com.walrusone.skywarsreloaded.managers.worlds.FileWorldManager;
+import com.walrusone.skywarsreloaded.managers.worlds.WorldManager;
+import com.walrusone.skywarsreloaded.api.enums.worldmanager.WorldManagerType;
 import com.walrusone.skywarsreloaded.matchevents.*;
 import com.walrusone.skywarsreloaded.menus.ArenaMenu;
 import com.walrusone.skywarsreloaded.menus.TeamSelectionMenu;
@@ -650,6 +648,7 @@ public class GameMap {
     }
 
     /**
+     *
      * @param player Player context for the request. Can be null. Not used in SWR by default. API only.
      * @return true if the player can be added to the match
      */
@@ -984,6 +983,40 @@ public class GameMap {
         getJoinQueue().start();
         SkyWarsReloaded.get().getLogger().info("Registered Map " + name + "!");
         return 0;
+
+        //old
+        //if (spawnLocations.size() > 1) {
+        //            int maxPlayers = getMaxPlayers();
+        //            int actualMaxPlayers = teamCards.size() * teamSize;
+        //
+        //            if ((teamSize > 1 && maxPlayers == actualMaxPlayers || !SkyWarsReloaded.getCfg().isUseSeparateCages()) || (teamSize == 1 && maxPlayers > 1)) {
+        //                if (spectateSpawn == null && SkyWarsReloaded.getCfg().spectateEnable()) {
+        //                    SkyWarsReloaded.get().getLogger().info("Could Not Register Map: " + name + " - No spectator spawn has been set. Set it using '/swm spawn spec'");
+        //                    registered = false;
+        //                    return 3;
+        //                }
+        //                if (waitingLobbySpawn == null && teamSize > 1) {
+        //                    SkyWarsReloaded.get().getLogger().info("Could Not Register Map: " + name + " - No waiting lobby spawn has been set. This is required for team games. Set it using '/swm spawn lobby'");
+        //                    registered = false;
+        //                    return 4;
+        //                }
+        //
+        //                registered = true;
+        //                gameboard = new GameBoard(this);
+        //                refreshMap();
+        //                getJoinQueue().start();
+        //                SkyWarsReloaded.get().getLogger().info("Registered Map " + name + "!");
+        //                return 0;
+        //            } else {
+        //                registered = false;
+        //                SkyWarsReloaded.get().getLogger().info("Could Not Register Map: " + name + " - Not all teams have enough spawns. There are only " + maxPlayers + "/" + actualMaxPlayers + " spawns set.");
+        //                return 1;
+        //            }
+        //        } else {
+        //            registered = false;
+        //            SkyWarsReloaded.get().getLogger().info("Could Not Register Map: " + name + " - Map must have at least 2 Spawn Points");
+        //            return 2;
+        //        }
     }
 
     /*Inventories*/
@@ -1088,7 +1121,7 @@ public class GameMap {
             // Setup border if enabled
             if (swrConfig.borderEnabled()) {
                 WorldBorder worldBorder = worldLoaded.getWorldBorder();
-                CoordLoc firstSpawnLoc = teamCards.get(0).getSpawns().get(0);
+                CoordLoc firstSpawnLoc = teamCards.getFirst().getSpawns().getFirst();
                 worldBorder.setCenter(firstSpawnLoc.getX(), firstSpawnLoc.getZ());
                 worldBorder.setSize(swrConfig.getBorderSize());
             }
@@ -1127,8 +1160,7 @@ public class GameMap {
                 currentChunk.load(true);
 
                 for (BlockState blockState : currentChunk.getTileEntities()) {
-                    if (blockState instanceof Beacon) {
-                        Beacon beacon = (Beacon) blockState;
+                    if (blockState instanceof Beacon beacon) {
                         Block blockUnder = beacon.getBlock().getRelative(0, -1, 0);
                         if (blockUnder == null || !nonSpawnMaterials.contains(blockUnder.getType())) {
                             Location loc = beacon.getLocation();
@@ -1154,7 +1186,7 @@ public class GameMap {
                                 org.bukkit.material.Chest chestData = (org.bukkit.material.Chest) chest.getData();
                                 BlockFace facing = chestData.getFacing();
                                 trappedChestBlock.setType(Material.CHEST);
-                                ((org.bukkit.material.Chest) trappedChestBlock.getState().getData()).setFacingDirection(facing);
+                                ((org.bukkit.material.Chest)trappedChestBlock.getState().getData()).setFacingDirection(facing);
                                 // Add the chest as center
                                 addChest(chest, ChestPlacementType.CENTER);
                             }
@@ -1461,6 +1493,13 @@ public class GameMap {
      * Returns the maximum number of players that can join a match
      */
     public int getMaxPlayers() {
+        // old
+//        int i = 0;
+//        for (List<CoordLoc> coords : spawnLocations.values()) {
+//            i += coords.size();
+//        }
+//        return i;
+
         boolean separateCages = SkyWarsReloaded.getCfg().isUseSeparateCages();
 
         int spawns = 0;
@@ -1586,7 +1625,6 @@ public class GameMap {
 
     /**
      * Add a team slot to the current GameMap
-     *
      * @param defaultSpawns List of initial CoordLocs to assign to the team card being created
      */
     public TeamCard addTeamCard(ArrayList<CoordLoc> defaultSpawns) {
@@ -1643,37 +1681,23 @@ public class GameMap {
         long longDiv14 = (long) div14;
         double truncatedDiv14 = div14 - longDiv14;
         int remainderDiv14 = (int) (truncatedDiv14 * 14);
-        switch (remainderDiv14) {
+        return switch (remainderDiv14) {
             // case 1 is the same as default
-            case 2:
-                return ChatColor.RED.toString();
-            case 3:
-                return ChatColor.DARK_BLUE.toString();
-            case 4:
-                return ChatColor.YELLOW.toString();
-            case 5:
-                return ChatColor.WHITE.toString();
-            case 6:
-                return ChatColor.AQUA.toString();
-            case 7:
-                return ChatColor.GRAY.toString();
-            case 8:
-                return ChatColor.DARK_PURPLE.toString();
-            case 9:
-                return ChatColor.DARK_GREEN.toString();
-            case 10:
-                return ChatColor.BLUE.toString();
-            case 11:
-                return ChatColor.DARK_GRAY.toString();
-            case 12:
-                return ChatColor.BLACK.toString();
-            case 13:
-                return ChatColor.LIGHT_PURPLE.toString();
-            case 14:
-                return ChatColor.GOLD.toString();
-            default:
-                return ChatColor.GREEN.toString();
-        }
+            case 2 -> ChatColor.RED.toString();
+            case 3 -> ChatColor.DARK_BLUE.toString();
+            case 4 -> ChatColor.YELLOW.toString();
+            case 5 -> ChatColor.WHITE.toString();
+            case 6 -> ChatColor.AQUA.toString();
+            case 7 -> ChatColor.GRAY.toString();
+            case 8 -> ChatColor.DARK_PURPLE.toString();
+            case 9 -> ChatColor.DARK_GREEN.toString();
+            case 10 -> ChatColor.BLUE.toString();
+            case 11 -> ChatColor.DARK_GRAY.toString();
+            case 12 -> ChatColor.BLACK.toString();
+            case 13 -> ChatColor.LIGHT_PURPLE.toString();
+            case 14 -> ChatColor.GOLD.toString();
+            default -> ChatColor.GREEN.toString();
+        };
     }
 
     private String getStringColor(int index) {
@@ -1681,46 +1705,32 @@ public class GameMap {
         long i = (long) d;
         double f = d - i;
         int s = (int) (f * 14);*/
-        switch (index) {
+        return switch (index) {
             // Case 0 is the same as default
-            case 1:
-                return "Red";
-            case 2:
-                return "Blue";
-            case 3:
-                return "Yellow";
-            case 4:
-                return "White";
-            case 5:
-                return "Cyan";
-            case 6:
-                return "Light Gray";
-            case 7:
-                return "Purple";
-            case 8:
-                return "Green";
-            case 9:
-                return "Light Blue";
-            case 10:
-                return "Gray";
-            case 11:
-                return "Black";
-            case 12:
-                return "Magenta";
-            case 13:
-                return "Orange";
-            default:
-                return "Lime";
-        }
+            case 1 -> "Red";
+            case 2 -> "Blue";
+            case 3 -> "Yellow";
+            case 4 -> "White";
+            case 5 -> "Cyan";
+            case 6 -> "Light Gray";
+            case 7 -> "Purple";
+            case 8 -> "Green";
+            case 9 -> "Light Blue";
+            case 10 -> "Gray";
+            case 11 -> "Black";
+            case 12 -> "Magenta";
+            case 13 -> "Orange";
+            default -> "Lime";
+        };
     }
 
     /**
      * Remove team slot by spawn location
-     *
      * @param loc Bukkit location of the spawn
-     * @return Map of which, Keys are the teams removed and
-     * Values are the indexes of the spawn location removed from within that team
-     * (if no more spawns are left, team is completely removed from the map.)
+     * @return
+     *      Map of which, Keys are the teams removed and
+     *      Values are the indexes of the spawn location removed from within that team
+     *          (if no more spawns are left, team is completely removed from the map.)
      */
     public Map<TeamCard, List<Integer>> removeSpawnsAtLocation(Location loc) {
         CoordLoc locToRemove = new CoordLoc(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
@@ -1729,7 +1739,7 @@ public class GameMap {
 
         // Find teams that have matching spawn locs
         for (TeamCard tCard : this.teamCards) {
-            if (tCard.getSpawns() == null || tCard.getSpawns().size() < 1) {
+            if (tCard.getSpawns() == null || tCard.getSpawns().isEmpty()) {
                 toRemove.put(tCard, toRemove.getOrDefault(tCard, new ArrayList<>()));
             } else {
                 for (int i = 0; i < tCard.getSpawns().size(); i++) {
@@ -1754,7 +1764,7 @@ public class GameMap {
                 if (coordsForTeam == null) continue;
                 coordsForTeam.remove(locToRemove);
                 // Should we remove the team completely?
-                if (coordsForTeam.size() == 0) {
+                if (coordsForTeam.isEmpty()) {
                     this.spawnLocations.remove(toRemoveEntry.getKey());
                     teamCards.remove(toRemoveEntry.getKey());
                 }
@@ -1821,8 +1831,7 @@ public class GameMap {
             list = centerChests;
         }
         InventoryHolder ih = chest.getInventory().getHolder();
-        if (ih instanceof DoubleChest) {
-            DoubleChest dc = (DoubleChest) ih;
+        if (ih instanceof DoubleChest dc) {
             Chest left = (Chest) dc.getLeftSide();
             Chest right = (Chest) dc.getRightSide();
             CoordLoc locLeft = new CoordLoc(left.getX(), left.getY(), left.getZ());
@@ -1853,8 +1862,7 @@ public class GameMap {
 
     public void removeChest(Chest chest) {
         InventoryHolder ih = chest.getInventory().getHolder();
-        if (ih instanceof DoubleChest) {
-            DoubleChest dc = (DoubleChest) ih;
+        if (ih instanceof DoubleChest dc) {
             Chest left = (Chest) dc.getLeftSide();
             Chest right = (Chest) dc.getRightSide();
             CoordLoc locLeft = new CoordLoc(left.getX(), left.getY(), left.getZ());
@@ -2220,22 +2228,15 @@ public class GameMap {
         }
     }
 
-    public static class GameMapCreationResult {
-
-        private boolean validName;
-        private World world;
-
-        public GameMapCreationResult(boolean validNameIn, @Nullable World worldIn) {
-            this.validName = validNameIn;
-            this.world = worldIn;
+    public record GameMapCreationResult(boolean validName, World world) {
+        public GameMapCreationResult(boolean validName, @Nullable World world) {
+            this.validName = validName;
+            this.world = world;
         }
 
-        public boolean isValidName() {
-            return this.validName;
-        }
-
+        @Override
         @Nullable
-        public World getWorld() {
+        public World world() {
             return this.world;
         }
     }

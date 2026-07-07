@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 
 public class PlayerCard {
-
     private TeamCard tCard;
     private UUID uuid;
     // The index at which the player used for this PlayerCard joined the game

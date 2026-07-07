@@ -54,6 +54,7 @@ public class Config {
         return config.getDouble(section);
     }
 
+    // todo remove all
     private final List<String> itemNames = Arrays.asList("kitvote", "votingItem", "teamSelectItem",
             "exitMenuItem", "nextPageItem", "prevPageItem",
             "exitGameItem",
