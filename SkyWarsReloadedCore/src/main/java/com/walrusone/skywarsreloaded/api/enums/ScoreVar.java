@@ -1,5 +1,6 @@
 package com.walrusone.skywarsreloaded.api.enums;
 
+@SuppressWarnings("unused")
 public enum ScoreVar {
     MAPNAME,
     TIME,

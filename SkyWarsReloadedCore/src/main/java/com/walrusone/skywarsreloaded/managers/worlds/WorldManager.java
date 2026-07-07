@@ -1,5 +1,6 @@
 package com.walrusone.skywarsreloaded.managers.worlds;
 
+import com.walrusone.skywarsreloaded.api.enums.worldmanager.WorldManagerType;
 import org.bukkit.World;
 
 import java.io.File;

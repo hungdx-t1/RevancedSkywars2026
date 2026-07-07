@@ -2,6 +2,7 @@ package com.walrusone.skywarsreloaded.managers.worlds;
 
 import com.google.common.collect.Lists;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
+import com.walrusone.skywarsreloaded.api.enums.worldmanager.WorldManagerType;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.WorldCreator;

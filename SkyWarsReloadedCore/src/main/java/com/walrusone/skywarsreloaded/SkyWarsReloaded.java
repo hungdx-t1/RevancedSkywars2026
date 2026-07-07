@@ -49,10 +49,12 @@ import java.util.ArrayList;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+@SuppressWarnings({"unused", "InstantiationOfUtilityClass", "CallToPrintStackTrace"})
 public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener {
-
+    public static final String extensionVersionSupport = "1.7.15";
     private static SkyWarsReloaded instance;
     private final ArrayList<String> leaderTypes = new ArrayList<>();
+
     private String servername;
     private Database db;
     private NMS nmsHandler;
@@ -80,6 +82,13 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
 
     private boolean loaded;
     private BukkitTask specObserver;
+
+
+    // 6.0-old
+    private final Object leaderboardLock = new Object();
+    private Leaderboard leaderboard = null;
+    private HologramsUtil hu;
+    // end of 6.0-old
 
     public static SkyWarsReloaded get() {
         return instance;

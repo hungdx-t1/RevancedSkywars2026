@@ -1,5 +1,6 @@
 package com.walrusone.skywarsreloaded.game.cages;
 
+import com.walrusone.skywarsreloaded.api.enums.cages.CageType;
 import com.walrusone.skywarsreloaded.menus.gameoptions.objects.CoordLoc;
 
 public class CubeCage extends Cage {

@@ -8,6 +8,7 @@ import com.infernalsuite.asp.api.world.properties.SlimePropertyMap;
 import com.infernalsuite.asp.loaders.file.FileLoader;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
 
+import com.walrusone.skywarsreloaded.api.enums.worldmanager.WorldManagerType;
 import org.bukkit.*;
 import org.bukkit.entity.SpawnCategory;
 import org.bukkit.event.world.WorldLoadEvent;

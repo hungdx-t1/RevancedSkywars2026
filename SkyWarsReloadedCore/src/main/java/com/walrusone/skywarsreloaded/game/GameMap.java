@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
+import com.walrusone.skywarsreloaded.api.enums.cages.CageType;
+import com.walrusone.skywarsreloaded.api.enums.worldmanager.WorldManagerType;
 import com.walrusone.skywarsreloaded.config.Config;
 import com.walrusone.skywarsreloaded.api.enums.ChestPlacementType;
 import com.walrusone.skywarsreloaded.api.enums.MatchState;
