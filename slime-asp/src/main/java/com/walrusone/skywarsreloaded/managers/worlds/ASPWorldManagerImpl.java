@@ -134,15 +134,16 @@ public class ASPWorldManagerImpl implements ASPWorldManager {
         world.setWeatherDuration(Integer.MAX_VALUE);
         world.setGameRule(GameRules.RESPAWN_RADIUS, 0);
         world.setGameRule(GameRules.PVP, true);
+        world.setGameRule(GameRules.FIRE_SPREAD_RADIUS_AROUND_PLAYER, 0);
         world.setTicksPerSpawns(SpawnCategory.ANIMAL, 1);
         world.setTicksPerSpawns(SpawnCategory.MONSTER, 1);
         world.setAutoSave(false);
 
-        SkyWarsReloaded.getNMS().setGameRule(world, "doMobSpawning", "false");
-        SkyWarsReloaded.getNMS().setGameRule(world, "mobGriefing", "false");
-        SkyWarsReloaded.getNMS().setGameRule(world, "doFireTick", "false");
-        SkyWarsReloaded.getNMS().setGameRule(world, "showDeathMessages", "false");
-        SkyWarsReloaded.getNMS().setGameRule(world, "announceAdvancements", "false");
-        SkyWarsReloaded.getNMS().setGameRule(world, "doDaylightCycle", "false");
+        SkyWarsReloaded.getNMS().setGameRule(world, "spawn_mobs", "false"); // old: doMobSpawning
+        SkyWarsReloaded.getNMS().setGameRule(world, "mob_griefing", "false"); // old: mobGriefing
+        SkyWarsReloaded.getNMS().setGameRule(world, "fire_spread_radius_around_player", "false"); // old: doFireTick
+        SkyWarsReloaded.getNMS().setGameRule(world, "show_death_messages", "false"); // old: showDeathMessages
+        SkyWarsReloaded.getNMS().setGameRule(world, "show_advancement_messages", "false"); // old: announceAdvancements
+        SkyWarsReloaded.getNMS().setGameRule(world, "advance_time", "false"); // old: doDaylightCycle
     }
 }
