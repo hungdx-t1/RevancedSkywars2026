@@ -8,9 +8,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.UUID;
 
-
 public class Party {
-    private static ArrayList<Party> parties = new ArrayList();
+    private static ArrayList<Party> parties = new ArrayList<>();
     private UUID leader;
     private String name;
     private ArrayList<UUID> members;
@@ -19,8 +18,8 @@ public class Party {
     public Party(Player player, String partyName) {
         leader = player.getUniqueId();
         name = partyName;
-        members = new ArrayList();
-        invited = new ArrayList();
+        members = new ArrayList<>();
+        invited = new ArrayList<>();
         members.add(player.getUniqueId());
         parties.add(this);
     }
@@ -98,14 +97,10 @@ public class Party {
         invited.add(invite);
         new BukkitRunnable() {
             public void run() {
-                boolean remove = false;
-                if (invited.contains(invite)) {
-                    remove = true;
-                }
+                boolean remove = invited.contains(invite);
                 if (remove) {
                     invited.remove(invite);
                 }
-
             }
         }.runTaskLater(SkyWarsReloaded.get(), 300L);
     }

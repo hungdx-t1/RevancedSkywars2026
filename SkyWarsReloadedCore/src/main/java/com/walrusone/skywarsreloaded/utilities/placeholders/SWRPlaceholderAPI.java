@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.List;
 
+// todo see LeaderboardManager
 public class SWRPlaceholderAPI extends PlaceholderExpansion {
 
     @Override

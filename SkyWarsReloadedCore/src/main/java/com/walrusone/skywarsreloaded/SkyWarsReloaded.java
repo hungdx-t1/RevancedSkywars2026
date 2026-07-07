@@ -34,6 +34,7 @@ import com.walrusone.skywarsreloaded.utilities.minecraftping.MinecraftPing;
 import com.walrusone.skywarsreloaded.utilities.minecraftping.MinecraftPingOptions;
 import com.walrusone.skywarsreloaded.utilities.minecraftping.MinecraftPingReply;
 import com.walrusone.skywarsreloaded.utilities.placeholders.SWRPlaceholderAPI;
+import com.walrusone.skywarsreloaded.utilities.pluginmanager.PluginSupport;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -42,11 +43,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.jspecify.annotations.NonNull;
 
 import java.io.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @SuppressWarnings({"unused", "InstantiationOfUtilityClass", "CallToPrintStackTrace"})
@@ -82,13 +85,6 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
 
     private boolean loaded;
     private BukkitTask specObserver;
-
-
-    // 6.0-old
-    private final Object leaderboardLock = new Object();
-    private Leaderboard leaderboard = null;
-    private HologramsUtil hu;
-    // end of 6.0-old
 
     public static SkyWarsReloaded get() {
         return instance;
@@ -141,6 +137,10 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
 
     @Override
     public void onEnable() {
+        PluginSupport.initialize();
+        Config.initialize(this);
+        if (Config.getBoolean("debugMode")) this.getLogger().info("Debug mode enabled");
+
         loaded = false;
 
         // NMS Init
@@ -163,9 +163,6 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
         // Load config data
         config = new Config();
 
-        // State using debug mode or not
-        if (getCfg().debugEnabled()) this.getLogger().info("Debug mode enabled");
-
         // Managers
         if (this.gameMapManager == null) this.gameMapManager = new GameMapManager(this);
         matchManager = MatchManager.get();
@@ -179,12 +176,8 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
             }
         }
 
-        // ------ All external integrations --------
-        // PAPI
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            new SWRPlaceholderAPI().register();
-        }
-        // PER WORLD INV
+        // Integrations
+        if (PluginSupport.isHasPlaceholderAPI()) new SWRPlaceholderAPI().register();
         if (Bukkit.getPluginManager().isPluginEnabled("PerWorldInventory")) {
             this.getServer().getPluginManager().registerEvents(new PerWorldInventoryListener(), this);
         }
@@ -193,43 +186,17 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
         // Currently disabled due to inability to access bungeecord PAF from spigot
         // this.getServer().getPluginManager().registerEvents(new PartyAndFriendsHook(), this);
 //        }
+
         // SLIME WORLD MANAGER
-        if (Bukkit.getPluginManager().isPluginEnabled("SlimeWorldManager") && getCfg().isUseSlimeWorldManager()) {
-            getLogger().info("SlimeWorldManager option enabled. Checking for AdvancedSlimePaper...");
+        if(PluginSupport.isHasSlimeWorldPlugin()) {
             try {
-                Class.forName("com.infernalsuite.aswm.SlimeNMSBridgeImpl");
-                getLogger().info("Found AdvancedSlimePaper!");
                 wm = (ASPWorldManager) Class.forName("com.walrusone.skywarsreloaded.managers.worlds.ASPWorldManagerImpl")
                         .getConstructor()
                         .newInstance();
             } catch (Exception e) {
-                e.printStackTrace();
-                getLogger().info("AdvancedSlimePaper not found");
-                int serverFeatureVersion = Integer.parseInt(getServer().getVersion().split("\\.")[1]);
-                if (serverFeatureVersion > 19) {
-                    getLogger().info("SlimeWorldManager cannot be used on 1.20 or higher. We expected the server to be running AdvancedSlimePaper.");
-                    wm = null;
-                } else if (serverFeatureVersion > 14) {
-                    try {
-                        getLogger().info("Using ASWM World Manager");
-                        wm = (WorldManager) Class.forName("com.walrusone.skywarsreloaded.managers.worlds.ASWMWorldManager")
-                                .getConstructor()
-                                .newInstance();
-                    } catch (Exception ex) {
-                        getLogger().info("Using Bukkit World Manager");
-                        wm = null;
-                    }
-                } else {
-                    try {
-                        getLogger().info("Using Legacy SWM World Manager");
-                        wm = (WorldManager) Class.forName("com.walrusone.skywarsreloaded.managers.worlds.LegacySWMWorldManager")
-                                .getConstructor()
-                                .newInstance();
-                    } catch (Exception ex) {
-                        getLogger().info("Using Bukkit World Manager");
-                        wm = null;
-                    }
-                }
+                getLogger().log(Level.SEVERE, "Failed to load ASPWorldManager!", e);
+                getServer().getPluginManager().disablePlugin(this);
+                return;
             }
         }
 
@@ -525,7 +492,7 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
         }
     }
 
-    public void onPluginMessageReceived(String channel, Player player, byte[] message) {
+    public void onPluginMessageReceived(String channel, @NonNull Player player, byte @NonNull [] message) {
         if (!channel.equals("BungeeCord")) {
             return;
         }
@@ -601,7 +568,7 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
                     }
                     if (header.equalsIgnoreCase("RequestUpdate")) {
                         String sendToServer = msgin.readUTF();
-                        GameMap gMap = SkyWarsReloaded.getGameMapMgr().getMapsCopy().get(0);
+                        GameMap gMap = SkyWarsReloaded.getGameMapMgr().getMapsCopy().getFirst();
                         String playerCount = "" + gMap.getAlivePlayers().size();
                         String maxPlayers = "" + gMap.getMaxPlayers();
                         String gameStarted = gMap.getMatchState().toString();

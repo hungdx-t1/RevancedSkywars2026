@@ -29,7 +29,6 @@ import java.io.PrintWriter;
 import java.util.*;
 
 public class Util {
-
     private static Util instance;
     private Random rand;
 
@@ -46,8 +45,9 @@ public class Util {
 
     private static double quadraticEquationRoot(double a, double b, double c) {
         double root1, root2;
-        root1 = (-b + Math.sqrt(Math.pow(b, 2) - 4 * a * c)) / (2 * a);
-        root2 = (-b - Math.sqrt(Math.pow(b, 2) - 4 * a * c)) / (2 * a);
+        double delta = Math.sqrt(Math.pow(b, 2) - 4 * a * c);
+        root1 = (-b + delta) / (2 * a);
+        root2 = (-b - delta) / (2 * a);
         return Math.max(root1, root2);
     }
 
@@ -194,7 +194,7 @@ public class Util {
         if (SkyWarsReloaded.get().isEnabled()) {
             return new BukkitRunnable() {
                 public void run() {
-                    if (System.currentTimeMillis() >= startTime + length * 1000 || SkyWarsReloaded.get().getServer().getPlayer(player.getUniqueId()) == null) {
+                    if (System.currentTimeMillis() >= startTime + length * 1000L || SkyWarsReloaded.get().getServer().getPlayer(player.getUniqueId()) == null) {
                         this.cancel();
                     } else {
                         for (int i = 0; i < fireworksPer5Tick; ++i) {
@@ -425,52 +425,30 @@ public class Util {
     }
 
     public byte getByteFromColor(String color) {
-        switch (color.toLowerCase()) {
-            case "white":
-                return (byte) 0;
-            case "orange":
-                return (byte) 1;
-            case "magenta":
-                return (byte) 2;
-            case "lightblue":
-                return (byte) 3;
-            case "yellow":
-                return (byte) 4;
-            case "lime":
-                return (byte) 5;
-            case "pink":
-                return (byte) 6;
-            case "gray":
-                return (byte) 7;
-            case "lightgray":
-                return (byte) 8;
-            case "cyan":
-                return (byte) 9;
-            case "purple":
-                return (byte) 10;
-            case "blue":
-                return (byte) 11;
-            case "brown":
-                return (byte) 12;
-            case "green":
-                return (byte) 13;
-            case "red":
-                return (byte) 14;
-            case "black":
-                return (byte) 15;
-            case "none":
-                return (byte) -2;
-            case "lapis":
-                return (byte) -3;
-            case "redstone":
-                return (byte) -4;
-            case "emerald":
-                return (byte) -5;
-            case "diamond":
-                return (byte) -6;
-            default:
-                return (byte) -1;
-        }
+        return switch (color.toLowerCase()) {
+            case "white" -> (byte) 0;
+            case "orange" -> (byte) 1;
+            case "magenta" -> (byte) 2;
+            case "lightblue" -> (byte) 3;
+            case "yellow" -> (byte) 4;
+            case "lime" -> (byte) 5;
+            case "pink" -> (byte) 6;
+            case "gray" -> (byte) 7;
+            case "lightgray" -> (byte) 8;
+            case "cyan" -> (byte) 9;
+            case "purple" -> (byte) 10;
+            case "blue" -> (byte) 11;
+            case "brown" -> (byte) 12;
+            case "green" -> (byte) 13;
+            case "red" -> (byte) 14;
+            case "black" -> (byte) 15;
+            case "none" -> (byte) -2;
+            case "lapis" -> (byte) -3;
+            case "redstone" -> (byte) -4;
+            case "emerald" -> (byte) -5;
+            case "diamond" -> (byte) -6;
+            default -> (byte) -1;
+        };
     }
 
     public void setPlayerExperience(Player player, int amount) {
@@ -508,15 +486,10 @@ public class Util {
         List<Map.Entry<GameMap, Integer>> list = new LinkedList<>(games.entrySet());
 
         // Sort the list
-        Collections.sort(list, new Comparator<Map.Entry<GameMap, Integer>>() {
-            public int compare(Map.Entry<GameMap, Integer> o1,
-                               Map.Entry<GameMap, Integer> o2) {
-                return (o1.getValue()).compareTo(o2.getValue());
-            }
-        });
+        list.sort(Map.Entry.comparingByValue());
 
         // put data from sorted list to hashmap
-        HashMap<GameMap, Integer> temp = new LinkedHashMap<GameMap, Integer>();
+        HashMap<GameMap, Integer> temp = new LinkedHashMap<>();
         for (Map.Entry<GameMap, Integer> aa : list) {
             temp.put(aa.getKey(), aa.getValue());
         }
@@ -581,8 +554,8 @@ public class Util {
         if (seconds < 60) {
             secs = seconds;
         } else {
-            mins = (int) seconds / 60;
-            secs = (int) seconds % 60;
+            mins = seconds / 60;
+            secs = seconds % 60;
         }
 
         if (returnFormat.equals("simplified")) {

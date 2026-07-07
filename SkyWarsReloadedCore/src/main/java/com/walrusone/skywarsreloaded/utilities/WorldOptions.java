@@ -9,16 +9,17 @@ import java.util.HashMap;
 /**
  * This is not used at the moment, WIP
  */
+@SuppressWarnings("unused")
 public class WorldOptions {
 
     @Nullable
-    private World world;
+    private final World world;
     private final Object worldLock = new Object();
 
-    private HashMap<String, Object> gamerules;
+    private final HashMap<String, Object> gamerules;
     private final Object gamerulesLock = new Object();
 
-    public WorldOptions(World worldIn, HashMap<String, Object> gamerulesIn) {
+    public WorldOptions(@Nullable World worldIn, HashMap<String, Object> gamerulesIn) {
         this.world = worldIn;
         this.gamerules = gamerulesIn;
     }

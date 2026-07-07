@@ -12,6 +12,7 @@ public final class PluginSupport {
     private static boolean hasVault;
     private static boolean hasDecentHolograms;
     private static boolean hasAdvancedSlimePaper;
+    private static boolean hasPlaceholderAPI;
     private static boolean setup = false;
 
     public static void initialize() {
@@ -43,6 +44,13 @@ public final class PluginSupport {
             logger.warn("Không tìm thấy ASPaperPlugin. Hệ thống sẽ tự động dùng bộ nạp thế giới dạng File truyền thống.");
         }
 
+        hasPlaceholderAPI = pluginManager.isPluginEnabled("PlaceholderAPI");
+        if (hasPlaceholderAPI) {
+            logger.info("Thấy PlaceholderAPI. Đang kết nối...");
+        } else {
+            logger.warn("Không tìm thấy plugin PlaceholderAPI. Đang bỏ qua...");
+        }
+
         setup = true;
     }
 
@@ -65,6 +73,10 @@ public final class PluginSupport {
 
     public static boolean isHasSlimeWorldPlugin() {
         return hasAdvancedSlimePaper;
+    }
+
+    public static boolean isHasPlaceholderAPI() {
+        return hasPlaceholderAPI;
     }
 
     public static boolean isSetup() {

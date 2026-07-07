@@ -6,6 +6,8 @@ import com.walrusone.skywarsreloaded.api.enums.LeaderType;
 import com.walrusone.skywarsreloaded.utilities.Util;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,6 +16,43 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 public class Config {
+    private static boolean initialized = false;
+    private static FileConfiguration config;
+
+    public static void initialize(SkyWarsReloaded plugin) {
+        if (initialized) {
+            throw new IllegalStateException("Config is already initialized");
+        }
+        initialized = true;
+        config = plugin.getConfig();
+    }
+
+    private static void ensureInitialized() throws IllegalStateException {
+        if (!initialized) {
+            throw new IllegalStateException("Config is not initialized");
+        }
+    }
+
+    @Nullable
+    public static String getString(String section) throws IllegalStateException {
+        ensureInitialized();
+        return config.getString(section);
+    }
+
+    public static int getInt(String section) throws IllegalStateException {
+        ensureInitialized();
+        return config.getInt(section);
+    }
+
+    public static boolean getBoolean(String section) throws IllegalStateException {
+        ensureInitialized();
+        return config.getBoolean(section);
+    }
+
+    public static double getDouble(String section) throws IllegalStateException {
+        ensureInitialized();
+        return config.getDouble(section);
+    }
 
     private final List<String> itemNames = Arrays.asList("kitvote", "votingItem", "teamSelectItem",
             "exitMenuItem", "nextPageItem", "prevPageItem",

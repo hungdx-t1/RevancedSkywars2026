@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SWRServer {
-
-
     private static ArrayList<SWRServer> servers = new ArrayList<>();
     private static final Object serversLock = new Object();
 
@@ -44,7 +42,7 @@ public class SWRServer {
 
     public SWRServer(final String name, final int port) {
         this.serverName = name;
-        signs = new ArrayList<Location>();
+        signs = new ArrayList<>();
         this.displayName = "Initializing";
         this.playerCount = 0;
         this.maxPlayers = 0;

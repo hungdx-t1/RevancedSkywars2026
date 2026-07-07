@@ -15,7 +15,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 public class PartyAndFriendsHook implements Listener {
-
     public PartyAndFriendsHook() {
         if (SkyWarsReloaded.getCfg().debugEnabled()) {
             SkyWarsReloaded.get().getLogger().info("PartyAndFriends Hook is enabled");

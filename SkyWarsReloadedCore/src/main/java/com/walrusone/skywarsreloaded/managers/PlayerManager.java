@@ -298,8 +298,8 @@ public class PlayerManager {
         Player taggerPlayer;
         boolean isRecentTag;
         if (tagger != null) {
-            taggerPlayer = tagger.getPlayer();
-            isRecentTag = System.currentTimeMillis() - tagger.getTime() < 10000; // 10 seconds
+            taggerPlayer = tagger.player();
+            isRecentTag = System.currentTimeMillis() - tagger.time() < 10000; // 10 seconds
         } else {
             taggerPlayer = null;
             isRecentTag = false;
