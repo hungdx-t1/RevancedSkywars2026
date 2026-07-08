@@ -53,7 +53,6 @@ public class GameBoard {
         /*updateScoreboard();*/
     }
 
-
     private void startRestartTimer() {
         restartTimer = SkyWarsReloaded.getCfg().getTimeAfterMatch();
         if (SkyWarsReloaded.get().isEnabled()) {

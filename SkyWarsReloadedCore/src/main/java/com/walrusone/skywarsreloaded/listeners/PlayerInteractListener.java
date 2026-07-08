@@ -50,8 +50,6 @@ import java.util.Map;
 import java.util.Random;
 
 public class PlayerInteractListener implements Listener {
-
-
     Object navigationWand = "";
     Object wandItem = "";
 
@@ -541,5 +539,4 @@ public class PlayerInteractListener implements Listener {
             }
         }
     }
-
 }

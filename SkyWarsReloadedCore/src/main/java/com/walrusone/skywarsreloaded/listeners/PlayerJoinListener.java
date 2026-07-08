@@ -6,6 +6,7 @@ import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
 import com.walrusone.skywarsreloaded.managers.PlayerStat;
 import com.walrusone.skywarsreloaded.utilities.Util;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -19,9 +20,8 @@ import java.util.logging.Level;
 
 public class PlayerJoinListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onJoin(final PlayerJoinEvent event) {
-
-        final Player player = event.getPlayer();
+    public void onJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
 
         new BukkitRunnable() {
             @Override
@@ -94,20 +94,15 @@ public class PlayerJoinListener implements Listener {
                     "However, since you have the sw.admin permissions, you will not be kicked to the lobby.");
         } else {
             SkyWarsReloaded.get().sendBungeeMsg(player, "Connect", SkyWarsReloaded.getCfg().getBungeeLobby());
-            kickPlayerIfStillOnline(player, 20);
+            kickPlayerIfStillOnline(player);
         }
 
         return false;
     }
 
     // UTILS
-
-    public void kickPlayerIfStillOnline(Player player, long ticks) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (player.isOnline()) player.kickPlayer("");
-            }
-        }.runTaskLater(SkyWarsReloaded.get(), ticks);
+    private void kickPlayerIfStillOnline(Player player) {
+        SkyWarsReloaded pl = SkyWarsReloaded.get();
+        pl.getServer().getScheduler().runTaskLater(pl, () -> { if(player.isOnline()) player.kick(Component.empty()); }, 20);
     }
 }

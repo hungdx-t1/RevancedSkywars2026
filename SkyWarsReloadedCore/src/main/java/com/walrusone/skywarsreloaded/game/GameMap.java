@@ -173,11 +173,7 @@ public class GameMap {
         }
     }
 
-
-
     /*Player Handling Methods*/
-
-
     private static boolean loadWorldForScanning(String name) {
         WorldManager wm = SkyWarsReloaded.getWM();
 

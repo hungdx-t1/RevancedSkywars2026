@@ -28,7 +28,6 @@ public class PlayerTeleportListener implements org.bukkit.event.Listener {
         GameMap gameMap = MatchManager.get().getPlayerMap(player);
 
         if (gameMap == null) {
-
             if (event.getTo() == null) {
                 SkyWarsReloaded.get().getLogger().warning(String.format("Player %s teleported to nowhere! (changing dimension?)", player.getName()));
                 return;

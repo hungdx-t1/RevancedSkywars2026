@@ -20,11 +20,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class PlayerData {
-    private static ArrayList<PlayerData> playerData;
-
-    static {
-        PlayerData.playerData = new ArrayList<>();
-    }
+    private static ArrayList<PlayerData> playerData = new ArrayList<>();
 
     private final UUID uuid;
     private final Scoreboard sbBeforeGame;

@@ -27,10 +27,9 @@ public class PlayerDeathListener implements org.bukkit.event.Listener {
     public void onDeathByDamageEvent(EntityDamageEvent e) {
         // Sanity checks
         if (e.isCancelled()) return;
-        if (!(e.getEntity() instanceof Player)) return;
+        if (!(e.getEntity() instanceof Player player)) return;
 
         // Make sure the player is in a game
-        Player player = (Player) e.getEntity();
         GameMap gameMap = MatchManager.get().getPlayerMap(player);
         if (gameMap == null) return;
 

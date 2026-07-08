@@ -4,11 +4,10 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
 import com.walrusone.skywarsreloaded.game.signs.SWRSign;
 import com.walrusone.skywarsreloaded.nms.NMS;
+import com.walrusone.skywarsreloaded.utilities.kyori.RegistryUtils;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ResolvableProfile;
 import io.papermc.paper.datacomponent.item.TooltipDisplay;
-import io.papermc.paper.registry.RegistryAccess;
-import io.papermc.paper.registry.RegistryKey;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -38,12 +37,9 @@ import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -51,28 +47,19 @@ import java.util.concurrent.ThreadLocalRandom;
 // v26_1 (26.1 hoặc 26.1.2)
 @SuppressWarnings("unused")
 public class NMSHandler implements NMS {
-    private static final Logger logger = LoggerFactory.getLogger(NMSHandler.class + "_v26_1");
-
     @Override
     public void playChestAction(Block block, boolean open) {
         Location location = block.getLocation();
         if (location.getWorld() == null) return;
         if (!(block.getState() instanceof EnderChest enderChest)) return;
-
-        if (open) enderChest.open();
-        else enderChest.close();
+        if (open) enderChest.open(); else enderChest.close();
     }
 
     @Override
     public PotionEffectType getPotionEffectTypeByName(String... name) {
         for (String n : name) {
-            try {
-                NamespacedKey key = NamespacedKey.fromString(n.toLowerCase(Locale.ROOT));
-                if(key != null) {
-                    PotionEffectType type = Registry.EFFECT.get(key);
-                    if (type != null) return type;
-                }
-            } catch (Exception ignored) { }
+            PotionEffectType type = RegistryUtils.getPotionEffectTypeOfString(n);
+            if (type != null) return type;
         }
         return null;
     }
@@ -80,14 +67,8 @@ public class NMSHandler implements NMS {
     @Override
     public Enchantment getEnchantmentByName(String... name) {
         for (String n : name) {
-            try {
-                NamespacedKey key = NamespacedKey.fromString(n.toLowerCase(Locale.ROOT));
-                if (key != null) {
-                    Registry<Enchantment> reg = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT);
-                    Enchantment enchantment = reg.get(key);
-                    if (enchantment != null) return enchantment;
-                }
-            } catch (Exception ignored) {}
+            Enchantment enchantment = RegistryUtils.getEnchantmentOfString(n);
+            if (enchantment != null) return enchantment;
         }
         return null;
     }
@@ -243,10 +224,7 @@ public class NMSHandler implements NMS {
 
         // Apply
         try {
-            NamespacedKey key = NamespacedKey.fromString(ruleName.toLowerCase(Locale.ROOT));
-            if (key == null) return;
-
-            GameRule<?> rawRule = Registry.GAME_RULE.get(key);
+            GameRule<?> rawRule = RegistryUtils.getGameRuleOfString(ruleName);
             if (rawRule == null) throw new Exception("Invalid GameRule: " + ruleName);
 
             if (valueBool == null) {
@@ -258,7 +236,7 @@ public class NMSHandler implements NMS {
                 world.setGameRule(gameRule, valueBool);
             }
         } catch (Exception ex) {
-            logger.error("Error setting GameRule: {} with value: {}", ruleName, value, ex);
+            getLogger().error("Error setting GameRule: {} with value: {}", ruleName, value, ex);
         }
     }
 
@@ -271,38 +249,6 @@ public class NMSHandler implements NMS {
     public ItemStack getBlankPlayerHead() {
         return new ItemStack(Material.PLAYER_HEAD, 1);
     }
-
-    /**
-     * @deprecated Sử dụng chính xác material list từ <a href="https://jd.papermc.io/paper/26.1.2/org/bukkit/Material.html">đây</a>
-     */
-    @Deprecated
-    public ItemStack getMaterial(String item) {
-        if (item.equalsIgnoreCase("SKULL_ITEM"))
-            return new ItemStack(Material.valueOf("SKELETON_SKULL"), 1);
-        if (item.equalsIgnoreCase("ENDER_PORTAL_FRAME"))
-            return new ItemStack(Material.valueOf("END_PORTAL_FRAME"), 1);
-        if (item.equalsIgnoreCase("WORKBENCH"))
-            return new ItemStack(Material.valueOf("CRAFTING_TABLE"), 1);
-        if (item.equalsIgnoreCase("IRON_FENCE"))
-            return new ItemStack(Material.valueOf("IRON_BARS"), 1);
-        if (item.equalsIgnoreCase("REDSTONE_COMPARATOR"))
-            return new ItemStack(Material.valueOf("COMPARATOR"));
-        if (item.equalsIgnoreCase("SIGN_POST"))
-            return new ItemStack(Material.valueOf("BIRCH_SIGN"));
-        if (item.equalsIgnoreCase("STONE_PLATE"))
-            return new ItemStack(Material.valueOf("STONE_PRESSURE_PLATE"));
-        if (item.equalsIgnoreCase("IRON_PLATE"))
-            return new ItemStack(Material.valueOf("HEAVY_WEIGHTED_PRESSURE_PLATE"));
-        if (item.equalsIgnoreCase("GOLD_PLATE"))
-            return new ItemStack(Material.valueOf("LIGHT_WEIGHTED_PRESSURE_PLATE"));
-        if (item.equalsIgnoreCase("MOB_SPAWNER"))
-            return new ItemStack(Material.valueOf("SPAWNER"));
-        if (item.equalsIgnoreCase("SNOW_BALL")) {
-            return new ItemStack(Material.valueOf("SNOWBALL"));
-        }
-        return new ItemStack(Material.AIR, 1);
-    }
-
 
     public ItemStack getColorItem(String mat, byte color) {
         String col = getColorFromByte(color);
@@ -363,9 +309,7 @@ public class NMSHandler implements NMS {
         if (paramIsCustom) {
             loc.getWorld().playSound(loc, paramEnumName, soundCateg, paramVolume, paramPitch);
         } else {
-            NamespacedKey key = NamespacedKey.fromString(paramEnumName.toLowerCase(Locale.ROOT));
-            if (key == null) return;
-            Sound sound = Registry.SOUND_EVENT.get(key);
+            Sound sound = RegistryUtils.getSoundOfString(paramEnumName);
             if (sound != null) {
                 loc.getWorld().playSound(loc, sound, soundCateg, paramVolume, paramPitch);
             }

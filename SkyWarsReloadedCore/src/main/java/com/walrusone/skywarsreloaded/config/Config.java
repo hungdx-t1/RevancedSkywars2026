@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class Config {
     private static boolean initialized = false;
@@ -93,46 +92,7 @@ public class Config {
             "DIAMOND_SWORD", "NOTE_BLOCK",
             "DRAGON_EGG",
             "GLASS", "SHIELD");
-    private final List<String> defItems12 = Arrays.asList("EYE_OF_ENDER", "COMPASS", "END_CRYSTAL",
-            "BARRIER", "FEATHER", "FEATHER",
-            "IRON_DOOR",
-            "SHIELD", "NETHER_STAR", "STONE_SWORD", "IRON_SWORD", "DIAMOND_SWORD", "WOOD_HOE",
-            "EXP_BOTTLE", "NETHER_STAR", "REDSTONE", "REDSTONE", "REDSTONE", "REDSTONE",
-            "BARRIER",
-            "WATCH", "NETHER_STAR", "WATCH", "WATCH", "WATCH", "WATCH",
-            "BLAZE_POWDER", "NETHER_STAR", "PRISMARINE_SHARD", "PRISMARINE_SHARD", "PRISMARINE_SHARD", "PRISMARINE_SHARD",
-            "DRAGONS_BREATH", "NETHER_STAR", "BOOK", "BOOK", "BOOK", "BOOK",
-            "DIAMOND_SWORD",
-            "REDSTONE_TORCH_OFF",
-            "REDSTONE_COMPARATOR",
-            "WOOD_SWORD",
-            "EYE_OF_ENDER",
-            "BLAZE_POWDER",
-            "ARROW",
-            "DIAMOND_SWORD", "NOTE_BLOCK",
-            "DRAGON_EGG",
-            "STAINED_GLASS", "SHIELD");
-    private final List<String> defItems8 = Arrays.asList("EYE_OF_ENDER", "COMPASS", "WATCH",
-            "BARRIER", "FEATHER", "FEATHER",
-            "IRON_DOOR",
-            "DIAMOND", "NETHER_STAR", "STONE_SWORD", "IRON_SWORD", "DIAMOND_SWORD", "WOOD_HOE",
-            "EXP_BOTTLE", "NETHER_STAR", "REDSTONE", "REDSTONE", "REDSTONE", "REDSTONE",
-            "BARRIER",
-            "WATCH", "NETHER_STAR", "WATCH", "WATCH", "WATCH", "WATCH",
-            "BLAZE_POWDER", "NETHER_STAR", "PRISMARINE_SHARD", "PRISMARINE_SHARD", "PRISMARINE_SHARD", "PRISMARINE_SHARD",
-            "DRAGON_EGG", "NETHER_STAR", "BOOK", "BOOK", "BOOK", "BOOK",
-            "DIAMOND_SWORD",
-            "REDSTONE_TORCH_OFF",
-            "REDSTONE_COMPARATOR",
-            "WOOD_SWORD",
-            "EYE_OF_ENDER",
-            "BLAZE_POWDER",
-            "ARROW",
-            "DIAMOND_SWORD", "NOTE_BLOCK",
-            "DRAGON_EGG",
-            "STAINED_GLASS", "DRAGON_EGG");
     private final List<String> signItems = Arrays.asList("blockoffline", "blockwaiting", "blockplaying", "blockending", "almostfull", "threefull", "halffull", "almostempty");
-    private final List<String> signDef8 = Arrays.asList("COAL_BLOCK", "EMERALD_BLOCK", "REDSTONE_BLOCK", "LAPIS_BLOCK", "DIAMOND_SWORD", "GOLD_HELMET", "IRON_HELMET", "WOOD_SWORD");
     private final List<String> signDef13 = Arrays.asList("COAL_BLOCK", "EMERALD_BLOCK", "REDSTONE_BLOCK", "LAPIS_BLOCK", "DIAMOND_SWORD", "GOLDEN_HELMET", "IRON_HELMET", "WOODEN_SWORD");
     private boolean debug;
     private boolean bungeeMode;
@@ -377,7 +337,7 @@ public class Config {
             vip4 =                  SkyWarsReloaded.get().getConfig().getInt("game.vip4Multiplier");
             vip5 =                  SkyWarsReloaded.get().getConfig().getInt("game.vip5Multiplier");
             spawn = Util.get().stringToLocation(SkyWarsReloaded.get().getConfig().getString("spawn"));
-            debugTesting();
+
             timeAfterMatch =        SkyWarsReloaded.get().getConfig().getInt("game.timeAfterMatch");
             fireworksPer5Tick =     SkyWarsReloaded.get().getConfig().getInt("fireworks.per5Ticks");
             fireworksEnabled =      SkyWarsReloaded.get().getConfig().getBoolean("fireworks.enabled");
@@ -549,19 +509,6 @@ public class Config {
             }
         }
         loading = false;
-    }
-
-    private void debugTesting() {
-        if (debugEnabled()) {
-            Logger log = SkyWarsReloaded.get().getLogger();
-            //log.info("[DEBUG] spawn.x null? " + String.join(", ", SkyWarsReloaded.get().getServer().getWorlds()));
-            //if (t3) return;
-            boolean t1 = getSpawn() == null;
-            log.info("[DEBUG] spawn null? " + t1);
-            if (t1) return;
-            boolean t2 = getSpawn().getWorld() == null;
-            log.info("[DEBUG] spawn.world null? " + t2);
-        }
     }
 
     private void addMaterial(String key, String mat, String def) {
@@ -1202,7 +1149,6 @@ public class Config {
             case KILLS -> killsEnabled;
             case DEATHS -> deathsEnabled;
             case XP -> xpEnabled;
-            default -> false;
         };
     }
 
@@ -1385,15 +1331,11 @@ public class Config {
     }
     public boolean isUseTeamNumberInMenu() { return useTeamNumberInMenu; }
 
-
-    public boolean isUseSlimeWorldManager() { return useSlimeWorldManager; }
-    public String getSlimeWorldManagerSource() { return slimeWorldManagerSource; }
     public boolean isUsePartyAndFriends() { return usePartyAndFriends; }
 
     public boolean isUseTeamChat() { return useTeamChat; }
     public String getTimeFormat() { return timeFormat; }
 
-    public boolean isCheckForBetaVersion() { return checkForBetaVersion; }
     public boolean isDisplayPlayerExeperience() {
         return displayPlayerExeperience;
     }

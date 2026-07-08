@@ -268,7 +268,6 @@ public class SkyWarsReloaded extends JavaPlugin implements PluginMessageListener
             prepareServers();
 
             SWRServer.updateServerSigns();
-
         }
         // TODO: SWR API - Not finished
         swrAPI = new SkywarsReloadedImpl();

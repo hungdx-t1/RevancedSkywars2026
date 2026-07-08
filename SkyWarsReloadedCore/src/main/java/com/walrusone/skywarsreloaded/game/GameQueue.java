@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class GameQueue {
     private final ConcurrentLinkedQueue<PlayerCard> queue = new ConcurrentLinkedQueue<>();
-    private GameMap map;
+    private final GameMap map;
     private BukkitRunnable runnableQueue;
 
     GameQueue(GameMap g) {

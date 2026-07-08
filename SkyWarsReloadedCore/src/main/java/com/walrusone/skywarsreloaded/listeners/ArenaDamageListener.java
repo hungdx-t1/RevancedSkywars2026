@@ -3,6 +3,7 @@ package com.walrusone.skywarsreloaded.listeners;
 import com.walrusone.skywarsreloaded.SkyWarsReloaded;
 import com.walrusone.skywarsreloaded.api.enums.GameType;
 import com.walrusone.skywarsreloaded.api.enums.MatchState;
+import com.walrusone.skywarsreloaded.game.Crate;
 import com.walrusone.skywarsreloaded.game.GameMap;
 import com.walrusone.skywarsreloaded.game.PlayerData;
 import com.walrusone.skywarsreloaded.managers.MatchManager;
@@ -15,64 +16,55 @@ import org.bukkit.event.entity.*;
 
 public class ArenaDamageListener implements org.bukkit.event.Listener {
 
-
-    public ArenaDamageListener() {
-    }
-
     @EventHandler
     public void dragonDamage(EntityDamageEvent e) {
-        if (e.getEntity() instanceof EnderDragon) {
-            GameMap map = SkyWarsReloaded.getGameMapMgr().getMap(e.getEntity().getLocation().getWorld().getName());
-            if (map == null) return;
+        if (!(e.getEntity() instanceof EnderDragon)) return;
+        GameMap map = SkyWarsReloaded.getGameMapMgr().getMap(e.getEntity().getLocation().getWorld().getName());
+        if (map == null) return;
 
-            for (MatchEvent event : map.getEvents()) {
-                if (event instanceof EnderDragonEvent && event.isEnabled()) {
-                    if (((EnderDragonEvent)event).makeDragonInvulnerable) {
-                        e.setDamage(0);
-                    }
+        for (MatchEvent event : map.getEvents()) {
+            if (event instanceof EnderDragonEvent && event.isEnabled()) {
+                if (((EnderDragonEvent)event).makeDragonInvulnerable) {
+                    e.setDamage(0);
                 }
             }
-
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void playerDamagedByAlly(EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof Player target)) return;
         Entity damager = event.getDamager();
-        if ((event.getEntity() instanceof Player)) {
-            Player target = (Player) event.getEntity();
-            GameMap gameMap = MatchManager.get().getPlayerMap(target);
-            if ((gameMap != null) && (!gameMap.getSpectators().contains(target.getUniqueId()))) {
-                if ((gameMap.getMatchState() == MatchState.ENDING || gameMap.getMatchState() == MatchState.WAITINGSTART || gameMap.getMatchState() == MatchState.WAITINGLOBBY) ||
-                        gameMap.isDisableDamage()) {
-                    event.setCancelled(true);
-                    // Friendly fire attack
-                } else if (!gameMap.allowFriendlyFire() && damager instanceof Player && gameMap.getMatchState() == MatchState.PLAYING && gameMap.getTeamCard(target).equals(gameMap.getTeamCard((Player)damager))) {
-                    event.setCancelled(true);
-                    // Friendly fire shoot
-                } else if (!gameMap.allowFriendlyFire() && event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE && gameMap.getMatchState() == MatchState.PLAYING && ((Projectile)damager).getShooter() != null
-                        && ((Projectile)damager).getShooter() instanceof Player
-                        && gameMap.getTeamCard(target).equals(gameMap.getTeamCard((Player) ((Projectile)damager).getShooter()))) {
-                    event.setCancelled(true);
-                    // Process pvp events
-                } else {
-                    event.setCancelled(false);
-                    if (gameMap.getProjectilesOnly()) {
-                        if ((damager instanceof Projectile)) {
-                            doProjectile(gameMap, damager, event, target);
-                        } else if ((damager instanceof Player)) {
-                            event.setCancelled(true);
-                        }
-                    } else if ((damager instanceof Projectile)) {
+        GameMap gameMap = MatchManager.get().getPlayerMap(target);
+        if ((gameMap != null) && (!gameMap.getSpectators().contains(target.getUniqueId()))) {
+            if ((gameMap.getMatchState() == MatchState.ENDING || gameMap.getMatchState() == MatchState.WAITINGSTART || gameMap.getMatchState() == MatchState.WAITINGLOBBY) ||
+                    gameMap.isDisableDamage()) {
+                event.setCancelled(true);
+                // Friendly fire attack
+            } else if (!gameMap.allowFriendlyFire() && damager instanceof Player && gameMap.getMatchState() == MatchState.PLAYING && gameMap.getTeamCard(target).equals(gameMap.getTeamCard((Player)damager))) {
+                event.setCancelled(true);
+                // Friendly fire shoot
+            } else if (!gameMap.allowFriendlyFire() && event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE && gameMap.getMatchState() == MatchState.PLAYING && ((Projectile)damager).getShooter() != null
+                    && ((Projectile)damager).getShooter() instanceof Player
+                    && gameMap.getTeamCard(target).equals(gameMap.getTeamCard((Player) ((Projectile)damager).getShooter()))) {
+                event.setCancelled(true);
+                // Process pvp events
+            } else {
+                event.setCancelled(false);
+                if (gameMap.getProjectilesOnly()) {
+                    if ((damager instanceof Projectile)) {
                         doProjectile(gameMap, damager, event, target);
                     } else if ((damager instanceof Player)) {
-                        doPVP(damager, target, event, gameMap);
+                        event.setCancelled(true);
                     }
+                } else if ((damager instanceof Projectile)) {
+                    doProjectile(gameMap, damager, event, target);
+                } else if ((damager instanceof Player)) {
+                    doPVP(damager, target, event, gameMap);
                 }
             }
         }
     }
-
 
     private void doProjectile(GameMap gMap, Entity damager, EntityDamageByEntityEvent event, Player victim) {
         Projectile proj = (Projectile) damager;
@@ -85,9 +77,8 @@ public class ArenaDamageListener implements org.bukkit.event.Listener {
         if (gMap.isDoubleDamageEnabled()) {
             event.setDamage(event.getDamage() * 2.0D);
         }
-        if ((proj.getShooter() instanceof Player)) {
-            Player attacker = (Player) proj.getShooter();
-            if ((attacker != null) && (attacker != victim)) {
+        if ((proj.getShooter() instanceof Player attacker)) {
+            if (attacker != victim) {
                 PlayerData pd = PlayerData.getPlayerData(victim.getUniqueId());
                 if (pd != null) {
                     pd.setTaggedBy(attacker);
@@ -109,8 +100,7 @@ public class ArenaDamageListener implements org.bukkit.event.Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void playerDamaged(EntityDamageEvent event) {
-        if ((event.getEntity() instanceof Player)) {
-            Player player = (Player) event.getEntity();
+        if ((event.getEntity() instanceof Player player)) {
             GameMap gameMap = MatchManager.get().getPlayerMap(player);
             if (gameMap != null) {
                 if (gameMap.getMatchState() == MatchState.ENDING || gameMap.getMatchState() == MatchState.WAITINGSTART || gameMap.getMatchState() == MatchState.WAITINGLOBBY) {
@@ -129,8 +119,7 @@ public class ArenaDamageListener implements org.bukkit.event.Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void satLoss(FoodLevelChangeEvent event) {
-        if ((event.getEntity() instanceof Player)) {
-            Player player = (Player) event.getEntity();
+        if ((event.getEntity() instanceof Player player)) {
             GameMap gameMap = MatchManager.get().getPlayerMap(player);
             if (gameMap != null && (gameMap.getMatchState() == MatchState.WAITINGSTART || gameMap.getMatchState() == MatchState.WAITINGLOBBY || gameMap.getMatchState() == MatchState.ENDING)) {
                 event.setCancelled(true);
@@ -140,10 +129,7 @@ public class ArenaDamageListener implements org.bukkit.event.Listener {
 
     @EventHandler
     public void regen(EntityRegainHealthEvent event) {
-        if (!(event.getEntity() instanceof Player)) {
-            return;
-        }
-        Player player = (Player) event.getEntity();
+        if (!(event.getEntity() instanceof Player player)) return;
         GameMap gameMap = MatchManager.get().getPlayerMap(player);
         if (gameMap != null && !gameMap.allowRegen()) {
             event.setCancelled(true);
@@ -152,10 +138,7 @@ public class ArenaDamageListener implements org.bukkit.event.Listener {
 
     @EventHandler
     public void bowEvent(EntityShootBowEvent event) {
-        if (!(event.getEntity() instanceof Player)) {
-            return;
-        }
-        Player player = (Player) event.getEntity();
+        if (!(event.getEntity() instanceof Player player)) return;
         GameMap gameMap = MatchManager.get().getPlayerMap(player);
         if ((gameMap != null) && (
                 (gameMap.getMatchState() == MatchState.WAITINGSTART || gameMap.getMatchState() == MatchState.WAITINGLOBBY) || (gameMap.getMatchState() == MatchState.ENDING))) {
@@ -168,7 +151,7 @@ public class ArenaDamageListener implements org.bukkit.event.Listener {
         FallingBlock fb;
         if ((event.getEntity() instanceof FallingBlock)) {
             fb = (FallingBlock) event.getEntity();
-            if (com.walrusone.skywarsreloaded.SkyWarsReloaded.getNMS().checkMaterial(fb, org.bukkit.Material.ANVIL)) {
+            if (SkyWarsReloaded.getNMS().checkMaterial(fb, org.bukkit.Material.ANVIL)) {
                 for (GameMap gMap : SkyWarsReloaded.getGameMapMgr().getPlayableArenas(GameType.ALL)) {
                     if (gMap.getAnvils().contains(event.getEntity().getUniqueId().toString())) {
                         event.setCancelled(true);
@@ -176,9 +159,9 @@ public class ArenaDamageListener implements org.bukkit.event.Listener {
                         return;
                     }
                 }
-            } else if (com.walrusone.skywarsreloaded.SkyWarsReloaded.getNMS().checkMaterial(fb, org.bukkit.Material.SAND)) {
+            } else if (SkyWarsReloaded.getNMS().checkMaterial(fb, org.bukkit.Material.SAND)) {
                 for (GameMap gMap : SkyWarsReloaded.getGameMapMgr().getPlayableArenas(GameType.ALL)) {
-                    for (com.walrusone.skywarsreloaded.game.Crate crate : gMap.getCrates()) {
+                    for (Crate crate : gMap.getCrates()) {
                         if (fb.equals(crate.getEntity())) {
                             event.setCancelled(true);
                             fb.setDropItem(false);

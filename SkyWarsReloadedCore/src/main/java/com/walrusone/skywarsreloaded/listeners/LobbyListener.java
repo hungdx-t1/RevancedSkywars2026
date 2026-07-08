@@ -9,6 +9,8 @@ import com.walrusone.skywarsreloaded.utilities.Messaging;
 import com.walrusone.skywarsreloaded.utilities.Party;
 import com.walrusone.skywarsreloaded.utilities.SWRServer;
 import com.walrusone.skywarsreloaded.utilities.Util;
+import com.walrusone.skywarsreloaded.utilities.kyori.RegistryUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -28,18 +30,17 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.util.UUID;
 
 public class LobbyListener implements org.bukkit.event.Listener {
-
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent e) {
         if (SkyWarsReloaded.getCfg().bungeeMode() && !SkyWarsReloaded.getCfg().isLobbyServer()) {
-            e.setJoinMessage("");
+            e.joinMessage(Component.empty());
         }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onQuit(PlayerQuitEvent e) {
         if (SkyWarsReloaded.getCfg().bungeeMode() && !SkyWarsReloaded.getCfg().isLobbyServer()) {
-            e.setQuitMessage("");
+            e.quitMessage(Component.empty());
         }
     }
 
@@ -114,9 +115,7 @@ public class LobbyListener implements org.bukkit.event.Listener {
             World w = signLocation.getWorld();
             Block b = w.getBlockAt(signLocation);
 
-            if (!(b.getState() instanceof Sign)) {
-                return;
-            }
+            if (!(b.getState() instanceof Sign)) return;
 
             event.setCancelled(true);
             if (SkyWarsReloaded.get().getLeaderTypes().contains(lines[1].toUpperCase())) {
@@ -144,8 +143,7 @@ public class LobbyListener implements org.bukkit.event.Listener {
             Location blockLocation = event.getBlock().getLocation();
             World w = blockLocation.getWorld();
             Block b = w.getBlockAt(blockLocation);
-            if ((b.getState() instanceof Sign)) {
-                Sign sign = (Sign) b.getState();
+            if ((b.getState() instanceof Sign sign)) {
                 Location loc = sign.getLocation();
                 boolean removed = false;
 
@@ -197,9 +195,7 @@ public class LobbyListener implements org.bukkit.event.Listener {
             GameMap gMap = MatchManager.get().getPlayerMap(player);
             if ((gMap == null) &&
                     (e.getAction() == org.bukkit.event.block.Action.PHYSICAL) && ((e.getClickedBlock().getType() == SkyWarsReloaded.getNMS().getMaterial("STONE_PLATE").getType()) ||
-                    (
-
-                            e.getClickedBlock().getType() == SkyWarsReloaded.getNMS().getMaterial("IRON_PLATE").getType()) || (e.getClickedBlock().getType() == SkyWarsReloaded.getNMS().getMaterial("GOLD_PLATE").getType())) &&
+                    (e.getClickedBlock().getType() == RegistryUtils.createSingletonItem("IRON_PRESSURIZED_PLATE").getType()) || (e.getClickedBlock().getType() == SkyWarsReloaded.getNMS().getMaterial("GOLD_PLATE").getType())) &&
                     (SkyWarsReloaded.getCfg().pressurePlateJoin())) {
                 Location spawn = SkyWarsReloaded.getCfg().getSpawn();
                 if (spawn != null) {

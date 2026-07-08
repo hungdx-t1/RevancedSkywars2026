@@ -14,9 +14,10 @@ import java.util.UUID;
 public class PlayerQuitListener implements org.bukkit.event.Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        final Player player = event.getPlayer();
-        final UUID uuid = player.getUniqueId();
+        Player player = event.getPlayer();
+        UUID uuid = player.getUniqueId();
         Party party = Party.getParty(player);
+
         if (party != null) {
             party.removeMember(player);
         }

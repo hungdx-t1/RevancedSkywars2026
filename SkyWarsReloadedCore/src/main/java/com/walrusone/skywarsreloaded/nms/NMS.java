@@ -1,6 +1,7 @@
 package com.walrusone.skywarsreloaded.nms;
 
 import com.walrusone.skywarsreloaded.game.signs.SWRSign;
+import com.walrusone.skywarsreloaded.utilities.kyori.RegistryUtils;
 import org.bukkit.*;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.block.Block;
@@ -21,6 +22,10 @@ import java.util.List;
 import java.util.UUID;
 
 public interface NMS {
+    default org.slf4j.Logger getLogger() {
+        return org.slf4j.LoggerFactory.getLogger(this.getClass() + "_v26_1");
+    }
+
     boolean removeFromScoreboardCollection(Scoreboard scoreboard);
     void respawnPlayer(Player paramPlayer);
     void sendParticles(World paramWorld, String paramString, float paramFloat1, float paramFloat2, float paramFloat3, float paramFloat4, float paramFloat5, float paramFloat6, float paramFloat7, int paramInt);
@@ -54,7 +59,11 @@ public interface NMS {
     void setGameRule(World paramWorld, String paramString1, String paramString2);
     boolean headCheck(Block paramBlock);
     ItemStack getBlankPlayerHead();
-    ItemStack getMaterial(String paramString);
+
+    default ItemStack getMaterial(String paramString) {
+        return RegistryUtils.createSingletonItem(paramString);
+    }
+
     ItemStack getColorItem(String paramString, byte paramByte);
     void setBlockWithColor(World paramWorld, int paramInt1, int paramInt2, int paramInt3, Material paramMaterial, byte paramByte);
     void deleteCache();

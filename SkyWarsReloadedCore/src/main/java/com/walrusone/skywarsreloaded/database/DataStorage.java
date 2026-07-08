@@ -77,13 +77,10 @@ public class DataStorage {
             }
 
             Connection connection = database.getConnection();
-            PreparedStatement preparedStatement = null;
 
-            try {
-                String query = "UPDATE `sw_player` SET `player_name` = ?, `wins` = ?, `losses` = ?, `kills` = ?, `deaths` = ?, `xp` = ?, `pareffect` = ?, " +
-                        "`proeffect` = ?, `glasscolor` = ?,`killsound` = ?, `winsound` = ?, `taunt` = ? WHERE `uuid` = ?;";
-
-                preparedStatement = connection.prepareStatement(query);
+            String query = "UPDATE `sw_player` SET `player_name` = ?, `wins` = ?, `losses` = ?, `kills` = ?, `deaths` = ?, `xp` = ?, `pareffect` = ?, " +
+                    "`proeffect` = ?, `glasscolor` = ?,`killsound` = ?, `winsound` = ?, `taunt` = ? WHERE `uuid` = ?;";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, pData.getPlayerName());
                 preparedStatement.setInt(2, pData.getWins());
                 preparedStatement.setInt(3, pData.getLosses());
@@ -98,21 +95,11 @@ public class DataStorage {
                 preparedStatement.setString(12, pData.getTaunt());
                 preparedStatement.setString(13, pData.getId());
                 preparedStatement.executeUpdate();
-
-            } catch (final SQLException sqlException) {
-                sqlException.printStackTrace();
-
-            } finally {
-                if (preparedStatement != null) {
-                    try {
-                        preparedStatement.close();
-                    } catch (final SQLException ignored) {
-                    }
-                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }
-
 
     public void loadStats(final PlayerStat pData, Runnable postLoadStatsTask) {
         new BukkitRunnable() {
@@ -142,17 +129,12 @@ public class DataStorage {
                         pData.setTaunt("none");
                     } else {
                         Connection connection = database.getConnection();
-                        PreparedStatement preparedStatement = null;
-                        ResultSet resultSet = null;
 
-                        try {
-                            String query = "SELECT `player_name`, `wins`, `losses`, `kills`, `deaths`, `xp`, `pareffect`, `proeffect`, `glasscolor`, `killsound`, `winsound`, `taunt` " +
-                                    "FROM `sw_player` WHERE `uuid` = ? LIMIT 1;";
-
-                            preparedStatement = connection.prepareStatement(query);
+                        String query = "SELECT `player_name`, `wins`, `losses`, `kills`, `deaths`, `xp`, `pareffect`, `proeffect`, `glasscolor`, `killsound`, `winsound`, `taunt` " +
+                                "FROM `sw_player` WHERE `uuid` = ? LIMIT 1;";
+                        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                             preparedStatement.setString(1, pData.getId());
-                            resultSet = preparedStatement.executeQuery();
-
+                            ResultSet resultSet = preparedStatement.executeQuery();
                             if (resultSet != null && resultSet.next()) {
                                 String name = Bukkit.getPlayer(UUID.fromString(pData.getId())).getName();
                                 if (name == null) name = pData.getPlayerName();
@@ -170,24 +152,8 @@ public class DataStorage {
                                 pData.setWinSound(resultSet.getString("winsound"));
                                 pData.setTaunt(resultSet.getString("taunt"));
                             }
-
-                        } catch (final SQLException sqlException) {
-                            sqlException.printStackTrace();
-
-                        } finally {
-                            if (resultSet != null) {
-                                try {
-                                    resultSet.close();
-                                } catch (final SQLException ignored) {
-                                }
-                            }
-
-                            if (preparedStatement != null) {
-                                try {
-                                    preparedStatement.close();
-                                } catch (final SQLException ignored) {
-                                }
-                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
                         }
                     }
                 } else {
@@ -261,31 +227,16 @@ public class DataStorage {
             }
         } else {
             Database database = SkyWarsReloaded.getDb();
-
-            if (database.checkConnection()) {
-                return;
-            }
+            if (database.checkConnection()) return;
 
             Connection connection = database.getConnection();
-            PreparedStatement preparedStatement = null;
 
-            try {
-                String query = "DELETE FROM `sw_player` WHERE `uuid` = ?;";
-
-                preparedStatement = connection.prepareStatement(query);
-                preparedStatement.setString(1, uuid);
-                preparedStatement.executeUpdate();
-
-            } catch (final SQLException sqlException) {
-                sqlException.printStackTrace();
-
-            } finally {
-                if (preparedStatement != null) {
-                    try {
-                        preparedStatement.close();
-                    } catch (final SQLException ignored) {
-                    }
-                }
+            String query = "DELETE FROM `sw_player` WHERE `uuid` = ?;";
+            try (PreparedStatement stmt = connection.prepareStatement(query)) {
+                stmt.setString(1, uuid);
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -300,20 +251,14 @@ public class DataStorage {
                 if (sqlEnabled) {
                     Database database = SkyWarsReloaded.getDb();
 
-                    if (database.checkConnection()) {
-                        return;
-                    }
+                    if (database.checkConnection()) return;
 
                     Connection connection = database.getConnection();
-                    PreparedStatement preparedStatement;
-                    ResultSet resultSet;
 
-                    try {
-                        String query = "SELECT `uuid`, `player_name`, `wins`, `losses`, `kills`, `deaths`, `xp` FROM `sw_player` GROUP BY `uuid` " +
-                                "ORDER BY `" + type.toString().toLowerCase() + "` DESC LIMIT " + size + ";";
-
-                        preparedStatement = connection.prepareStatement(query);
-                        resultSet = preparedStatement.executeQuery();
+                    String query = "SELECT `uuid`, `player_name`, `wins`, `losses`, `kills`, `deaths`, `xp` FROM `sw_player` GROUP BY `uuid` " +
+                            "ORDER BY `" + type.toString().toLowerCase() + "` DESC LIMIT " + size + ";";
+                    try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+                         ResultSet resultSet = preparedStatement.executeQuery()) {
                         leaderboardManager.resetLeader(type);
                         while (resultSet.next()) {
                             String uuid = resultSet.getString("uuid");
@@ -326,10 +271,8 @@ public class DataStorage {
                             int xp = resultSet.getInt("xp");
                             leaderboardManager.addLeader(type, uuid, name, wins, losses, kills, deaths, xp);
                         }
-
-                    } catch (final SQLException sqlException) {
-                        sqlException.printStackTrace();
-
+                    } catch (SQLException e) {
+                        e.printStackTrace();
                     }
                 } else {
                     File dataDirectory = SkyWarsReloaded.get().getDataFolder();
@@ -405,35 +348,17 @@ public class DataStorage {
                         return;
                     }
                     Connection connection = database.getConnection();
-                    PreparedStatement preparedStatement = null;
-                    ResultSet resultSet = null;
 
-                    try {
-                        String query = "SELECT `permissions` FROM `sw_permissions` WHERE `uuid` = ?;";
-
-                        preparedStatement = connection.prepareStatement(query);
-                        preparedStatement.setString(1, playerStat.getId());
-                        resultSet = preparedStatement.executeQuery();
-
-                        while (resultSet != null && resultSet.next()) {
-                            playerStat.addPerm(resultSet.getString("permissions"), false);
-                        }
-                    } catch (final SQLException sqlException) {
-                        sqlException.printStackTrace();
-
-                    } finally {
-                        if (resultSet != null) {
-                            try {
-                                resultSet.close();
-                            } catch (final SQLException ignored) {
+                    String query = "SELECT `permissions` FROM `sw_permissions` WHERE `uuid` = ?;";
+                    try (PreparedStatement stmt = connection.prepareStatement(query)) {
+                        stmt.setString(1, playerStat.getId());
+                        try (ResultSet resultSet = stmt.executeQuery()) {
+                            while (resultSet != null && resultSet.next()) {
+                                playerStat.addPerm(resultSet.getString("permissions"), false);
                             }
                         }
-                        if (preparedStatement != null) {
-                            try {
-                                preparedStatement.close();
-                            } catch (final SQLException ignored) {
-                            }
-                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -483,7 +408,6 @@ public class DataStorage {
                                 for (String perm : playerStat.getPerms().getPermissions().keySet()) {
                                     String query = "INSERT INTO `sw_permissions` (`uuid`, `playername`, `permissions`) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE " +
                                             "`uuid`=`uuid`, `playername`=`playername`, `permissions`=`permissions` ";
-
                                     preparedStatement = connection.prepareStatement(query);
                                     preparedStatement.setString(1, playerStat.getId());
                                     preparedStatement.setString(2, playerStat.getPlayerName());
@@ -506,6 +430,4 @@ public class DataStorage {
             }
         }.runTaskAsynchronously(SkyWarsReloaded.get());
     }
-
-
 }
